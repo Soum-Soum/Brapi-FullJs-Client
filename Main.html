@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8"/>
+		<title>Breeding Api Client</title>
+		<script src="js/jquery.js"></script>
+		<script src="js/jquery.modal.js" type="text/javascript" charset="utf-8"></script>
+		<link rel="stylesheet" href="css/jquery.modal.css" type="text/css" media="screen" />
+		<script type="text/javascript" src="js/utilities.js"></script>
+		<script type="text/javascript" src="js/pager.js"></script>
+		<script src="js/main.js"></script>
+		<script src="js/getting_Information.js"></script>
+		<script src="js/view.js"></script>
+		<link rel="stylesheet" type="text/css" href="css/style.css">
+	</head>
+	<body>
+		<h1 id="title">Breeding Api Client</h1>
+		<form id="loginForm">
+			<p>Log-in for private data, or just submit for public data</p>
+			<label for="UserId">UserId : </label> 
+			<input type="text" name="UserId" id="UserId" placeholder="Ex : pmeunier">
+			<label for="Password">Password : </label> 
+			<input type="text" name="Password" id="Password">
+		</form>
+		<div id="urlForm">
+			<label for="URL" id="labelUrl">Url : </label> 
+			<input type="text" name="URL" placeholder="Ex : http://_____/brapi/v1" size="62" id="urltoget">
+		</div>
+		<input type="button" name="Submit" value="Submit" id="Submit1" onclick="login()">
+		<form id="mainForm">
+			<div id="mapForm">
+				<label for="selectionMap" id="labelSelectionMap">Maps : </label>
+				<select name="selectionMap" id="selectionMap"></select>
+			</div>
+				<label for="selectionStudies">Study : </label>
+				<select name="selectionStudies" id="selectionStudies" onchange="launch_selection()"></select>
+				<br>
+			<label for="Germplasms" class="alignTop">Germplasms : </label>
+			<label id="labelGermplasms" class="alignTop"></label>
+			<select name="Germplasms" id="Germplasms" size="10" multiple="" onchange="updateSelection('labelGermplasms','Germplasms');setUpMarkerProfils();"></select>
+			<label for="MarkersProfils" id="labelMarkersProfils" class="alignTop">MarkersProfils : </label>
+			<select name="MarkersProfils" id="MarkersProfils" size="10" multiple="" ></select>
+			<br>
+			<label for="typeMarker" class="alignTop"> Type : </label>
+			<select name="typeMarker" id="typeMarker" size="10" multiple="" onchange="selectionMarkers();"></select>
+			<label for="chromosome" class="alignTop"> Chromosome : </label>
+			<label id="chromosomeLabel" class="alignTop"></label>
+			<select name="chromosome" id="chromosome" size="10" multiple="" onchange="selectionMarkers();updateSelection('chromosomeLabel','chromosome');"></select>
+			<label for="Markers" class="alignTop">Markers : </label>
+			<span id="numberOfMarkers" class="alignTop"></span>
+			<select name="Markers" id="Markers" size="10" multiple=""></select>
+			<br>
+			<input type="button" name="Search" value="Search" onclick="getRequestParameter();">
+			<input type="button" name="Export" value="Export" onclick="exportMatrix();">
+			<h5 class="Evolution">Loading : </h5>	
+		</form>
+		<form id="secondForm">
+			<span id="ErrorMessage"></span>
+			<br>
+			<span id="nbResult"></span>
+			<input type="button" name="prev" value="<" onclick="prevPage();">
+			<label for="customIndex">Page n°</label>
+			<input type="text" id="customIndex" size="5" onchange="setCustomIndex();">
+			<span id="pageNumber" ></span>
+			<input type="button" name="next" value=">" onclick="nextPage()">
+			<label for="customPageSize">Number of Records per page</label>
+			<input type="text" id="customPageSize" size="5" onchange="setCustomPageSize();">	
+			<label for="missingData">Display missing data</label>
+			<input type="checkbox" name="missingData" id="missingData" checked>
+			<br>
+		</form>
+		<table id="resulttable">
+			<thead>
+				<tr>
+					<th>Markers</th>
+					<th>Sample</th>
+					<th>Genotype</th>
+				</tr>
+			</thead> 
+			<tbody>
+			</tbody>
+			<tfoot>
+				<tr>
+					<th>Markers</th>
+					<th>Sample</th>
+					<th>Genotype</th>
+				</tr>   	
+			</tfoot>
+		</table>
+		<div id="loadingScreen" class="modal">
+			<img id="loadingImage" src="resources/progress.gif">
+			<h3 id="EvolutionLoadingScreen">Loading : </h3>
+		</div>
+		<script type="text/javascript">	init();	</script>
+	</body>
+</html>
