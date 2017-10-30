@@ -171,7 +171,6 @@ async function getMarkersPosition(argumentsArray){
 	else{var myURL = argumentsArray.urlEndPoint+"/"+URL_MAPS+"/"+argumentsArray.selectedMap+"/positions?page="+argumentsArray.askedPage;}
 	var myInit = returnInit(argumentsArray.token);
 	console.log(myURL);
-	
 	try {
 		var resp = await fetch(myURL, myInit);
 		resp = await resp.json();

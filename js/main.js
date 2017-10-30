@@ -1,6 +1,6 @@
 "use strict";
 var urlEndPoint= "",token = "", selectedMap="";
-var selectedMarkersProfils=new Array(), selectedMarkers=new Array(), hmapsType=new Array() , hmapsLinkageGroup = new Array(), response = new Array();
+var selectedMarkersProfils=new Array(), selectedMarkers=new Array(), hmapsType=null , hmapsLinkageGroup = new Array(), response = new Array(), cpyResp = new Array();
 var clientPageSize=1000, startmentindex=0, sizeOfResquestedMatrix=0;	
 var isEndPointInUrl=false, isMapIdInUrl=false, isOneForOne = true, auth=true;
 
@@ -12,10 +12,11 @@ async function init(){
 }
 
 async function setVisibleField(){
-	$('#mainForm').hide();
-	$('#secondForm').hide();
-	$('#resulttable').hide();
-	$('#loadingScreen').hide();
+	// $('#mainForm').hide();
+	// $('#secondForm').hide();
+	// $('#resulttable').hide();
+	// $('#loadingScreen').hide();
+	// $('#ErrorMessage').hide();
 	if($_GET("brapiV1EndPoint")!=null && await urlBrapiEndPointIsOk($_GET("brapiV1EndPoint"))){
 		urlEndPoint = $_GET("brapiV1EndPoint");
 		$('#urlForm').hide(); 
@@ -75,6 +76,7 @@ async function launch_selection(){
 			console.log(response);
 			setUpMarkerProfils(response);
 			console.log(response);
+			cpyResp = response;
 			response=reversHmap(response);
 			console.log(response);
 		});
@@ -83,8 +85,10 @@ async function launch_selection(){
 		mapDetails.result.data[0].linkageGroups.forEach(function(element){
 			arrayOfLinkageGroup.push(element.linkageGroupId);
 		});
-		arrayMarkers = await paginationManager.pager(getMarkers,argumentsArray);
-		arrayOfMarkersType = setHmapType(arrayMarkers);
+		if (await paginationManager.is1Page(getMarkers,argumentsArray)){
+			arrayMarkers = await paginationManager.pager(getMarkers,argumentsArray);
+			arrayOfMarkersType = setHmapType(arrayMarkers);
+		}
 		arrayMarkers = await paginationManager.pager(getMarkersPosition,argumentsArray);
 		setHmapLinkageGroup(arrayOfLinkageGroup, arrayMarkers);
 		setUpLinkageGroupAndMarkersType(arrayOfLinkageGroup,arrayOfMarkersType);
@@ -107,6 +111,7 @@ function setHmapLinkageGroup(arrayOfLinkageGroup, arrayMarkers){
 
 function setHmapType(arrayMarkers){
 	console.log(arrayMarkers);
+	hmapsType = new Array();
 	var arrayOfMarkersType=new Array();
 	for (var i = 0; i < arrayMarkers.length; i++) {
 		for (var j = 0; j < arrayMarkers[i].length; j++) {
@@ -124,16 +129,17 @@ function selectionMarkers(){
 	var selectedLinkageGroup = $("#chromosome").val();
 	console.log(selectedType);
 	console.log(hmapsLinkageGroup);
-	if(selectedType.length!=0 && selectedLinkageGroup.length!=0){
+	if((selectedType.length!=0 && selectedLinkageGroup.length!=0)||(selectedLinkageGroup.length!=0 && $("#typeMarker>option").length==0)){
 		selectedMarkers=new Array();
 		for(var i=0; i<selectedLinkageGroup.length;i++){
 			selectedMarkers = selectedMarkers.concat(hmapsLinkageGroup[selectedLinkageGroup[i]]);	
 		}
-		console.log(selectedMarkers);
-		for (var i = 0; i < selectedMarkers.length; i++) {
-			if (!isInArray(selectedType,hmapsType[selectedMarkers[i]])){
-				selectedMarkers.splice(i,1);
-				i--;
+		if (hmapsType!=null){
+			for (var i = 0; i < selectedMarkers.length; i++) {
+				if (!isInArray(selectedType,hmapsType[selectedMarkers[i]])){
+					selectedMarkers.splice(i,1);
+					i--;
+				}
 			}
 		}
 		setupMarkersId(selectedMarkers);
@@ -194,7 +200,7 @@ function launchMatrixRequest(index){
 			}
 			argumentsArray = {urlEndPoint,token,sendedMarkers,sendedMarkersProlis, clientPageSize};
 			var matrix = paginationManager.pager(getMatrix,argumentsArray).then(function(matrix){
-				matrix=trasform_matrix(matrix,isOneForOne);
+				matrix=trasform_matrix(matrix,sendedMarkersProlis);
 				fill_result_table(matrix, response);
 			});
 		}
@@ -261,3 +267,33 @@ function setCustomIndex(){
 		launchMatrixRequest(startmentindex);
 	}
 }
+
+/*function exportGermplasmeTsv(){
+	
+	var data = genearteTsvData(cpyResp); //[["name1", "city1", "some other info"], ["name2", "city2", "more info"]];
+	console.log(typeof data);
+	var dataString="";
+	var csvContent = "data:text/csv;charset=utf-8,";
+	// data.forEach(function(infoArray, index){
+	//    dataString = infoArray.join(",");
+	//    csvContent += index < data.length ? dataString+ "\n" : dataString;
+	// });
+	var encodedUri = encodeURI(data);
+	var link = document.createElement("a");
+	link.setAttribute("href", encodedUri);
+	link.setAttribute("download", "my_data.tsv");
+	document.body.appendChild(link); // Required for FF
+
+	link.click(); 
+}
+
+function genearteTsvData(hmap){;
+	var tsvData = new Array();
+	Object.keys(hmap).forEach(function(element){
+		hmap[element].forEach(function(element2){
+			tsvData.push(element2.germplasmDbId + "," + element2.markerProfileDbId);
+		})
+	});
+	console.log(tsvData);
+	return tsvData
+}*/

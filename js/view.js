@@ -30,6 +30,7 @@ function setUpGermplasms(response){
 		htmlString +='<option selected value="'+valueString+'">'+element+'</option>\n';
 	});
 	$('select#Germplasms').html(htmlString);
+	updateSelection('labelGermplasms','Germplasms');
 }
 
 function setUpMarkerProfils(response){
@@ -56,6 +57,7 @@ function setUpLinkageGroupAndMarkersType(arrayOfLinkageGroup,arrayOfMarkersType)
 		htmlString += '<option value="' + element+ '">' + element+ '</option>';
     });
     $('select#chromosome').html(htmlString);
+    updateSelection('chromosomeLabel','chromosome');
     htmlString="";
     arrayOfMarkersType.forEach(function(element){
 		htmlString += '<option selected value="' + element+ '">' + element+ '</option>';
@@ -85,18 +87,26 @@ function fill_result_table(matrix,response){
 	var htmlString="";
 	if($('#missingData').prop('checked')){
 		matrix.forEach(function(element){
-			if (Object.keys(response).length!=0){
-				element[1]=response[element[1]];
-			}
-			htmlString += '<tr><td>'+element[0]+'</td><td>'+element[1]+'</td><td>'+element[2]+'</td></tr>';
-		});	
-	}else{
-		matrix.forEach(function(element){
-			if(element[2]!="N"){
-				if (response!=false){
+			if (element!=null){
+				if (Object.keys(response).length!=0){
 					element[1]=response[element[1]];
 				}
 				htmlString += '<tr><td>'+element[0]+'</td><td>'+element[1]+'</td><td>'+element[2]+'</td></tr>';
+			}else{
+				htmlString += '<tr><td>Missing Data</td><td>Missing Data</td><td> Missing Data</td></tr>';
+			}
+		});	
+	}else{
+		matrix.forEach(function(element){
+			if (element!=null){
+				if(element[2]!="N"){
+					if (response!=false){
+						element[1]=response[element[1]];
+					}
+					htmlString += '<tr><td>'+element[0]+'</td><td>'+element[1]+'</td><td>'+element[2]+'</td></tr>';
+				}
+			}else{
+				htmlString += '<tr><td>Missing Data</td><td>Missing Data</td><td> Missing Data</td></tr>';
 			}
 		});
 	}
@@ -128,12 +138,12 @@ async function handleErrors(err) {
 	if (typeof err == "string"){
 		$('#ErrorMessage').show();
 	    $('#ErrorMessage').text(err);
-	    await sleep(10000);
+	    await sleep(3000);
 	    $('#ErrorMessage').hide();
 	}else{
 		$('#ErrorMessage').show();
 	    $('#ErrorMessage').text(err.message);
-	    await sleep(10000);
+	    await sleep(3000);
 	    $('#ErrorMessage').hide();
 	}
 }

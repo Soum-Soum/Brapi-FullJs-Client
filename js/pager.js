@@ -39,6 +39,23 @@ class PaginationManager{
 			handleErrors(err);
 		}
 	}
+
+	async is1Page(function_to_launch, argumentsArray){
+		try{
+			argumentsArray.askedPage=0;
+			var resp = await function_to_launch(argumentsArray);
+			var totalPages = resp.metadata.pagination.totalPages;
+			var currentPage = resp.metadata.pagination.currentPage;
+			if (currentPage == totalPages-1) {
+				return true;
+			}else{
+				return false;
+			}
+		}catch(err){
+			handleErrors(err);
+		}
+	}
+
 	updateEvolution(){
 		$('.Evolution').show();
 		if (this.getEvolutionOfPagination()==100) {$('.Evolution').hide();}

@@ -1,10 +1,13 @@
-function trasform_matrix(matrix, isOneForOne){
+function trasform_matrix(matrix,sendedMarkersProlis){
 	var newMatrix = new Array();
-		matrix.forEach(function(element){
-			element.forEach(function(element2){
-				newMatrix.push(element2); 		
-			});		
-		});	
+	matrix.forEach(function(element){
+		element.forEach(function(element2){
+			newMatrix.push(element2); 		
+		});		
+	});
+	for (var i =0; i < sendedMarkersProlis.length; i++) {
+			newMatrix.push(null);
+		}	
 	return newMatrix;
 }
 
