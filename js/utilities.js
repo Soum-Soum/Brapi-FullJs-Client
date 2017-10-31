@@ -1,19 +1,19 @@
 function trasform_matrix(matrix,sendedMarkersProlis){
-	var newMatrix = new Array();
+	let newMatrix = [];
 	matrix.forEach(function(element){
 		element.forEach(function(element2){
 			newMatrix.push(element2); 		
 		});		
 	});
-	for (var i =0; i < sendedMarkersProlis.length; i++) {
+	for (let i =0; i < sendedMarkersProlis.length; i++) {
 			newMatrix.push(null);
 		}	
 	return newMatrix;
 }
 
 function isInArray(array, a){
-	for (var i = 0; i < array.length; i++) {
-		if (array[i]==a){
+	for (let i = 0; i < array.length; i++) {
+		if (array[i]===a){
 			return true;
 		}
 	}
@@ -25,17 +25,18 @@ function sleep(ms) {
 }
 
 function returnInit(token){
-	var myHeaders = new Headers();
-	myHeaders = {'Authorization': 'Bearer '+token}
-	var myInit = { method: 'GET',
-                   headers: myHeaders,
-                   mode: 'cors',
-                   cache: 'default' };
-    return myInit;
+	let myHeaders = new Headers();
+	myHeaders = {'Authorization': 'Bearer '+token};
+    return {
+        method: 'GET',
+        headers: myHeaders,
+        mode: 'cors',
+        cache: 'default'
+    };
 }
 
 function $_GET(param) {
-    var vars = {};
+    let vars = {};
     window.location.href.replace(location.hash, '').replace(
             /[?&]+([^=&]+)=?([^&]*)?/gi, // regexp
             function (m, key, value) { // callback
@@ -50,12 +51,12 @@ function $_GET(param) {
 
 function getMarkerProfileHmap(arrayGermplasmsIDs){
 	console.log(arrayGermplasmsIDs);
-	var hmap=new Array(), alreadyTreated = new Array();
-	for (var i = 0; i < arrayGermplasmsIDs.length; i++) {
-		for (var j = 0; j < arrayGermplasmsIDs[i].length; j++) {
+	let hmap=[], alreadyTreated = [];
+	for (let i = 0; i < arrayGermplasmsIDs.length; i++) {
+		for (let j = 0; j < arrayGermplasmsIDs[i].length; j++) {
 			if(!isInArray(alreadyTreated, arrayGermplasmsIDs[i][j].germplasmDbId)){
 				alreadyTreated.push(arrayGermplasmsIDs[i][j].germplasmDbId);
-				hmap[arrayGermplasmsIDs[i][j].germplasmDbId]=new Array();
+				hmap[arrayGermplasmsIDs[i][j].germplasmDbId]=[];
 				hmap[arrayGermplasmsIDs[i][j].germplasmDbId].push(arrayGermplasmsIDs[i][j]);
 			}else{
 				hmap[arrayGermplasmsIDs[i][j].germplasmDbId].push(arrayGermplasmsIDs[i][j]);
@@ -76,8 +77,8 @@ function is1For1(hmap){
 }
 
 function removeAll(tab, val){
-	for (var i = 0; i < tab.length; i++) {
-		if (tab[i]==val) {
+	for (let i = 0; i < tab.length; i++) {
+		if (tab[i]===val) {
 			tab.splice(i,1);
 		}
 	}
@@ -85,13 +86,13 @@ function removeAll(tab, val){
 }
 
 function sortAlphaNum(a,b) {
-	var reA = /[^a-zA-Z]/g;
-	var reN = /[^0-9]/g;
-    var aA = a.replace(reA, "");
-    var bA = b.replace(reA, "");
+	let reA = /[^a-zA-Z]/g;
+	let reN = /[^0-9]/g;
+    let aA = a.replace(reA, "");
+    let bA = b.replace(reA, "");
     if(aA === bA) {
-        var aN = parseInt(a.replace(reN, ""), 10);
-        var bN = parseInt(b.replace(reN, ""), 10);
+        let aN = parseInt(a.replace(reN, ""), 10);
+        let bN = parseInt(b.replace(reN, ""), 10);
         return aN === bN ? 0 : aN > bN ? 1 : -1;
     } else {
         return aA > bA ? 1 : -1;
@@ -99,9 +100,9 @@ function sortAlphaNum(a,b) {
 }
 
 function reversHmap(hMap){
-	var newHMap = new Array();
+	let newHMap = [];
 	Object.keys(hMap).forEach(function(element){
-		if (hMap[element].length==1){newHMap[hMap[element][0].markerProfileDbId]=element;}
+		if (hMap[element].length===1){newHMap[hMap[element][0].markerProfileDbId]=element;}
 		else{return null;}
 	});
 	return newHMap;

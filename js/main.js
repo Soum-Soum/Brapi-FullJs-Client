@@ -1,12 +1,12 @@
 "use strict";
-var urlEndPoint= "",token = "", selectedMap="";
-var selectedMarkersProfils=new Array(), selectedMarkers=new Array(), hmapsType=null , hmapsLinkageGroup = new Array(), response = new Array(), cpyResp = new Array();
-var clientPageSize=1000, startmentindex=0, sizeOfResquestedMatrix=0;	
-var isEndPointInUrl=false, isMapIdInUrl=false, isOneForOne = true, auth=true;
+let urlEndPoint = "", token = "", selectedMap = "";
+let selectedMarkersProfils=[], selectedMarkers=[], hmapsType=null , hmapsLinkageGroup = [], response = [], cpyResp = [];
+let clientPageSize=1000, startmentindex=0, sizeOfResquestedMatrix=0;
+let isEndPointInUrl=false, isMapIdInUrl=false, auth=true;
 
 async function init(){
 	await setVisibleField();
-	if (window != top){
+	if (window !== top){
 		$('#title').hide();
 	}
 }
@@ -17,21 +17,21 @@ async function setVisibleField(){
 	// $('#resulttable').hide();
 	// $('#loadingScreen').hide();
 	// $('#ErrorMessage').hide();
-	if($_GET("brapiV1EndPoint")!=null && await urlBrapiEndPointIsOk($_GET("brapiV1EndPoint"))){
+	if($_GET("brapiV1EndPoint")!==null && await urlBrapiEndPointIsOk($_GET("brapiV1EndPoint"))){
 		urlEndPoint = $_GET("brapiV1EndPoint");
-		$('#urlForm').hide(); 
+		$('#urlForm').hide();
 		isEndPointInUrl=true;
-		if ($_GET("mapDbId")!=null && await urlMapIdIsOk(urlEndPoint,$_GET("mapDbId"))){
-			selectedMap=$_GET("mapDbId"); 
+		if ($_GET("mapDbId")!==null && await urlMapIdIsOk(urlEndPoint,$_GET("mapDbId"))){
+			selectedMap=$_GET("mapDbId");
 			$('#mapForm').hide();
 			isMapIdInUrl=true;
 		}
 	}
-	if ($_GET("auth")!="true"){
+	if ($_GET("auth")!=="true"){
 		$('#loginForm').hide();
 		auth = false;
 	}
-	if (isEndPointInUrl && auth==false){
+	if (isEndPointInUrl && auth===false){
 		console.log("ptdr");
 		$('#Submit1').hide();
 		await login();
@@ -39,38 +39,38 @@ async function setVisibleField(){
 }
 
 async function login(){
-	var stringUserId = $("input#UserId").val(), stringPassword = $("input#Password").val();
+	let stringUserId = $("#UserId").val(), stringPassword = $("#Password").val();
 	if(!isEndPointInUrl){urlEndPoint = $("#urltoget").val()}
-	if(stringPassword == "" || stringUserId == ""){
-		$('form#mainForm').show();
+	if(stringPassword === "" || stringUserId === ""){
+		$('#mainForm').show();
 		startment();
 	}else{
 		token = await getToken(stringUserId, stringPassword, urlEndPoint);
-		if(token == ""){alert("Bad Username or password, You're are loged as public user, so you only have acces to public data");}
+		if(token === ""){alert("Bad Username or password, You're are loged as public user, so you only have acces to public data");}
 		else{alert("You're loged as private user");}
-		$('form#mainForm').show();
+		$('#mainForm').show();
 		startment();
 	}
 }
 
 async function startment() {
-	var argumentsArray = {urlEndPoint, token}
-	var firtstInformation = await getFirstInformation(argumentsArray);
+	let argumentsArray = {urlEndPoint, token};
+	let firtstInformation = await getFirstInformation(argumentsArray);
 	setup_select_tag(firtstInformation);
 }	
 
 async function launch_selection(){
-	if ($("select#selectionStudies option:selected").text()=="---Select one---") {
+	if ($("#selectionStudies option:selected").text()==="---Select one---") {
 		setEmptyTheFields();
 	}else{
 		if(!isMapIdInUrl){
-			selectedMap = $('select#selectionMap option:selected').val();
+			selectedMap = $('#selectionMap').find('option:selected').val();
 		}
-		var arrayOfLinkageGroup=new Array(), arrayOfMarkersType=new Array(), arrayMarkers=new Array();
-		var selectedStudy = $('select#selectionStudies option:selected').val();
-		var paginationManager = new PaginationManager(0);
-		var argumentsArray = {urlEndPoint, token, selectedStudy, selectedMap}
-		var arraymarkerProfileDbId = await paginationManager.pager(getmarkerProfileDbId,argumentsArray).then(function(arrayGermplasmsIDs){
+		let arrayOfLinkageGroup=[], arrayOfMarkersType=[], arrayMarkers=[];
+		let selectedStudy = $('#selectionStudies').find('option:selected').val();
+		let paginationManager = new PaginationManager(0);
+		let argumentsArray = {urlEndPoint, token, selectedStudy, selectedMap};
+        await paginationManager.pager(getmarkerProfileDbId,argumentsArray).then(function(arrayGermplasmsIDs){
 			response = getMarkerProfileHmap(arrayGermplasmsIDs);
 			setUpGermplasms(response);
 			console.log(response);
@@ -80,7 +80,7 @@ async function launch_selection(){
 			response=reversHmap(response);
 			console.log(response);
 		});
-		var mapDetails = await getMapDetails(argumentsArray);
+		let mapDetails = await getMapDetails(argumentsArray);
 		console.log(argumentsArray.selectedMap);
 		mapDetails.result.data[0].linkageGroups.forEach(function(element){
 			arrayOfLinkageGroup.push(element.linkageGroupId);
@@ -98,12 +98,12 @@ async function launch_selection(){
 
 function setHmapLinkageGroup(arrayOfLinkageGroup, arrayMarkers){
 	hmapsLinkageGroup=null;
-	hmapsLinkageGroup=new Array();
-	for(var i =0; i<arrayOfLinkageGroup.length; i++){
-		hmapsLinkageGroup[arrayOfLinkageGroup[i]]=new Array();
+	hmapsLinkageGroup=[];
+	for(let i =0; i<arrayOfLinkageGroup.length; i++){
+		hmapsLinkageGroup[arrayOfLinkageGroup[i]]=[];
 	}
-	for (var i = 0; i < arrayMarkers.length; i++) {
-		for (var j = 0; j < arrayMarkers[i].length; j++) {
+	for (let i = 0; i < arrayMarkers.length; i++) {
+		for (let j = 0; j < arrayMarkers[i].length; j++) {
 						hmapsLinkageGroup[arrayMarkers[i][j].linkageGroup].push(arrayMarkers[i][j].markerDbId);
 		}
 	}
@@ -111,10 +111,10 @@ function setHmapLinkageGroup(arrayOfLinkageGroup, arrayMarkers){
 
 function setHmapType(arrayMarkers){
 	console.log(arrayMarkers);
-	hmapsType = new Array();
-	var arrayOfMarkersType=new Array();
-	for (var i = 0; i < arrayMarkers.length; i++) {
-		for (var j = 0; j < arrayMarkers[i].length; j++) {
+	hmapsType = [];
+	let arrayOfMarkersType=[];
+	for (let i = 0; i < arrayMarkers.length; i++) {
+		for (let j = 0; j < arrayMarkers[i].length; j++) {
 			hmapsType[arrayMarkers[i][j].markerDbId]=arrayMarkers[i][j].type;
 			if(!isInArray(arrayOfMarkersType, arrayMarkers[i][j].type)){
 					arrayOfMarkersType.push(arrayMarkers[i][j].type);
@@ -125,17 +125,17 @@ function setHmapType(arrayMarkers){
 }
 
 function selectionMarkers(){
-	var selectedType = $("#typeMarker").val();
-	var selectedLinkageGroup = $("#chromosome").val();
+	let selectedType = $("#typeMarker").val();
+	let selectedLinkageGroup = $("#chromosome").val();
 	console.log(selectedType);
 	console.log(hmapsLinkageGroup);
-	if((selectedType.length!=0 && selectedLinkageGroup.length!=0)||(selectedLinkageGroup.length!=0 && $("#typeMarker>option").length==0)){
-		selectedMarkers=new Array();
-		for(var i=0; i<selectedLinkageGroup.length;i++){
+	if((selectedType.length!==0 && selectedLinkageGroup.length!==0)||(selectedLinkageGroup.length!==0 && $("#typeMarker>option").length===0)){
+		selectedMarkers=[];
+		for(let i=0; i<selectedLinkageGroup.length;i++){
 			selectedMarkers = selectedMarkers.concat(hmapsLinkageGroup[selectedLinkageGroup[i]]);	
 		}
-		if (hmapsType!=null){
-			for (var i = 0; i < selectedMarkers.length; i++) {
+		if (hmapsType!==null){
+			for (let i = 0; i < selectedMarkers.length; i++) {
 				if (!isInArray(selectedType,hmapsType[selectedMarkers[i]])){
 					selectedMarkers.splice(i,1);
 					i--;
@@ -143,23 +143,24 @@ function selectionMarkers(){
 			}
 		}
 		setupMarkersId(selectedMarkers);
+		console.log(selectedMarkers);
 	}
 }
 
 
 function getRequestParameter(){
 	selectedMarkersProfils=null;
-	$('form#secondForm').show();
+	$('#secondForm').show();
 	if($('#MarkersProfils').is('visible')){
-		selectedMarkersProfils = $("select#MarkersProfils option:selected").map(function(){return $(this).val();}).get();
+		selectedMarkersProfils = $("#MarkersProfils option:selected").map(function(){return $(this).val();}).get();
 	}else{
-		selectedMarkersProfils = $("select#Germplasms option:selected").map(function(){return $(this).val().split(",");}).get(); 
+		selectedMarkersProfils = $("#Germplasms option:selected").map(function(){return $(this).val().split(",");}).get();
 		selectedMarkersProfils = removeAll(selectedMarkersProfils, "");	
 	}
-	if($('select#Markers').html()!=""){
-		selectedMarkers = $('select#Markers option:selected').map(function(){return $(this).val();}).get();
+	if($('#Markers').html()!==""){
+		selectedMarkers = $('#Markers').find('option:selected').map(function(){return $(this).val();}).get();
 	}
-	if(selectedMarkers.length!=0 && selectedMarkersProfils.length!=0){
+	if(selectedMarkers.length!==0 && selectedMarkersProfils.length!==0){
 		$('#nbResult').text("RESULT : " + (selectedMarkers.length*selectedMarkersProfils.length) + " records found");
 		launchMatrixRequest(0);
 	}else{
@@ -173,24 +174,24 @@ function launchMatrixRequest(index){
 	$('#customIndex').val(Math.floor(startmentindex/clientPageSize));
 	console.log(Math.floor(startmentindex/clientPageSize));
 	if (index < sizeOfResquestedMatrix){
-		var sendedMarkers = new Array(), sendedMarkersProlis = new Array();
-		var paginationManager = new PaginationManager(0);
-		var isAnExport= false;
+		let sendedMarkers = [], sendedMarkersProlis = [];
+		let paginationManager = new PaginationManager(0);
+		let isAnExport= false;
 		if (selectedMarkers.length*selectedMarkers.length<clientPageSize){
 			sendedMarkers = selectedMarkers;
 			sendedMarkersProlis = selectedMarkersProfils;
-			var argumentsArray = {urlEndPoint, token, sendedMarkers, sendedMarkersProlis, clientPageSize, isAnExport};
-			var matrix = paginationManager.pager(getMatrix,argumentsArray).then(function(matrix){
+			let argumentsArray = {urlEndPoint, token, sendedMarkers, sendedMarkersProlis, clientPageSize, isAnExport};
+			paginationManager.pager(getMatrix,argumentsArray).then(function(matrix){
 				matrix=trasform_matrix(matrix);
 				fill_result_table(matrix,0);
 			});
 		}else{
-			var count =0 ,cpyIndex = index ,rest = index%selectedMarkers.length ,quotient = Math.trunc(index/selectedMarkers.length);
+			let count =0 ,rest = index%selectedMarkers.length ,quotient = Math.trunc(index/selectedMarkers.length);
 			while(count<clientPageSize && index <= sizeOfResquestedMatrix){
-				if(selectedMarkers[rest]!=null && !isInArray(sendedMarkers, selectedMarkers[rest])){
+				if(selectedMarkers[rest]!==null && !isInArray(sendedMarkers, selectedMarkers[rest])){
 					sendedMarkers.push(selectedMarkers[rest]);
 				}
-				if (!isInArray(sendedMarkersProlis, selectedMarkersProfils[quotient]) && selectedMarkersProfils[quotient]!=null ){
+				if (!isInArray(sendedMarkersProlis, selectedMarkersProfils[quotient]) && selectedMarkersProfils[quotient]!==null ){
 					sendedMarkersProlis.push(selectedMarkersProfils[quotient]);
 				}
 				index++;
@@ -198,8 +199,8 @@ function launchMatrixRequest(index){
 				rest = index%selectedMarkers.length;
 				quotient = Math.trunc(index/selectedMarkers.length);
 			}
-			argumentsArray = {urlEndPoint,token,sendedMarkers,sendedMarkersProlis, clientPageSize};
-			var matrix = paginationManager.pager(getMatrix,argumentsArray).then(function(matrix){
+			let argumentsArray = {urlEndPoint,token,sendedMarkers,sendedMarkersProlis, clientPageSize};
+			paginationManager.pager(getMatrix,argumentsArray).then(function(matrix){
 				matrix=trasform_matrix(matrix,sendedMarkersProlis);
 				fill_result_table(matrix, response);
 			});
@@ -213,17 +214,17 @@ function launchMatrixRequest(index){
 
 async function exportMatrix(){
 	setloader();
-	var sendedMarkersProlis = $("select#MarkersProfils option:selected").map(function(){return $(this).val().split(",");}).get(); 
+	let sendedMarkersProlis = $("select#MarkersProfils option:selected").map(function(){return $(this).val().split(",");}).get();
 	sendedMarkersProlis = removeAll(sendedMarkersProlis, "");
-	var sendedMarkers = $('select#Markers option:selected').map(function(){return $(this).val();}).get();
-	var paginationManager = new PaginationManager(0);
-	var isAnExport= true;
-	var argumentsArray = {urlEndPoint, token, sendedMarkers, sendedMarkersProlis, clientPageSize, isAnExport};
-	var link = await getMatrix(argumentsArray);
+	let sendedMarkers = selectedMarkers
+	console.log(sendedMarkers);
+	let isAnExport= true, askedPage = null;
+	let argumentsArray = {urlEndPoint, token, sendedMarkers, sendedMarkersProlis, clientPageSize, isAnExport, askedPage};
+	let link = await getMatrix(argumentsArray);
 	console.log(link);
 	argumentsArray.asynchid = link.metadata.status[0].message;
 	console.log(argumentsArray.asynchid);
-	getExportStatus(argumentsArray);
+	await getExportStatus(argumentsArray);
 }
 
 function nextPage(){
@@ -246,16 +247,16 @@ function prevPage(){
 }
 
 function setCustomPageSize(){
-	if (parseInt($('input#customPageSize').val())<5000){
-		clientPageSize=parseInt($('input#customPageSize').val())
+	if (parseInt($('#customPageSize').val())<5000){
+		clientPageSize=parseInt($('#customPageSize').val())
 	}else{
 		clientPageSize=5000;
-		$('input#customPageSize').val(5000);
+		$('#customPageSize').val(5000);
 	}	
 }
 
 function setCustomIndex(){
-	var pageNumber = parseInt($('input#customIndex').val());
+	let pageNumber = parseInt($('#customIndex').val());
 	startmentindex = pageNumber*clientPageSize;
 	if(startmentindex>=0 && startmentindex<selectedMarkers.length*selectedMarkersProfils.length){
 		launchMatrixRequest(startmentindex);

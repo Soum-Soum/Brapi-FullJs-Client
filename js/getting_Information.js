@@ -5,14 +5,14 @@ const URL_MARKERS = "markers";
 const URL_MARKER_PROFILES = "markerprofiles";
 const URL_ALLELE_MATRIX = "allelematrix-search";
 const URL_TOKEN="token";
-const REQUIRED_CALLS = new Array(URL_MAPS, URL_MARKERS, URL_STUDIES, URL_MARKER_PROFILES, URL_ALLELE_MATRIX);
+const REQUIRED_CALLS = [URL_MAPS, URL_MARKERS, URL_STUDIES, URL_MARKER_PROFILES, URL_ALLELE_MATRIX];
 
 async function getToken(stringUserId, stringPassword, urlEndPoint){
-	var myURL = urlEndPoint + "/" + URL_TOKEN, tokenString="";
-	var body = {username : stringUserId, password : stringPassword}
+	let myURL = urlEndPoint + "/" + URL_TOKEN, tokenString="";
+	let body = {username : stringUserId, password : stringPassword}
 	body = JSON.stringify(body);
 	try {
-    	var resp = await fetch(myURL,{method: "POST",body: body, headers: {'Content-Type': 'application/json'}});
+    	let resp = await fetch(myURL,{method: "POST",body: body, headers: {'Content-Type': 'application/json'}});
     	if (resp.status>199 && resp.status<300){
 		tokenString = await resp.json();
 		return tokenString.access_token;
@@ -24,18 +24,18 @@ async function getToken(stringUserId, stringPassword, urlEndPoint){
 }
 
 async function urlMapIdIsOk(brapiEndPoint, mapDbId){
-	try{
-		resp =  await fetch(brapiEndPoint + "/" + URL_MAPS + "/" + mapDbId);
-	}catch(err){
-		handleErrors("Bad map id in Url");
-		return false;
-	}
+    try {
+        await fetch(brapiEndPoint + "/" + URL_MAPS + "/" + mapDbId);
+    } catch (err) {
+        handleErrors("Bad map id in Url");
+        return false;
+    }
 	return true;
 }
 
 async function urlBrapiEndPointIsOk(brapiEndPoint){
 	try{
-        let resp = await fetch(brapiEndPoint + "/" + URL_CALLS);
+        await fetch(brapiEndPoint + "/" + URL_CALLS);
     }catch(err){
 		handleErrors("Bad barpi end point in Url");
 		return false;
@@ -45,29 +45,29 @@ async function urlBrapiEndPointIsOk(brapiEndPoint){
 
 async function getFirstInformation(argumentsArray){
     let arrayOfStudies, arrayOfMaps = [];
-    paginationManager = new PaginationManager(0);
+    let paginationManager = new PaginationManager(0);
     let calls = await paginationManager.pager(getCalls, argumentsArray);
     let all_Calls_Are_Detected = callsAreInArray(calls, REQUIRED_CALLS);
     if(all_Calls_Are_Detected){
 		arrayOfStudies= await readStudyList(argumentsArray);
 		if($_GET("mapDbId")!==null){console.log($_GET("mapDbId"));$('select#selectionMap').hide();$('#labelSelectionMap').hide();}
 		else{arrayOfMaps = await readMaps(argumentsArray);}	
-		var firstInformation = new Object();
+		let firstInformation = {};
 		firstInformation.maps=arrayOfMaps;
 		firstInformation.studies=arrayOfStudies;
 		return firstInformation;
 	}else{
-		return;
+		return null;
 	}
 }
 
 async function getCalls(argumentsArray){
-	var myURL = argumentsArray.urlEndPoint + "/" + URL_CALLS;
-	var myHeaders = new Headers();
-	var Authorization = "Bearer " + argumentsArray.token;
+	let myURL = argumentsArray.urlEndPoint + "/" + URL_CALLS;
+	let myHeaders = new Headers();
+	let Authorization = "Bearer " + argumentsArray.token;
 	myHeaders = {Authorization}
 	try {
-    	var resp = await fetch(myURL, myHeaders);
+    	let resp = await fetch(myURL, myHeaders);
 	    resp = await resp.json();
 		return resp;
 	}
@@ -77,15 +77,15 @@ async function getCalls(argumentsArray){
 }
 
 function callsAreInArray(resp, required_calls_array){
-	var foundCalls = new Array();
-	var result=false;
+	let foundCalls = [];
+	let result=false;
 	resp.forEach(function(element){
 		element.forEach(function(element2){foundCalls.push(element2.call);});
 	});
 	required_calls_array.forEach(function(element){
     	result = false;
 	    for(i=0; i<foundCalls.length; i++){
-	        if(foundCalls[i] == element){result = true;}
+	        if(foundCalls[i] === element){result = true;}
 	    }
 	});
 	if (result) {console.log("All required calls are detected");}
@@ -94,11 +94,11 @@ function callsAreInArray(resp, required_calls_array){
 }
 
 async function readMaps(argumentsArray){
-	var myURL = argumentsArray.urlEndPoint + "/" + URL_MAPS;
-	var foundMaps = new Array();
-	var myInit = returnInit(argumentsArray.token);
+	let myURL = argumentsArray.urlEndPoint + "/" + URL_MAPS;
+	let foundMaps = [];
+	let myInit = returnInit(argumentsArray.token);
     try {
-    	var resp = await fetch(myURL, myInit);
+    	let resp = await fetch(myURL, myInit);
     	resp = await resp.json();
 		resp.result.data.forEach(function(element){foundMaps.push(element);});
 		return foundMaps;
@@ -109,11 +109,11 @@ async function readMaps(argumentsArray){
 }
 
 async function readStudyList(argumentsArray){
-	var myURL = argumentsArray.urlEndPoint + "/" + URL_STUDIES + "?studyType=genotype";
-	var foundStudies = new Array();
-	var myInit = returnInit(argumentsArray.token);
+	let myURL = argumentsArray.urlEndPoint + "/" + URL_STUDIES + "?studyType=genotype";
+	let foundStudies = new Array();
+	let myInit = returnInit(argumentsArray.token);
     try {
-    	var resp = await fetch(myURL, myInit);
+    	let resp = await fetch(myURL, myInit);
     	resp = await resp.json();
 		resp.result.data.forEach(function(element){foundStudies.push(element);});
 		return foundStudies;
@@ -124,14 +124,13 @@ async function readStudyList(argumentsArray){
 }
 
 async function getmarkerProfileDbId(argumentsArray){
-	if(argumentsArray.askedPage == null){var myURL = argumentsArray.urlEndPoint + "/" + URL_MARKER_PROFILES;}
-	else{var myURL = argumentsArray.urlEndPoint + "/" + URL_MARKER_PROFILES +"?page="+argumentsArray.askedPage;}
-	var myURL = argumentsArray.urlEndPoint + "/" + URL_MARKER_PROFILES + "?" + argumentsArray.askedPage;
-	var myInit = returnInit(argumentsArray.token);
+    let myURL = argumentsArray.askedPage===null ? argumentsArray.urlEndPoint + "/" + URL_MARKER_PROFILES : argumentsArray.urlEndPoint + "/" + URL_MARKER_PROFILES +"?page="+argumentsArray.askedPage ;
+	let myInit = returnInit(argumentsArray.token);
 	try {
-		var resp = await fetch(myURL, myInit);
+		let resp = await fetch(myURL, myInit);
     	resp = await resp.json();
-		return resp;;
+    	console.log(resp);
+		return resp;
 	}
 	catch(err) {
 	     handleErrors(err); 
@@ -139,12 +138,11 @@ async function getmarkerProfileDbId(argumentsArray){
 }
 
 async function getMarkers(argumentsArray){
-	if(argumentsArray.askedPage == null){var myURL = argumentsArray.urlEndPoint + "/" + URL_MARKERS;}
-	else{var myURL = argumentsArray.urlEndPoint + "/" + URL_MARKERS +"?page="+argumentsArray.askedPage;}
-	var myInit = returnInit(argumentsArray.token);
+    let myURL = argumentsArray.askedPage===null ? argumentsArray.urlEndPoint + "/" + URL_MARKERS : argumentsArray.urlEndPoint + "/" + URL_MARKERS +"?page="+argumentsArray.askedPage ;
+	let myInit = returnInit(argumentsArray.token);
 	try {
 		console.log(myURL);
-		var resp = await fetch(myURL, myInit);
+		let resp = await fetch(myURL, myInit);
     	resp = await resp.json();
 		return resp;	
 	}
@@ -154,10 +152,10 @@ async function getMarkers(argumentsArray){
 }
 
 async function getMapDetails(argumentsArray){
-	var myURL=argumentsArray.urlEndPoint+"/"+URL_MAPS+"/"+argumentsArray.selectedMap;
-	var myInit = returnInit(argumentsArray.token);
+	let myURL=argumentsArray.urlEndPoint+"/"+URL_MAPS+"/"+argumentsArray.selectedMap;
+	let myInit = returnInit(argumentsArray.token);
 	try {
-		var resp = await fetch(myURL, myInit);
+		let resp = await fetch(myURL, myInit);
 		resp = await resp.json();
 		return resp;
 	}
@@ -167,12 +165,11 @@ async function getMapDetails(argumentsArray){
 }
 
 async function getMarkersPosition(argumentsArray){
-	if(argumentsArray.askedPage==null){var myURL=argumentsArray.urlEndPoint+"/"+URL_MAPS+"/"+argumentsArray.selectedMap+"/positions";}
-	else{var myURL = argumentsArray.urlEndPoint+"/"+URL_MAPS+"/"+argumentsArray.selectedMap+"/positions?page="+argumentsArray.askedPage;}
-	var myInit = returnInit(argumentsArray.token);
+    let myURL = argumentsArray.askedPage===null ? argumentsArray.urlEndPoint+"/"+URL_MAPS+"/"+argumentsArray.selectedMap+"/positions" : argumentsArray.urlEndPoint+"/"+URL_MAPS+"/"+argumentsArray.selectedMap+"/positions?page="+argumentsArray.askedPage;
+	let myInit = returnInit(argumentsArray.token);
 	console.log(myURL);
 	try {
-		var resp = await fetch(myURL, myInit);
+		let resp = await fetch(myURL, myInit);
 		resp = await resp.json();
 		return resp;
 	}
@@ -182,9 +179,8 @@ async function getMarkersPosition(argumentsArray){
 }
 
 async function getMatrix(argumentsArray){
-	if(argumentsArray.askedPage==null){ myURL = argumentsArray.urlEndPoint + "/" +URL_ALLELE_MATRIX;}
-	else{ myURL = argumentsArray.urlEndPoint + "/" +URL_ALLELE_MATRIX+"?pageSize="+argumentsArray.clientPageSize+"&page="+argumentsArray.askedPage;}
-	var matrixString = "";
+	let myURL = argumentsArray.askedPage===null ? argumentsArray.urlEndPoint + "/" +URL_ALLELE_MATRIX : argumentsArray.urlEndPoint + "/" +URL_ALLELE_MATRIX+"?pageSize="+argumentsArray.clientPageSize+"&page="+argumentsArray.askedPage;
+    let matrixString = "";
 	for(i=0;i<argumentsArray.sendedMarkersProlis.length; i++){
 		matrixString+= 'markerprofileDbId=' + argumentsArray.sendedMarkersProlis[i] + '&';
 	}
@@ -192,13 +188,13 @@ async function getMatrix(argumentsArray){
 		matrixString+= (i==0 ? '' : '&') + 'markerDbId=' +argumentsArray.sendedMarkers[i];
 	}
 	if(argumentsArray.isAnExport == true){matrixString += "&format=tsv&unknownString=N";}
-	var myHeaders = new Headers();
+	let myHeaders = new Headers();
 	myHeaders = {'Authorization': 'Bearer '+argumentsArray.token,
 				 'Content-Type':'application/x-www-form-urlencoded'
-				}	
+				};
 	try {
 		console.log(myURL);
-    	var resp = await fetch(myURL,{method: "POST",body: matrixString, headers: myHeaders});
+    	let resp = await fetch(myURL,{method: "POST",body: matrixString, headers: myHeaders});
 		resp = await resp.json();
 		return resp;
 	}
@@ -208,12 +204,12 @@ async function getMatrix(argumentsArray){
 }
 
 async function getExportStatus(argumentsArray){
-	var myURL = argumentsArray.urlEndPoint + "/" + URL_ALLELE_MATRIX + "/status/" + argumentsArray.asynchid;
-	var myInit = returnInit(argumentsArray.token);
-	var resp = await fetch(myURL, myInit)
+	let myURL = argumentsArray.urlEndPoint + "/" + URL_ALLELE_MATRIX + "/status/" + argumentsArray.asynchid;
+	let myInit = returnInit(argumentsArray.token);
+	let resp = await fetch(myURL, myInit)
 	try{
 		console.log(myURL);
-		var resp = await fetch(myURL, myInit)
+		let resp = await fetch(myURL, myInit)
 	}catch(err){
 		handleErrors(err);
 	}
@@ -222,7 +218,7 @@ async function getExportStatus(argumentsArray){
 	console.log(argumentsArray.asynchid);
 	console.log(myURL);
 	try {
-    	while(resp.metadata.status[0].message=="INPROCESS"){
+    	while(resp.metadata.status[0].message==="INPROCESS"){
 			console.log(myURL);
 			resp = await fetch(myURL, myInit);
 			resp = await resp.json();

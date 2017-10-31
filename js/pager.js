@@ -1,6 +1,5 @@
 class PaginationManager{
-	
-	costructor(evolutionOfPagination){
+    constructor(evolutionOfPagination){
 		this.evolutionOfPagination=evolutionOfPagination;
 	}
 
@@ -14,16 +13,17 @@ class PaginationManager{
 
 	async pager(function_to_launch, argumentsArray){
 		try{
-			var arrayOfResp = new Array();
+			let arrayOfResp = [];
 			argumentsArray.askedPage=0;
-			var resp = await function_to_launch(argumentsArray);
+			let resp = await function_to_launch(argumentsArray);
 			argumentsArray.askedPage++;
-			var totalPages = resp.metadata.pagination.totalPages;
-			var currentPage = resp.metadata.pagination.currentPage;
+			let totalPages = resp.metadata.pagination.totalPages;
+			let currentPage = resp.metadata.pagination.currentPage;
 			arrayOfResp.push(resp.result.data);
-			if (currentPage == totalPages-1) {
+			if (currentPage === totalPages-1) {
 				this.setEvolutionOfPagination(100);
 				this.updateEvolution();
+                console.log(arrayOfResp);
 				return arrayOfResp;
 			}else{
 				while(argumentsArray.askedPage <= totalPages-1){
@@ -33,7 +33,7 @@ class PaginationManager{
 					argumentsArray.askedPage++;
 					arrayOfResp.push(resp.result.data);
 				}
-			return arrayOfResp
+			    return arrayOfResp;
 			}
 		}catch(err){
 			handleErrors(err);
@@ -43,14 +43,10 @@ class PaginationManager{
 	async is1Page(function_to_launch, argumentsArray){
 		try{
 			argumentsArray.askedPage=0;
-			var resp = await function_to_launch(argumentsArray);
-			var totalPages = resp.metadata.pagination.totalPages;
-			var currentPage = resp.metadata.pagination.currentPage;
-			if (currentPage == totalPages-1) {
-				return true;
-			}else{
-				return false;
-			}
+			let resp = await function_to_launch(argumentsArray);
+			let totalPages = resp.metadata.pagination.totalPages;
+			let currentPage = resp.metadata.pagination.currentPage;
+			return currentPage === totalPages - 1;
 		}catch(err){
 			handleErrors(err);
 		}
@@ -58,7 +54,7 @@ class PaginationManager{
 
 	updateEvolution(){
 		$('.Evolution').show();
-		if (this.getEvolutionOfPagination()==100) {$('.Evolution').hide();}
+		if (this.getEvolutionOfPagination()===100) {$('.Evolution').hide();}
 		$('.Evolution').html("Loading : " + this.getEvolutionOfPagination() + "%");
 	}
 }
