@@ -60,7 +60,7 @@ async function startment() {
 }	
 
 async function launch_selection(){
-	if ($("#selectionStudies option:selected").text()==="---Select one---") {
+	if ($("#selectionStudies").find("option:selected").text()==="---Select one---") {
 		setEmptyTheFields();
 	}else{
 		if(!isMapIdInUrl){
@@ -73,12 +73,9 @@ async function launch_selection(){
         await paginationManager.pager(getmarkerProfileDbId,argumentsArray).then(function(arrayGermplasmsIDs){
 			response = getMarkerProfileHmap(arrayGermplasmsIDs);
 			setUpGermplasms(response);
-			console.log(response);
 			setUpMarkerProfils(response);
-			console.log(response);
 			cpyResp = response;
 			response=reversHmap(response);
-			console.log(response);
 		});
 		let mapDetails = await getMapDetails(argumentsArray);
 		console.log(argumentsArray.selectedMap);
@@ -127,8 +124,6 @@ function setHmapType(arrayMarkers){
 function selectionMarkers(){
 	let selectedType = $("#typeMarker").val();
 	let selectedLinkageGroup = $("#chromosome").val();
-	console.log(selectedType);
-	console.log(hmapsLinkageGroup);
 	if((selectedType.length!==0 && selectedLinkageGroup.length!==0)||(selectedLinkageGroup.length!==0 && $("#typeMarker>option").length===0)){
 		selectedMarkers=[];
 		for(let i=0; i<selectedLinkageGroup.length;i++){
@@ -182,7 +177,7 @@ function launchMatrixRequest(index){
 			sendedMarkersProlis = selectedMarkersProfils;
 			let argumentsArray = {urlEndPoint, token, sendedMarkers, sendedMarkersProlis, clientPageSize, isAnExport};
 			paginationManager.pager(getMatrix,argumentsArray).then(function(matrix){
-				matrix=trasform_matrix(matrix);
+				matrix=trasform_matrix(matrix,sendedMarkersProlis);
 				fill_result_table(matrix,0);
 			});
 		}else{
@@ -269,32 +264,29 @@ function setCustomIndex(){
 	}
 }
 
-/*function exportGermplasmeTsv(){
-	
-	var data = genearteTsvData(cpyResp); //[["name1", "city1", "some other info"], ["name2", "city2", "more info"]];
-	console.log(typeof data);
-	var dataString="";
-	var csvContent = "data:text/csv;charset=utf-8,";
-	// data.forEach(function(infoArray, index){
-	//    dataString = infoArray.join(",");
-	//    csvContent += index < data.length ? dataString+ "\n" : dataString;
-	// });
-	var encodedUri = encodeURI(data);
-	var link = document.createElement("a");
-	link.setAttribute("href", encodedUri);
-	link.setAttribute("download", "my_data.tsv");
-	document.body.appendChild(link); // Required for FF
-
-	link.click(); 
+function exportGermplasmeTsv(){
+	download('Germplasm2Sample.tsv',cpyResp);
 }
 
-function genearteTsvData(hmap){;
-	var tsvData = new Array();
+function download(filename,hmap) {
+    let element = document.createElement('a');
+    let text = genearteTsvData(hmap);
+    element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+    element.setAttribute('download', filename);
+    element.style.display = 'none';
+    document.body.appendChild(element);
+    element.click();
+    document.body.removeChild(element);
+}
+
+
+function genearteTsvData(hmap){
+	let tsvData = "";
 	Object.keys(hmap).forEach(function(element){
 		hmap[element].forEach(function(element2){
-			tsvData.push(element2.germplasmDbId + "," + element2.markerProfileDbId);
+			tsvData+=(element2.germplasmDbId + "\t" + element2.markerProfileDbId + "\n");
 		})
 	});
 	console.log(tsvData);
 	return tsvData
-}*/
+}

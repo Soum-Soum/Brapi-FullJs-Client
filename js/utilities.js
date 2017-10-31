@@ -1,4 +1,5 @@
 function trasform_matrix(matrix,sendedMarkersProlis){
+	console.log(sendedMarkersProlis);
 	let newMatrix = [];
 	matrix.forEach(function(element){
 		element.forEach(function(element2){
