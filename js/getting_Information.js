@@ -64,8 +64,8 @@ async function getFirstInformation(argumentsArray){
 async function getCalls(argumentsArray){
 	let myURL = argumentsArray.urlEndPoint + "/" + URL_CALLS;
 	let myHeaders = new Headers();
-	let Authorization = "Bearer " + argumentsArray.token;
-	myHeaders = {Authorization}
+	let Authorization = argumentsArray.token==='' ? '' : "Bearer " + argumentsArray.token;
+	myHeaders = {Authorization};
 	try {
     	let resp = await fetch(myURL, myHeaders);
 	    resp = await resp.json();
@@ -179,20 +179,28 @@ async function getMarkersPosition(argumentsArray){
 }
 
 async function getMatrix(argumentsArray){
-	let myURL = argumentsArray.askedPage===null ? argumentsArray.urlEndPoint + "/" +URL_ALLELE_MATRIX : argumentsArray.urlEndPoint + "/" +URL_ALLELE_MATRIX+"?pageSize="+argumentsArray.clientPageSize+"&page="+argumentsArray.askedPage;
-    let matrixString = "";
-	for(i=0;i<argumentsArray.sendedMarkersProlis.length; i++){
-		matrixString+= 'markerprofileDbId=' + argumentsArray.sendedMarkersProlis[i] + '&';
-	}
-	for(i=0;i<argumentsArray.sendedMarkers.length; i++){
-		matrixString+= (i==0 ? '' : '&') + 'markerDbId=' +argumentsArray.sendedMarkers[i];
-	}
-	if(argumentsArray.isAnExport == true){matrixString += "&format=tsv&unknownString=N";}
-	let myHeaders = new Headers();
-	myHeaders = {'Authorization': 'Bearer '+argumentsArray.token,
-				 'Content-Type':'application/x-www-form-urlencoded'
-				};
-	try {
+    try {
+		let myURL = argumentsArray.askedPage===null ? argumentsArray.urlEndPoint + "/" +URL_ALLELE_MATRIX : argumentsArray.urlEndPoint + "/" +URL_ALLELE_MATRIX+"?pageSize="+argumentsArray.clientPageSize+"&page="+argumentsArray.askedPage;
+		let matrixString = "";
+		argumentsArray.sendedMarkersProlis = removeAll(argumentsArray.sendedMarkersProlis, undefined);
+		for(i=0;i<argumentsArray.sendedMarkersProlis.length; i++){
+			matrixString+= 'markerprofileDbId=' + argumentsArray.sendedMarkersProlis[i] + '&';
+		}
+		argumentsArray.sendedMarkers = removeAll(argumentsArray.sendedMarkers, undefined);
+		for(i=0;i<argumentsArray.sendedMarkers.length; i++){
+			matrixString+= (i==0 ? '' : '&') + 'markerDbId=' +argumentsArray.sendedMarkers[i];
+		}
+		if(argumentsArray.isAnExport == true){matrixString += "&format=tsv&unknownString=N";}
+		let myHeaders = new Headers();
+		if(argumentsArray.token==='""'){
+			myHeaders = {'Authorization': 'Bearer '+argumentsArray.token,
+				'Content-Type':'application/x-www-form-urlencoded'
+			};
+		}else {
+			myHeaders = {
+				'Content-Type':'application/x-www-form-urlencoded'
+			};
+		}
 		console.log(myURL);
     	let resp = await fetch(myURL,{method: "POST",body: matrixString, headers: myHeaders});
 		resp = await resp.json();
@@ -204,33 +212,27 @@ async function getMatrix(argumentsArray){
 }
 
 async function getExportStatus(argumentsArray){
-	let myURL = argumentsArray.urlEndPoint + "/" + URL_ALLELE_MATRIX + "/status/" + argumentsArray.asynchid;
-	let myInit = returnInit(argumentsArray.token);
-	let resp = await fetch(myURL, myInit)
-	try{
-		console.log(myURL);
+    try {
+		let myURL = argumentsArray.urlEndPoint + "/" + URL_ALLELE_MATRIX + "/status/" + argumentsArray.asynchid;
+		let myInit = returnInit(argumentsArray.token);
 		let resp = await fetch(myURL, myInit)
-	}catch(err){
-		handleErrors(err);
-	}
-	resp = await resp.json();
-	console.log(resp);
-	console.log(argumentsArray.asynchid);
-	console.log(myURL);
-	try {
-    	while(resp.metadata.status[0].message==="INPROCESS"){
+		resp = await resp.json();
+		console.log(resp);
+		console.log(argumentsArray.asynchid);
+		console.log(myURL);
+		while(resp.metadata.status[0].message==="INPROCESS"){
 			console.log(myURL);
 			resp = await fetch(myURL, myInit);
 			resp = await resp.json();
 			console.log(resp.metadata.pagination.currentPage);
 			$('#EvolutionLoadingScreen').html("Loading : " + resp.metadata.pagination.currentPage + "%");
-			await sleep(1500);	
+			await sleep(1500);
 		}
 		console.log(resp);
 		window.location = resp.metadata.datafiles[0];
 	}
 	catch(err) {
-	     handleErrors(err); 
+		handleErrors(err);
 	}
 	$.modal.close();
 }

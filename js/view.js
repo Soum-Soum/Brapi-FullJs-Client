@@ -42,13 +42,12 @@ function setUpMarkerProfils(){
 	selectedGermplasms.forEach(function(element){
 		htmlString +='<option selected value="'+element+'">'+element+'</option>\n';
 	});
-	$('select#MarkersProfils').html(htmlString);
-	if ($('select#MarkersProfils>option').length===$('select#Germplasms>option:selected').length){
-		$('#labelMarkersProfils').hide();
-		$('select#MarkersProfils').hide();
+	$('#MarkersProfils').html(htmlString);
+    updateSelection('markerProfileLabel','MarkersProfils');
+	if ($('#MarkersProfils>option').length===$('#Germplasms>option:selected').length){
+		$('#MarkersProfils').attr("disabled", true);
 	}else{
-		$('#labelMarkersProfils').show();
-		$('select#MarkersProfils').show();
+		$('#MarkersProfils').attr("disabled", false);
 	}
 }
 
@@ -72,13 +71,16 @@ function setupMarkersId(arrayMarkersIds){
 		$('#Markers').show();
 		$('#numberOfMarkers').hide();
 		$('#labelToHide').show();
+        $('#markersLabel').show();
 		let htmlString ="";
 		arrayMarkersIds.forEach(function(element){
 			htmlString +='<option selected value="'+element+'">'+element+'</option>\n';
 		});
 		$('#Markers').html(htmlString);
+        updateSelection('markersLabel','Markers');
 	}else{
 		$('#Markers').html("");
+		$('#markersLabel').hide();
 		$('#numberOfMarkers').html(arrayMarkersIds.length);
 		$('#numberOfMarkers').show();
 	}
@@ -90,10 +92,7 @@ function fill_result_table(matrix,response){
 	if($('#missingData').prop('checked')){
 		matrix.forEach(function(element){
 			if (element!==null){
-				if (Object.keys(response).length!==0){
-					element[1]=response[element[1]];
-				}
-				htmlString += '<tr><td>'+element[0]+'</td><td>'+element[1]+'</td><td>'+element[2]+'</td></tr>';
+                htmlString += '<tr><td>'+element[0]+'</td><td>'+response[element[1]]+'</td><td>'+element[1]+'</td><td>'+element[2]+'</td></tr>';
 			}else{
 				htmlString += '<tr><td>Missing Data</td><td>Missing Data</td><td> Missing Data</td></tr>';
 			}
@@ -102,10 +101,7 @@ function fill_result_table(matrix,response){
 		matrix.forEach(function(element){
 			if (element!==null){
 				if(element[2]!=="N"){
-					if (response!==false){
-						element[1]=response[element[1]];
-					}
-					htmlString += '<tr><td>'+element[0]+'</td><td>'+element[1]+'</td><td>'+element[2]+'</td></tr>';
+					htmlString += '<tr><td>'+element[0]+'</td><td>'+response[element[1]]+'</td><td>'+element[1]+'</td><td>'+element[2]+'</td></tr>';
 				}
 			}else{
 				htmlString += '<tr><td>Missing Data</td><td>Missing Data</td><td> Missing Data</td></tr>';

@@ -1,14 +1,10 @@
-function trasform_matrix(matrix,sendedMarkersProlis){
-	console.log(sendedMarkersProlis);
+function trasform_matrix(matrix){
 	let newMatrix = [];
 	matrix.forEach(function(element){
 		element.forEach(function(element2){
 			newMatrix.push(element2); 		
 		});		
 	});
-	for (let i =0; i < sendedMarkersProlis.length; i++) {
-			newMatrix.push(null);
-		}	
 	return newMatrix;
 }
 
@@ -27,7 +23,7 @@ function sleep(ms) {
 
 function returnInit(token){
 	let myHeaders = new Headers();
-	myHeaders = {'Authorization': 'Bearer '+token};
+	myHeaders = token==='' ? {} : {'Authorization': 'Bearer '+token};
     return {
         method: 'GET',
         headers: myHeaders,
@@ -81,6 +77,7 @@ function removeAll(tab, val){
 	for (let i = 0; i < tab.length; i++) {
 		if (tab[i]===val) {
 			tab.splice(i,1);
+			i--;
 		}
 	}
 	return tab;
@@ -103,8 +100,12 @@ function sortAlphaNum(a,b) {
 function reversHmap(hMap){
 	let newHMap = [];
 	Object.keys(hMap).forEach(function(element){
-		if (hMap[element].length===1){newHMap[hMap[element][0].markerProfileDbId]=element;}
-		else{return null;}
+        console.log(element);
+		for(let i=0; i<hMap[element].length;i++){
+            newHMap[hMap[element][i].markerProfileDbId]=element;
+		}
 	});
 	return newHMap;
 }
+
+

@@ -1,7 +1,7 @@
 "use strict";
 let urlEndPoint = "", token = "", selectedMap = "";
 let selectedMarkersProfils=[], selectedMarkers=[], hmapsType=null , hmapsLinkageGroup = [], response = [], cpyResp = [];
-let clientPageSize=1000, startmentindex=0, sizeOfResquestedMatrix=0;
+let clientPageSize=1000, startmentindex=0, sizeOfResquestedMatrix=0, totalPage =0;
 let isEndPointInUrl=false, isMapIdInUrl=false, auth=true;
 
 async function init(){
@@ -142,15 +142,14 @@ function selectionMarkers(){
 	}
 }
 
-
 function getRequestParameter(){
 	selectedMarkersProfils=null;
 	$('#secondForm').show();
-	if($('#MarkersProfils').is('visible')){
-		selectedMarkersProfils = $("#MarkersProfils option:selected").map(function(){return $(this).val();}).get();
-	}else{
-		selectedMarkersProfils = $("#Germplasms option:selected").map(function(){return $(this).val().split(",");}).get();
-		selectedMarkersProfils = removeAll(selectedMarkersProfils, "");	
+	if($('#MarkersProfils').is('[disabled=disabled]')){
+        selectedMarkersProfils = $("#Germplasms option:selected").map(function(){return $(this).val().split(",");}).get();
+        selectedMarkersProfils = removeAll(selectedMarkersProfils, "");
+    }else{
+        selectedMarkersProfils = $("#MarkersProfils option:selected").map(function(){return $(this).val();}).get();
 	}
 	if($('#Markers').html()!==""){
 		selectedMarkers = $('#Markers').find('option:selected').map(function(){return $(this).val();}).get();
@@ -165,9 +164,9 @@ function getRequestParameter(){
 
 function launchMatrixRequest(index){
 	sizeOfResquestedMatrix = selectedMarkers.length*selectedMarkersProfils.length;
-	$('#pageNumber').text("/" + Math.floor((selectedMarkers.length*selectedMarkersProfils.length)/clientPageSize));
-	$('#customIndex').val(Math.floor(startmentindex/clientPageSize));
-	console.log(Math.floor(startmentindex/clientPageSize));
+	totalPage = Math.floor(1+(sizeOfResquestedMatrix)/clientPageSize);
+	$('#pageNumber').text("/" + totalPage);
+	$('#customIndex').val(Math.floor(startmentindex/clientPageSize)+1);
 	if (index < sizeOfResquestedMatrix){
 		let sendedMarkers = [], sendedMarkersProlis = [];
 		let paginationManager = new PaginationManager(0);
@@ -194,22 +193,25 @@ function launchMatrixRequest(index){
 				rest = index%selectedMarkers.length;
 				quotient = Math.trunc(index/selectedMarkers.length);
 			}
+            sendedMarkersProlis = removeAll(sendedMarkersProlis, undefined);
+			console.log(sendedMarkersProlis);
 			let argumentsArray = {urlEndPoint,token,sendedMarkers,sendedMarkersProlis, clientPageSize};
 			paginationManager.pager(getMatrix,argumentsArray).then(function(matrix){
+				console.log(matrix);
 				matrix=trasform_matrix(matrix,sendedMarkersProlis);
+                console.log(matrix);
 				fill_result_table(matrix, response);
 			});
 		}
 	}else{
-		console.log(startmentindex-clientPageSize);
-		startmentindex-=clientPageSize;
-		launchMatrixRequest(startmentindex);
+		startmentindex = parseInt(clientPageSize)*(totalPage-1);
+        launchMatrixRequest(startmentindex);
 	}
 }
 
 async function exportMatrix(){
 	setloader();
-	let sendedMarkersProlis = $("select#MarkersProfils option:selected").map(function(){return $(this).val().split(",");}).get();
+	let sendedMarkersProlis = $("#MarkersProfils option:selected").map(function(){return $(this).val().split(",");}).get();
 	sendedMarkersProlis = removeAll(sendedMarkersProlis, "");
 	let sendedMarkers = selectedMarkers
 	console.log(sendedMarkers);
@@ -227,7 +229,8 @@ function nextPage(){
 		startmentindex += clientPageSize;
 		launchMatrixRequest(startmentindex);
 	}else{
-		launchMatrixRequest(sizeOfResquestedMatrix-parseInt(clientPageSize));
+		startmentindex=parseInt(clientPageSize)*(totalPage-1);
+		launchMatrixRequest(startmentindex);
 	}
 }
 
@@ -251,14 +254,13 @@ function setCustomPageSize(){
 }
 
 function setCustomIndex(){
-	let pageNumber = parseInt($('#customIndex').val());
-	startmentindex = pageNumber*clientPageSize;
-	if(startmentindex>=0 && startmentindex<selectedMarkers.length*selectedMarkersProfils.length){
+	startmentindex = parseInt($('#customIndex').val()-1)*clientPageSize;
+	if(startmentindex>=0 && startmentindex<=totalPage*clientPageSize){
 		launchMatrixRequest(startmentindex);
 	}else if(startmentindex<0){
 		startmentindex=0;
 		launchMatrixRequest(0);
-	}else if(startmentindex>=selectedMarkers.length*selectedMarkersProfils.length){
+	}else if(startmentindex>totalPage*clientPageSize){
 		startmentindex = (selectedMarkers.length*selectedMarkersProfils.length)-(clientPageSize);
 		launchMatrixRequest(startmentindex);
 	}
