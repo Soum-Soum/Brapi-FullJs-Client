@@ -32,7 +32,6 @@ async function setVisibleField(){
 		auth = false;
 	}
 	if (isEndPointInUrl && auth===false){
-		console.log("ptdr");
 		$('#Submit1').hide();
 		await login();
 	}
@@ -144,6 +143,7 @@ function selectionMarkers(){
 
 function getRequestParameter(){
 	selectedMarkersProfils=null;
+	$('#customIndex').val(1);
 	$('#secondForm').show();
 	if($('#MarkersProfils').is('[disabled=disabled]')){
         selectedMarkersProfils = $("#Germplasms option:selected").map(function(){return $(this).val().split(",");}).get();
@@ -176,8 +176,8 @@ function launchMatrixRequest(index){
 			sendedMarkersProlis = selectedMarkersProfils;
 			let argumentsArray = {urlEndPoint, token, sendedMarkers, sendedMarkersProlis, clientPageSize, isAnExport};
 			paginationManager.pager(getMatrix,argumentsArray).then(function(matrix){
-				matrix=trasform_matrix(matrix,sendedMarkersProlis);
-				fill_result_table(matrix,0);
+                fill_result_table(sendedMarkers,sendedMarkersProlis,response);
+                insetMatrixInResultTable(matrix);
 			});
 		}else{
 			let count =0 ,rest = index%selectedMarkers.length ,quotient = Math.trunc(index/selectedMarkers.length);
@@ -197,10 +197,8 @@ function launchMatrixRequest(index){
 			console.log(sendedMarkersProlis);
 			let argumentsArray = {urlEndPoint,token,sendedMarkers,sendedMarkersProlis, clientPageSize};
 			paginationManager.pager(getMatrix,argumentsArray).then(function(matrix){
-				console.log(matrix);
-				matrix=trasform_matrix(matrix,sendedMarkersProlis);
-                console.log(matrix);
-				fill_result_table(matrix, response);
+				fill_result_table(sendedMarkers,sendedMarkersProlis,response);
+                insetMatrixInResultTable(matrix);
 			});
 		}
 	}else{

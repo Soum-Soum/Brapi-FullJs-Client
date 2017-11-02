@@ -86,29 +86,26 @@ function setupMarkersId(arrayMarkersIds){
 	}
 }
 
-function fill_result_table(matrix,response){
-	$('table').show();
-	let htmlString="";
-	if($('#missingData').prop('checked')){
-		matrix.forEach(function(element){
-			if (element!==null){
-                htmlString += '<tr><td>'+element[0]+'</td><td>'+response[element[1]]+'</td><td>'+element[1]+'</td><td>'+element[2]+'</td></tr>';
-			}else{
-				htmlString += '<tr><td>Missing Data</td><td>Missing Data</td><td> Missing Data</td></tr>';
-			}
-		});	
-	}else{
-		matrix.forEach(function(element){
-			if (element!==null){
-				if(element[2]!=="N"){
-					htmlString += '<tr><td>'+element[0]+'</td><td>'+response[element[1]]+'</td><td>'+element[1]+'</td><td>'+element[2]+'</td></tr>';
-				}
-			}else{
-				htmlString += '<tr><td>Missing Data</td><td>Missing Data</td><td> Missing Data</td></tr>';
-			}
-		});
+function fill_result_table(sendedMarkers,sendedMarkersProlis,response) {
+    $('table').show();
+    let htmlString="";
+    console.log(sendedMarkers);
+    console.log(sendedMarkersProlis);
+    for(let i=0;i<sendedMarkersProlis.length;i++){
+    	for(let j=0;j<sendedMarkers.length;j++){
+            htmlString += '<tr><td>'+sendedMarkers[j]+'</td><td>'+response[sendedMarkersProlis[i]]+'</td><td>'+sendedMarkersProlis[i]+'</td><td id="'+sendedMarkers[j]+'--'+sendedMarkersProlis[i]+'">Missing Data</td></tr>';
+		}
 	}
-	$("#resulttable").find("> tbody").html(htmlString);
+    $("#resulttable").find("> tbody").html(htmlString);
+}
+
+function insetMatrixInResultTable(matrix){
+	for(let i=0; i<matrix.length;i++){
+        matrix[i].forEach(function (element) {
+            let tempString = element[0] + '--' + element[1];
+            $('#'+tempString).text(element[2]);
+        })
+    }
 }
 
 function updateSelection(idLabel, idSelect){

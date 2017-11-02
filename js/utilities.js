@@ -1,11 +1,11 @@
 function trasform_matrix(matrix){
-	let newMatrix = [];
+	let hmapMatrix = [];
 	matrix.forEach(function(element){
 		element.forEach(function(element2){
-			newMatrix.push(element2); 		
+            hmapMatrix[element2[0]+'/'+element2[1]]=element2[2];
 		});		
 	});
-	return newMatrix;
+	return hmapMatrix;
 }
 
 function isInArray(array, a){
