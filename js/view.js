@@ -122,6 +122,7 @@ function setloader(){
 	$('#loadingScreen').show();
 	$('#loadingScreen').modal({
 		escapeClose: false,
+        closeExisting: false,
 		clickClose: false,
 		showClose: false
 	});

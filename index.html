@@ -15,6 +15,17 @@
 		<link rel="stylesheet" type="text/css" href="css/style.css">
 	</head>
 	<body>
+	<div class=" container-fluid">
+		<div class="row">
+			<div class=" col-12">
+				<div id="loadingScreen" class="modal mx-auto">
+					<img id="loadingImage" src="resources/progress.gif">
+					<h3 id="EvolutionLoadingScreen" style="display: inline;" >Loading : </h3>
+					<button class="btn btn-danger" type="button" style="display: inline;" onclick="abortExport()">Abort</button>
+				</div>
+			</div>
+		</div>
+	</div>
 		<div class="container-fluid">
 			<div class="row">
 				<h1 id="title" class="col-md-4">Breeding Api Client</h1>
@@ -56,30 +67,30 @@
 					</div>
 					<div class="col-md-4">
 						<label for="Germplasms" class="alignTop">Germplasms : </label>
-						<label id="labelGermplasms" class="alignTop"></label><br>
+						<label class="badge badge-success"id="labelGermplasms" class="alignTop"></label><br>
 						<select name="Germplasms" id="Germplasms" size="10" multiple="" onchange="updateSelection('labelGermplasms','Germplasms');setUpMarkerProfils();"></select>
 					</div>
 					<div class="col-md-4">
 						<label for="MarkersProfils" id="labelMarkersProfils" class="alignTop">Samples : </label>
-						<label id="markerProfileLabel" class="alignTop"></label><br>
+						<label class="badge badge-success" id="markerProfileLabel" class="alignTop"></label><br>
 						<select name="MarkersProfils" id="MarkersProfils" size="10" onchange="updateSelection('markerProfileLabel','MarkersProfils');" multiple="" ></select>
 					</div>
 				</div>
 				<div class="row">
 					<div class="col-md-4">
 						<label for="typeMarker" class="alignTop"> Types : </label>
-						<label id="markerLabel" class="alignTop"></label><br>
+						<label class="badge badge-success" id="markerLabel" class="alignTop"></label><br>
 						<select name="typeMarker" id="typeMarker" size="10" multiple="" onchange="selectionMarkers('markerLabel','typeMarker');"></select>
 					</div>
 					<div class="col-md-4">
 						<label for="chromosome" class="alignTop"> Sequences : </label>
-						<label id="chromosomeLabel" class="alignTop"></label><br>
+						<label class="badge badge-success" id="chromosomeLabel" class="alignTop"></label><br>
 						<select name="chromosome" id="chromosome" size="10" multiple="" onchange="selectionMarkers();updateSelection('chromosomeLabel','chromosome');"></select>
 					</div>
 					<div class="col-md-4">
 						<label for="Markers" class="alignTop">Markers : </label>
-						<span id="numberOfMarkers" class="alignTop"></span>
-						<label id="markersLabel" class="alignTop"></label><br>
+						<span class="badge badge-success" id="numberOfMarkers" class="alignTop"></span>
+						<label class="badge badge-success" id="markersLabel" class="alignTop"></label><br>
 						<select name="Markers" id="Markers" size="10" onchange="updateSelection('markersLabel','Markers');" multiple=""></select>
 					</div>
 				</div>
@@ -88,7 +99,7 @@
 						<input type="button" name="Search" value="Search" class="btn btn-primary btn-sm" onclick="getRequestParameter();">
 						<input type="button" name="Export" value="Export" class="btn btn-primary btn-sm" onclick="exportMatrix();">
 						<input type="button" value="Export Germplasms Tsv" class="btn btn-primary btn-sm" onclick="exportGermplasmeTsv();">
-						<h5 class="Evolution">Loading : </h5>
+						<h5 class="Evolution alert alert-primary" role="alert">Loading : </h5>
 					</div>
 				</div>
 			</form>
@@ -99,13 +110,13 @@
 			<br>
 			<span id="nbResult"></span>
 			<input type="button" name="prev" value="<" class="btn btn-primary btn-sm" onclick="prevPage();">
-			<label for="customIndex">Page n°</label>
+			<label class="badge badge-success" for="customIndex">Page n°</label>
 			<input type="text" id="customIndex" size="5" onchange="setCustomIndex();">
 			<span id="pageNumber" ></span>
 			<input type="button" name="next" value=">" class="btn btn-primary btn-sm" onclick="nextPage()">
-			<label for="customPageSize">Genotypes per page : </label>
+			<label class="badge badge-success" for="customPageSize">Genotypes per page : </label>
 			<input type="text" id="customPageSize" size="5" value="1000" onchange="setCustomPageSize();">
-			<label for="missingData">Display missing data</label>
+			<label class="badge badge-success" for="missingData">Display missing data</label>
 			<input type="checkbox" name="missingData" id="missingData" onchange="launchMatrixRequest(startmentindex);" checked>
 			<br>
 		</form>
@@ -130,10 +141,6 @@
 					</tr>   	
 				</tfoot>
 			</table>
-		</div>
-		<div id="loadingScreen" class="modal">
-			<img id="loadingImage" src="resources/progress.gif">
-			<h3 id="EvolutionLoadingScreen">Loading : </h3>
 		</div>
 		<script type="text/javascript">	init();	</script>
 	</body>

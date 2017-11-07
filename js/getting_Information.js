@@ -220,7 +220,7 @@ async function getExportStatus(argumentsArray){
 		console.log(resp);
 		console.log(argumentsArray.asynchid);
 		console.log(myURL);
-		while(resp.metadata.status[0].message==="INPROCESS"){
+		while(resp.metadata.status[0].message==="INPROCESS" && isAbort===false){
 			console.log(myURL);
 			resp = await fetch(myURL, myInit);
 			resp = await resp.json();
@@ -228,8 +228,10 @@ async function getExportStatus(argumentsArray){
 			$('#EvolutionLoadingScreen').html("Loading : " + resp.metadata.pagination.currentPage + "%");
 			await sleep(1500);
 		}
-		console.log(resp);
-		window.location = resp.metadata.datafiles[0];
+		if(isAbort===false){
+            console.log(resp);
+            window.location = resp.metadata.datafiles[0];
+		}
 	}
 	catch(err) {
 		handleErrors(err);

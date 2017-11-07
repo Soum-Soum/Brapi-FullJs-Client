@@ -2,7 +2,7 @@
 let urlEndPoint = "", token = "", selectedMap = "";
 let selectedMarkersProfils=[], selectedMarkers=[], hmapsType=null , hmapsLinkageGroup = [], response = [], cpyResp = [];
 let clientPageSize=1000, startmentindex=0, sizeOfResquestedMatrix=0, totalPage =0;
-let isEndPointInUrl=false, isMapIdInUrl=false, auth=true;
+let isEndPointInUrl=false, isMapIdInUrl=false, auth=true, isAbort = false;
 
 async function init(){
 	await setVisibleField();
@@ -208,10 +208,11 @@ function launchMatrixRequest(index){
 }
 
 async function exportMatrix(){
+	isAbort=false;
 	setloader();
 	let sendedMarkersProlis = $("#MarkersProfils option:selected").map(function(){return $(this).val().split(",");}).get();
 	sendedMarkersProlis = removeAll(sendedMarkersProlis, "");
-	let sendedMarkers = selectedMarkers
+	let sendedMarkers = selectedMarkers;
 	console.log(sendedMarkers);
 	let isAnExport= true, askedPage = null;
 	let argumentsArray = {urlEndPoint, token, sendedMarkers, sendedMarkersProlis, clientPageSize, isAnExport, askedPage};
@@ -289,4 +290,8 @@ function genearteTsvData(hmap){
 	});
 	console.log(tsvData);
 	return tsvData
+}
+
+function abortExport(){
+	isAbort = true;
 }
