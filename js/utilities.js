@@ -100,7 +100,6 @@ function sortAlphaNum(a,b) {
 function reversHmap(hMap){
 	let newHMap = [];
 	Object.keys(hMap).forEach(function(element){
-        console.log(element);
 		for(let i=0; i<hMap[element].length;i++){
             newHMap[hMap[element][i].markerProfileDbId]=element;
 		}

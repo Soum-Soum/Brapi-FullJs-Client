@@ -40,13 +40,30 @@ class PaginationManager{
 		}
 	}
 
-	async is1Page(function_to_launch, argumentsArray){
-		try{
-			argumentsArray.askedPage=0;
-			let resp = await function_to_launch(argumentsArray);
-			let totalPages = resp.metadata.pagination.totalPages;
-			let currentPage = resp.metadata.pagination.currentPage;
-			return currentPage === totalPages - 1;
+	async getFirstPage(function_to_launch, argumentsArray){
+        try{
+            argumentsArray.askedPage=0;
+            let resp = await function_to_launch(argumentsArray);
+            console.log(resp);
+            return [resp.result.data];
+        }catch (err){
+            handleErrors();
+        }
+
+	}
+
+	async isCompleteTypeList(function_to_launch, argumentsArray,arrayOfMarkersType){
+		let tantamount= 0, count = 0, resp=null;
+	    try{
+            argumentsArray.askedPage=0;
+            resp= await function_to_launch(argumentsArray);
+            tantamount=resp.metadata.pagination.totalCount;
+		    for(let i=0; i<arrayOfMarkersType.length;i++){
+                argumentsArray.askedType=arrayOfMarkersType[i];
+                resp = await function_to_launch(argumentsArray);
+                count += resp.metadata.pagination.totalCount;
+            }
+            return tantamount === count;
 		}catch(err){
 			handleErrors(err);
 		}

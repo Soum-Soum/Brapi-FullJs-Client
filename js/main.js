@@ -1,6 +1,6 @@
 "use strict";
 let urlEndPoint = "", token = "", selectedMap = "";
-let selectedMarkersProfils=[], selectedMarkers=[], hmapsType=null , hmapsLinkageGroup = [], response = [], cpyResp = [];
+let selectedMarkersProfils=[], selectedMarkers=[], hmapsType=undefined , hmapsLinkageGroup = [], response = [], cpyResp = [];
 let clientPageSize=1000, startmentindex=0, sizeOfResquestedMatrix=0, totalPage =0;
 let isEndPointInUrl=false, isMapIdInUrl=false, auth=true, isAbort = false;
 
@@ -12,13 +12,13 @@ async function init(){
 }
 
 async function setVisibleField(){
-	// $('#mainForm').hide();
-	// $('#secondForm').hide();
-	// $('#resulttable').hide();
-	// $('#loadingScreen').hide();
-	// $('#ErrorMessage').hide();
-	if($_GET("brapiV1EndPoint")!==null && await urlBrapiEndPointIsOk($_GET("brapiV1EndPoint"))){
-		urlEndPoint = $_GET("brapiV1EndPoint");
+	 $('#mainForm').hide();
+	 $('#secondForm').hide();
+	 $('#resulttable').hide();
+	 $('#loadingScreen').hide();
+	 $('#ErrorMessage').hide();
+	if($_GET("baseUrl")!==null && await urlBrapiEndPointIsOk($_GET("baseUrl"))){
+		urlEndPoint = $_GET("baseUrl");
 		$('#urlForm').hide();
 		isEndPointInUrl=true;
 		if ($_GET("mapDbId")!==null && await urlMapIdIsOk(urlEndPoint,$_GET("mapDbId"))){
@@ -59,6 +59,7 @@ async function startment() {
 }	
 
 async function launch_selection(){
+    setDisabled(true);
 	if ($("#selectionStudies").find("option:selected").text()==="---Select one---") {
 		setEmptyTheFields();
 	}else{
@@ -69,6 +70,7 @@ async function launch_selection(){
 		let selectedStudy = $('#selectionStudies').find('option:selected').val();
 		let paginationManager = new PaginationManager(0);
 		let argumentsArray = {urlEndPoint, token, selectedStudy, selectedMap};
+		let askedType=null;
         await paginationManager.pager(getmarkerProfileDbId,argumentsArray).then(function(arrayGermplasmsIDs){
 			response = getMarkerProfileHmap(arrayGermplasmsIDs);
 			setUpGermplasms(response);
@@ -77,19 +79,41 @@ async function launch_selection(){
 			response=reversHmap(response);
 		});
 		let mapDetails = await getMapDetails(argumentsArray);
-		console.log(argumentsArray.selectedMap);
 		mapDetails.result.data[0].linkageGroups.forEach(function(element){
 			arrayOfLinkageGroup.push(element.linkageGroupId);
 		});
-		if (await paginationManager.is1Page(getMarkers,argumentsArray)){
-			arrayMarkers = await paginationManager.pager(getMarkers,argumentsArray);
-			arrayOfMarkersType = setHmapType(arrayMarkers);
+        arrayMarkers = await paginationManager.getFirstPage(getMarkers,argumentsArray);
+        argumentsArray = {urlEndPoint, token, selectedStudy, selectedMap, askedType};
+        if(!paginationManager.isCompleteTypeList(getMarkers,argumentsArray,arrayOfMarkersType)){
+            console.log('uncomplete');
+        }else{
+            arrayMarkers = await paginationManager.pager(getMarkers,{urlEndPoint, token, selectedStudy, selectedMap});
+            arrayOfMarkersType = setHmapType(arrayMarkers);
+        }
+        console.log(arrayOfMarkersType);
+        console.log(arrayMarkers);
+		if(arrayOfLinkageGroup.length>100 || arrayMarkers.length<600000){
+            arrayMarkers = await paginationManager.pager(getMarkersPosition,argumentsArray);
+		}else{
+			arrayMarkers=[];
+			let tempArray=[];
+			for(let i=0; i<arrayOfLinkageGroup.length;i++){
+				let selectedLKG = arrayOfLinkageGroup[i];
+                let argumentsArray = {urlEndPoint, token, selectedStudy, selectedMap, selectedLKG};
+                tempArray = await paginationManager.pager(getMarkersPosition, argumentsArray);
+                for(let p=0; p<tempArray.length;p++){
+                    arrayMarkers=arrayMarkers.concat(tempArray[p]);
+				}
+			}
+            arrayMarkers = [arrayMarkers];
 		}
-		arrayMarkers = await paginationManager.pager(getMarkersPosition,argumentsArray);
-		setHmapLinkageGroup(arrayOfLinkageGroup, arrayMarkers);
+		console.log(arrayMarkers);
+        setHmapLinkageGroup(arrayOfLinkageGroup, arrayMarkers);
+        console.log(hmapsLinkageGroup);
 		setUpLinkageGroupAndMarkersType(arrayOfLinkageGroup,arrayOfMarkersType);
 		arrayMarkers=null;
 	}
+    setDisabled(false);
 }
 
 function setHmapLinkageGroup(arrayOfLinkageGroup, arrayMarkers){
@@ -103,6 +127,7 @@ function setHmapLinkageGroup(arrayOfLinkageGroup, arrayMarkers){
 						hmapsLinkageGroup[arrayMarkers[i][j].linkageGroup].push(arrayMarkers[i][j].markerDbId);
 		}
 	}
+	console.log(hmapsLinkageGroup);
 }
 
 function setHmapType(arrayMarkers){
@@ -122,13 +147,16 @@ function setHmapType(arrayMarkers){
 
 function selectionMarkers(){
 	let selectedType = $("#typeMarker").val();
+	console.log(selectedType);
 	let selectedLinkageGroup = $("#chromosome").val();
 	if((selectedType.length!==0 && selectedLinkageGroup.length!==0)||(selectedLinkageGroup.length!==0 && $("#typeMarker>option").length===0)){
 		selectedMarkers=[];
 		for(let i=0; i<selectedLinkageGroup.length;i++){
 			selectedMarkers = selectedMarkers.concat(hmapsLinkageGroup[selectedLinkageGroup[i]]);	
 		}
-		if (hmapsType!==null){
+		console.log(selectedMarkers);
+		if (hmapsType!==undefined){
+		    console.log(hmapsType);
 			for (let i = 0; i < selectedMarkers.length; i++) {
 				if (!isInArray(selectedType,hmapsType[selectedMarkers[i]])){
 					selectedMarkers.splice(i,1);
@@ -199,6 +227,9 @@ function launchMatrixRequest(index){
 			paginationManager.pager(getMatrix,argumentsArray).then(function(matrix){
 				fill_result_table(sendedMarkers,sendedMarkersProlis,response);
                 insetMatrixInResultTable(matrix);
+                if($('#missingData').prop('checked')){
+					cleanTab(sendedMarkers,sendedMarkersProlis);
+                }
 			});
 		}
 	}else{
@@ -214,7 +245,7 @@ async function exportMatrix(){
 	sendedMarkersProlis = removeAll(sendedMarkersProlis, "");
 	let sendedMarkers = selectedMarkers;
 	console.log(sendedMarkers);
-	let isAnExport= true, askedPage = null;
+	let isAnExport= true, askedPage = undefined;
 	let argumentsArray = {urlEndPoint, token, sendedMarkers, sendedMarkersProlis, clientPageSize, isAnExport, askedPage};
 	let link = await getMatrix(argumentsArray);
 	console.log(link);

@@ -29,9 +29,11 @@
 		<div class="container-fluid">
 			<div class="row">
 				<h1 id="title" class="col-md-4">Breeding Api Client</h1>
-				<div class="col-md-3"></div>
+				<div class="col-md-3">
+                    <span class="alert alert-danger" id="ErrorMessage"></span>
+                </div>
 				<form class="col-md-5">
-					<div class="container">
+					<div class="container mx-auto">
 						<div id="loginForm">
 							<p>Log-in for private data, or just submit for public data</p>
 							<div class=" row">
@@ -45,9 +47,9 @@
 						</div>
 						<div class="row">
 							<div id="urlForm" class="input-group">
-								<input type="text" name="URL" class="form-control" placeholder="Ex : http://_____/brapi/v1" id="urltoget">
-								<button class="btn btn-secondary btn-sm" id="Submit1" type="button" onclick="login()">Submit</button>
+								<input type="text" name="URL" class="form-control" placeholder="Ex : http://_____/brapi/v1" id="urltoget" onchange="setEmptyTheFields();">
 							</div>
+							<button class="btn btn-secondary btn-sm" id="Submit1" type="button" onclick="login()">Submit</button>
 						</div>
 					</div>
 				</form>	
@@ -59,10 +61,12 @@
 				<div class="row">
 					<div class="col-md-4">
 						<div id="mapForm">
-							<label for="selectionMap" id="labelSelectionMap">Maps : </label>
+							<label for="selectionMap" id="labelSelectionMap">Map : </label>
+                            <br>
 							<select name="selectionMap" id="selectionMap" class="custom-select"></select>
 						</div>
 						<label for="selectionStudies">Study : </label>
+                        <br>
 						<select name="selectionStudies" id="selectionStudies" class="custom-select"onchange="launch_selection()"></select>
 					</div>
 					<div class="col-md-4">
@@ -96,16 +100,15 @@
 				</div>
 				<div class="row">
 					<div class="col-md-12">
-						<input type="button" name="Search" value="Search" class="btn btn-primary btn-sm" onclick="getRequestParameter();">
-						<input type="button" name="Export" value="Export" class="btn btn-primary btn-sm" onclick="exportMatrix();">
-						<input type="button" value="Export Germplasms Tsv" class="btn btn-primary btn-sm" onclick="exportGermplasmeTsv();">
+						<input disabled type="button" id="Search" value="Search" class="btn btn-primary btn-sm" onclick="getRequestParameter();">
+						<input disabled type="button" id="Export" value="Export" class="btn btn-primary btn-sm" onclick="exportMatrix();">
+						<input disabled type="button" id="ExportGermplasmsTsv" value="Export Germplasms Tsv" class="btn btn-primary btn-sm" onclick="exportGermplasmeTsv();">
 						<h5 class="Evolution alert alert-primary" role="alert">Loading : </h5>
 					</div>
 				</div>
 			</form>
 		</div>
 		<form id="secondForm">
-			<span class="alert alert-danger" id="ErrorMessage"></span>
 			<br>
 			<br>
 			<span id="nbResult"></span>
@@ -115,8 +118,8 @@
 			<span id="pageNumber" ></span>
 			<input type="button" name="next" value=">" class="btn btn-primary btn-sm" onclick="nextPage()">
 			<label class="badge badge-success" for="customPageSize">Genotypes per page : </label>
-			<input type="text" id="customPageSize" size="5" value="1000" onchange="setCustomPageSize();">
-			<label class="badge badge-success" for="missingData">Display missing data</label>
+			<input type="text" id="customPageSize" size="5" value="1000" onchange="setCustomPageSize();launchMatrixRequest(startmentindex);">
+			<label class="badge badge-success" for="missingData">Hide missing data</label>
 			<input type="checkbox" name="missingData" id="missingData" onchange="launchMatrixRequest(startmentindex);" checked>
 			<br>
 		</form>

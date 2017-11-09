@@ -99,12 +99,24 @@ function fill_result_table(sendedMarkers,sendedMarkersProlis,response) {
     $("#resulttable").find("> tbody").html(htmlString);
 }
 
+function cleanTab(sendedMarkers,sendedMarkersProlis){
+    for(let i=0;i<sendedMarkersProlis.length;i++){
+        for(let j=0;j<sendedMarkers.length;j++){
+            let id = '#' + sendedMarkers[j]+'--'+sendedMarkersProlis[i];
+            let temp = $(id);
+            if(temp.text()==='Missing Data'){
+                temp.parent().remove();
+            }
+        }
+    }
+}
+
 function insetMatrixInResultTable(matrix){
-	for(let i=0; i<matrix.length;i++){
+    for(let i=0; i<matrix.length;i++){
         matrix[i].forEach(function (element) {
             let tempString = element[0] + '--' + element[1];
             $('#'+tempString).text(element[2]);
-        })
+        });
     }
 }
 
@@ -128,7 +140,6 @@ function setloader(){
 	});
 }
 
-
 async function handleErrors(err) {
 	console.log(typeof err);
 	if (typeof err === "string"){
@@ -142,4 +153,12 @@ async function handleErrors(err) {
 	    await sleep(3000);
 	    $('#ErrorMessage').hide();
 	}
+}
+
+function setDisabled(bool){
+    $('#selectionMap').prop('disabled', bool);
+    $('#selectionStudies').prop('disabled', bool);
+    $('#Search').prop('disabled', bool);
+    $('#Export').prop('disabled', bool);
+    $('#ExportGermplasmsTsv').prop('disabled', bool);
 }

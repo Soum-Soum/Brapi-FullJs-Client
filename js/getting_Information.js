@@ -44,20 +44,24 @@ async function urlBrapiEndPointIsOk(brapiEndPoint){
 }
 
 async function getFirstInformation(argumentsArray){
-    let arrayOfStudies, arrayOfMaps = [];
-    let paginationManager = new PaginationManager(0);
-    let calls = await paginationManager.pager(getCalls, argumentsArray);
-    let all_Calls_Are_Detected = callsAreInArray(calls, REQUIRED_CALLS);
-    if(all_Calls_Are_Detected){
-		arrayOfStudies= await readStudyList(argumentsArray);
-		if($_GET("mapDbId")!==null){console.log($_GET("mapDbId"));$('select#selectionMap').hide();$('#labelSelectionMap').hide();}
-		else{arrayOfMaps = await readMaps(argumentsArray);}	
-		let firstInformation = {};
-		firstInformation.maps=arrayOfMaps;
-		firstInformation.studies=arrayOfStudies;
-		return firstInformation;
-	}else{
-		return null;
+	try{
+        let arrayOfStudies, arrayOfMaps = [];
+        let paginationManager = new PaginationManager(0);
+        let calls = await paginationManager.pager(getCalls, argumentsArray);
+        let all_Calls_Are_Detected = callsAreInArray(calls, REQUIRED_CALLS);
+        if(all_Calls_Are_Detected){
+            arrayOfStudies= await readStudyList(argumentsArray);
+            if($_GET("mapDbId")!==null){console.log($_GET("mapDbId"));$('select#selectionMap').hide();$('#labelSelectionMap').hide();}
+            else{arrayOfMaps = await readMaps(argumentsArray);}
+            let firstInformation = {};
+            firstInformation.maps=arrayOfMaps;
+            firstInformation.studies=arrayOfStudies;
+            return firstInformation;
+        }else{
+            return null;
+        }
+	}catch (err){
+		handleErrors('Bad URL')
 	}
 }
 
@@ -124,7 +128,7 @@ async function readStudyList(argumentsArray){
 }
 
 async function getmarkerProfileDbId(argumentsArray){
-    let myURL = argumentsArray.askedPage===null ? argumentsArray.urlEndPoint + "/" + URL_MARKER_PROFILES : argumentsArray.urlEndPoint + "/" + URL_MARKER_PROFILES +"?page="+argumentsArray.askedPage ;
+    let myURL = argumentsArray.askedPage===undefined ? argumentsArray.urlEndPoint + "/" + URL_MARKER_PROFILES : argumentsArray.urlEndPoint + "/" + URL_MARKER_PROFILES +"?page="+argumentsArray.askedPage ;
 	let myInit = returnInit(argumentsArray.token);
 	try {
 		let resp = await fetch(myURL, myInit);
@@ -138,8 +142,11 @@ async function getmarkerProfileDbId(argumentsArray){
 }
 
 async function getMarkers(argumentsArray){
-    let myURL = argumentsArray.askedPage===null ? argumentsArray.urlEndPoint + "/" + URL_MARKERS : argumentsArray.urlEndPoint + "/" + URL_MARKERS +"?page="+argumentsArray.askedPage ;
-	let myInit = returnInit(argumentsArray.token);
+    let myURL = argumentsArray.askedPage===undefined ? argumentsArray.urlEndPoint + "/" + URL_MARKERS : argumentsArray.urlEndPoint + "/" + URL_MARKERS +"?page="+argumentsArray.askedPage ;
+	if(argumentsArray.arrayOfMarkersType !== undefined){
+		myURL += '&' + argumentsArray.arrayOfMarkersType[i] + '&pageSize=1';
+	}
+    let myInit = returnInit(argumentsArray.token);
 	try {
 		console.log(myURL);
 		let resp = await fetch(myURL, myInit);
@@ -165,8 +172,9 @@ async function getMapDetails(argumentsArray){
 }
 
 async function getMarkersPosition(argumentsArray){
-    let myURL = argumentsArray.askedPage===null ? argumentsArray.urlEndPoint+"/"+URL_MAPS+"/"+argumentsArray.selectedMap+"/positions" : argumentsArray.urlEndPoint+"/"+URL_MAPS+"/"+argumentsArray.selectedMap+"/positions?page="+argumentsArray.askedPage;
-	let myInit = returnInit(argumentsArray.token);
+    let myURL = argumentsArray.askedPage===undefined ? argumentsArray.urlEndPoint+"/"+URL_MAPS+"/"+argumentsArray.selectedMap+"/positions" : argumentsArray.urlEndPoint+"/"+URL_MAPS+"/"+argumentsArray.selectedMap+"/positions?page="+argumentsArray.askedPage;
+    if(argumentsArray.selectedLKG!==undefined){myURL = myURL + '&linkageGroupId=' + argumentsArray.selectedLKG;}
+    let myInit = returnInit(argumentsArray.token);
 	console.log(myURL);
 	try {
 		let resp = await fetch(myURL, myInit);
@@ -174,13 +182,13 @@ async function getMarkersPosition(argumentsArray){
 		return resp;
 	}
 	catch(err) {
-	     handleErrors(err); 
+	     handleErrors(err);
 	}
 }
 
 async function getMatrix(argumentsArray){
     try {
-		let myURL = argumentsArray.askedPage===null ? argumentsArray.urlEndPoint + "/" +URL_ALLELE_MATRIX : argumentsArray.urlEndPoint + "/" +URL_ALLELE_MATRIX+"?pageSize="+argumentsArray.clientPageSize+"&page="+argumentsArray.askedPage;
+		let myURL = argumentsArray.askedPage===undefined ? argumentsArray.urlEndPoint + "/" +URL_ALLELE_MATRIX : argumentsArray.urlEndPoint + "/" +URL_ALLELE_MATRIX+"?pageSize="+argumentsArray.clientPageSize+"&page="+argumentsArray.askedPage;
 		let matrixString = "";
 		argumentsArray.sendedMarkersProlis = removeAll(argumentsArray.sendedMarkersProlis, undefined);
 		for(i=0;i<argumentsArray.sendedMarkersProlis.length; i++){
@@ -190,9 +198,9 @@ async function getMatrix(argumentsArray){
 		for(i=0;i<argumentsArray.sendedMarkers.length; i++){
 			matrixString+= (i==0 ? '' : '&') + 'markerDbId=' +argumentsArray.sendedMarkers[i];
 		}
-		if(argumentsArray.isAnExport == true){matrixString += "&format=tsv&unknownString=N";}
+		if(argumentsArray.isAnExport == true){matrixString += "&format=tsv&unknownString=MissingData";}
 		let myHeaders = new Headers();
-		if(argumentsArray.token==='""'){
+		if(argumentsArray.token!=='""'){
 			myHeaders = {'Authorization': 'Bearer '+argumentsArray.token,
 				'Content-Type':'application/x-www-form-urlencoded'
 			};
@@ -215,7 +223,7 @@ async function getExportStatus(argumentsArray){
     try {
 		let myURL = argumentsArray.urlEndPoint + "/" + URL_ALLELE_MATRIX + "/status/" + argumentsArray.asynchid;
 		let myInit = returnInit(argumentsArray.token);
-		let resp = await fetch(myURL, myInit)
+		let resp = await fetch(myURL, myInit);
 		resp = await resp.json();
 		console.log(resp);
 		console.log(argumentsArray.asynchid);
@@ -238,3 +246,4 @@ async function getExportStatus(argumentsArray){
 	}
 	$.modal.close();
 }
+
