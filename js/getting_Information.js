@@ -188,7 +188,7 @@ async function getMarkersPosition(argumentsArray){
 
 async function getMatrix(argumentsArray){
     try {
-		let myURL = argumentsArray.askedPage===undefined ? argumentsArray.urlEndPoint + "/" +URL_ALLELE_MATRIX : argumentsArray.urlEndPoint + "/" +URL_ALLELE_MATRIX+"?pageSize="+argumentsArray.clientPageSize+"&page="+argumentsArray.askedPage;
+		let myURL = argumentsArray.askedPage===undefined ? argumentsArray.urlEndPoint + "/" +URL_ALLELE_MATRIX + "?sepUnphased= / " : argumentsArray.urlEndPoint + "/" +URL_ALLELE_MATRIX+ "?sepUnphased= / &pageSize="+argumentsArray.clientPageSize+"&page="+argumentsArray.askedPage;
 		let matrixString = "";
 		argumentsArray.sendedMarkersProlis = removeAll(argumentsArray.sendedMarkersProlis, undefined);
 		for(i=0;i<argumentsArray.sendedMarkersProlis.length; i++){

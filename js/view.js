@@ -18,6 +18,7 @@ function setEmptyTheFields(){
 	$("#typeMarker").html("");
 	$("#chromosome").html("");
 	$("#Markers").html("");
+	$('#Germplasms').html("");
 }
 
 function setUpGermplasms(response){
@@ -72,6 +73,7 @@ function setupMarkersId(arrayMarkersIds){
 		$('#numberOfMarkers').hide();
 		$('#labelToHide').show();
         $('#markersLabel').show();
+        $('#topMarkerDiv').hide();
 		let htmlString ="";
 		arrayMarkersIds.forEach(function(element){
 			htmlString +='<option selected value="'+element+'">'+element+'</option>\n';
@@ -83,6 +85,7 @@ function setupMarkersId(arrayMarkersIds){
 		$('#markersLabel').hide();
 		$('#numberOfMarkers').html(arrayMarkersIds.length);
 		$('#numberOfMarkers').show();
+		$('#topMarkerDiv').show();
 	}
 }
 

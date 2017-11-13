@@ -82,9 +82,12 @@
 				</div>
 				<div class="row">
 					<div class="col-md-4">
+						<div class="badge badge-danger text-center" style="position: absolute; z-index: 5; text-align: center; opacity: 0.7; height: 100%;" id="topTypeDiv">
+							<p class="mx-auto my-auto" style="padding-top: 100px;">Unable to determine list of <br> distinct marker types</p>
+						</div>
 						<label for="typeMarker" class="alignTop"> Types : </label>
-						<label class="badge badge-success" id="markerLabel" class="alignTop"></label><br>
-						<select name="typeMarker" id="typeMarker" size="10" multiple="" onchange="selectionMarkers('markerLabel','typeMarker');"></select>
+						<label  class="badge badge-success" id="markerLabel" class="alignTop"></label><br>
+						<select  name="typeMarker" id="typeMarker" size="10" multiple="" onchange="selectionMarkers('markerLabel','typeMarker');"></select>
 					</div>
 					<div class="col-md-4">
 						<label for="chromosome" class="alignTop"> Sequences : </label>
@@ -92,6 +95,9 @@
 						<select name="chromosome" id="chromosome" size="10" multiple="" onchange="selectionMarkers();updateSelection('chromosomeLabel','chromosome');"></select>
 					</div>
 					<div class="col-md-4">
+						<div class="badge badge-danger text-center" style="position: absolute; z-index: 5; text-align: center; opacity: 0.7; height: 100%;" id="topMarkerDiv">
+							<p class="mx-auto my-auto" style="padding-top: 100px;">Too many markers for display <br> and selection</p>
+						</div>
 						<label for="Markers" class="alignTop">Markers : </label>
 						<span class="badge badge-success" id="numberOfMarkers" class="alignTop"></span>
 						<label class="badge badge-success" id="markersLabel" class="alignTop"></label><br>
@@ -99,7 +105,7 @@
 					</div>
 				</div>
 				<div class="row">
-					<div class="col-md-12">
+					<div class="col-md-12" style="text-align: center;">
 						<input disabled type="button" id="Search" value="Search" class="btn btn-primary btn-sm" onclick="getRequestParameter();">
 						<input disabled type="button" id="Export" value="Export" class="btn btn-primary btn-sm" onclick="exportMatrix();">
 						<input disabled type="button" id="ExportGermplasmsTsv" value="Export Germplasms Tsv" class="btn btn-primary btn-sm" onclick="exportGermplasmeTsv();">
@@ -108,9 +114,7 @@
 				</div>
 			</form>
 		</div>
-		<form id="secondForm">
-			<br>
-			<br>
+		<form id="secondForm" style="text-align: center;">
 			<span id="nbResult"></span>
 			<input type="button" name="prev" value="<" class="btn btn-primary btn-sm" onclick="prevPage();">
 			<label class="badge badge-success" for="customIndex">Page n°</label>

@@ -12,11 +12,13 @@ async function init(){
 }
 
 async function setVisibleField(){
-	 $('#mainForm').hide();
-	 $('#secondForm').hide();
-	 $('#resulttable').hide();
-	 $('#loadingScreen').hide();
-	 $('#ErrorMessage').hide();
+	 // $('#mainForm').hide();
+	 // $('#secondForm').hide();
+	 // $('#resulttable').hide();
+	 // $('#loadingScreen').hide();
+	 // $('#ErrorMessage').hide();
+    $('#topMarkerDiv').hide();
+    $('#topTypeDiv').hide();
 	if($_GET("baseUrl")!==null && await urlBrapiEndPointIsOk($_GET("baseUrl"))){
 		urlEndPoint = $_GET("baseUrl");
 		$('#urlForm').hide();
@@ -59,6 +61,7 @@ async function startment() {
 }	
 
 async function launch_selection(){
+    $('#topTypeDiv').hide();
     setDisabled(true);
 	if ($("#selectionStudies").find("option:selected").text()==="---Select one---") {
 		setEmptyTheFields();
@@ -79,13 +82,15 @@ async function launch_selection(){
 			response=reversHmap(response);
 		});
 		let mapDetails = await getMapDetails(argumentsArray);
-		mapDetails.result.data[0].linkageGroups.forEach(function(element){
+		console.log(mapDetails.result.linkageGroups);
+		mapDetails.result.linkageGroups.forEach(function(element){
 			arrayOfLinkageGroup.push(element.linkageGroupId);
 		});
         arrayMarkers = await paginationManager.getFirstPage(getMarkers,argumentsArray);
         argumentsArray = {urlEndPoint, token, selectedStudy, selectedMap, askedType};
         if(!paginationManager.isCompleteTypeList(getMarkers,argumentsArray,arrayOfMarkersType)){
             console.log('uncomplete');
+            $('#topTypeDiv').show();
         }else{
             arrayMarkers = await paginationManager.pager(getMarkers,{urlEndPoint, token, selectedStudy, selectedMap});
             arrayOfMarkersType = setHmapType(arrayMarkers);
