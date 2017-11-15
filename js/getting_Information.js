@@ -188,7 +188,7 @@ async function getMarkersPosition(argumentsArray){
 
 async function getMatrix(argumentsArray){
     try {
-		let myURL = argumentsArray.askedPage===undefined ? argumentsArray.urlEndPoint + "/" +URL_ALLELE_MATRIX + "?sepUnphased= / " : argumentsArray.urlEndPoint + "/" +URL_ALLELE_MATRIX+ "?sepUnphased= / &pageSize="+argumentsArray.clientPageSize+"&page="+argumentsArray.askedPage;
+		let myURL = argumentsArray.askedPage===undefined ? argumentsArray.urlEndPoint + "/" +URL_ALLELE_MATRIX : argumentsArray.urlEndPoint + "/" +URL_ALLELE_MATRIX+ "?pageSize="+argumentsArray.clientPageSize+"&page="+argumentsArray.askedPage;
 		let matrixString = "";
 		argumentsArray.sendedMarkersProlis = removeAll(argumentsArray.sendedMarkersProlis, undefined);
 		for(i=0;i<argumentsArray.sendedMarkersProlis.length; i++){
@@ -238,7 +238,7 @@ async function getExportStatus(argumentsArray){
 		}
 		if(isAbort===false){
             console.log(resp);
-            window.location = resp.metadata.datafiles[0];
+            //window.location = resp.metadata.datafiles[0];
 		}
 	}
 	catch(err) {
@@ -247,3 +247,9 @@ async function getExportStatus(argumentsArray){
 	$.modal.close();
 }
 
+async function getGermplasmsDetails(argumentsArray){
+    let myURL = argumentsArray.urlEndPoint + "/germplasm/" + argumentsArray.germplasmId;
+    let myInit = returnInit(argumentsArray.token);
+    let resp = await fetch(myURL, myInit);
+    return await resp.json();
+}

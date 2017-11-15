@@ -164,4 +164,5 @@ function setDisabled(bool){
     $('#Search').prop('disabled', bool);
     $('#Export').prop('disabled', bool);
     $('#ExportGermplasmsTsv').prop('disabled', bool);
+    $('#ExportGermplasmsDetails').prop('disabled', bool);
 }

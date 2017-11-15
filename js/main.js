@@ -83,6 +83,7 @@ async function launch_selection(){
 		});
 		let mapDetails = await getMapDetails(argumentsArray);
 		console.log(mapDetails.result.linkageGroups);
+        //mapDetails.result.data[0].linkageGroups.forEach(function(element){
 		mapDetails.result.linkageGroups.forEach(function(element){
 			arrayOfLinkageGroup.push(element.linkageGroupId);
 		});
@@ -259,6 +260,21 @@ async function exportMatrix(){
 	await getExportStatus(argumentsArray);
 }
 
+async function ExportDetailsGermplasms(){
+	let HMap = [],  argumentsArray;
+	let selectedGermplasms = $("#Germplasms option:selected").map(function(){return $(this).text().split(",");}).get();
+	let germplasmId;
+    selectedGermplasms = removeAll(selectedGermplasms, "");
+    console.log(selectedGermplasms);
+	for(let i=0; i<selectedGermplasms.length; i++){
+        germplasmId=selectedGermplasms[i];
+        argumentsArray = {urlEndPoint, token, germplasmId};
+        let resp = await getGermplasmsDetails(argumentsArray);
+        HMap[germplasmId]=resp.result;
+	}
+    download('test.tsv',HMap);
+}
+
 function nextPage(){
 	if (startmentindex+=clientPageSize<sizeOfResquestedMatrix){
 		startmentindex += clientPageSize;
@@ -307,7 +323,8 @@ function exportGermplasmeTsv(){
 
 function download(filename,hmap) {
     let element = document.createElement('a');
-    let text = genearteTsvData(hmap);
+    let text;
+    filename==='test.tsv' ? text = anotherTsvDataGenerator(hmap) : text = genearteTsvData(hmap);
     element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
     element.setAttribute('download', filename);
     element.style.display = 'none';
@@ -322,11 +339,31 @@ function genearteTsvData(hmap){
 	Object.keys(hmap).forEach(function(element){
 		hmap[element].forEach(function(element2){
 			tsvData+=(element2.germplasmDbId + "\t" + element2.markerProfileDbId + "\n");
-		})
+		});
 	});
 	console.log(tsvData);
 	return tsvData
 }
+
+function anotherTsvDataGenerator(hmap) {
+    let tsvData = "";
+    Object.keys(hmap).forEach(function(element){
+    	let temp = JSON.stringify(hmap[element]);
+    	temp.replace('{','');
+        temp.replace('}','');
+        console.log(temp);
+        let temp2 = temp.split(',');
+        console.log(temp2)
+        for(let i=0;i<temp2.length;i++){
+        	tsvData+= temp2[i] +'\t';
+		}
+		tsvData += '\n';
+		console.log(tsvData);
+    });
+    console.log(tsvData);
+    return tsvData
+}
+
 
 function abortExport(){
 	isAbort = true;
