@@ -54,14 +54,17 @@ class PaginationManager{
 
 	async isCompleteTypeList(function_to_launch, argumentsArray,arrayOfMarkersType){
 		let tantamount= 0, count = 0, resp=null;
-	    try{
+        try{
             argumentsArray.askedPage=0;
             resp= await function_to_launch(argumentsArray);
             tantamount=resp.metadata.pagination.totalCount;
 		    for(let i=0; i<arrayOfMarkersType.length;i++){
-                argumentsArray.askedType=arrayOfMarkersType[i];
-                resp = await function_to_launch(argumentsArray);
-                count += resp.metadata.pagination.totalCount;
+		    	console.log(arrayOfMarkersType[i]);
+		    	if(arrayOfMarkersType[i]!== undefined && arrayOfMarkersType[i]!== null && arrayOfMarkersType[i]!==''){
+                    argumentsArray.askedType=arrayOfMarkersType[i];
+                    resp = await function_to_launch(argumentsArray);
+                    count += resp.metadata.pagination.totalCount;
+				}
             }
             return tantamount === count;
 		}catch(err){

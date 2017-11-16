@@ -89,7 +89,7 @@ async function launch_selection(){
 		});
         arrayMarkers = await paginationManager.getFirstPage(getMarkers,argumentsArray);
         argumentsArray = {urlEndPoint, token, selectedStudy, selectedMap, askedType};
-        if(!paginationManager.isCompleteTypeList(getMarkers,argumentsArray,arrayOfMarkersType)){
+        if(! await paginationManager.isCompleteTypeList(getMarkers,argumentsArray,arrayOfMarkersType)){
             console.log('uncomplete');
             $('#topTypeDiv').show();
         }else{
@@ -144,7 +144,7 @@ function setHmapType(arrayMarkers){
 		for (let j = 0; j < arrayMarkers[i].length; j++) {
 			hmapsType[arrayMarkers[i][j].markerDbId]=arrayMarkers[i][j].type;
 			if(!isInArray(arrayOfMarkersType, arrayMarkers[i][j].type)){
-					arrayOfMarkersType.push(arrayMarkers[i][j].type);
+				arrayOfMarkersType.push(arrayMarkers[i][j].type);
 			}
 		}
 	}

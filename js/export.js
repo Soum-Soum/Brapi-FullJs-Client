@@ -43,13 +43,11 @@ function buildTsvString(jsonHamp, selectedGermplasms, fieldTab){
     let tsvString = 'germplasmDbId \tmarkerProfileDbId \t';
     Object.keys(fieldTab).forEach(function (element){
        if(fieldTab[element]===true){
-           console.log(element);
            tsvString += element + '\t';
        }
     });
     tsvString+='\n';
     selectedGermplasms.forEach(function (element){
-        console.log(cpyResp);
         tsvString+=cpyResp[element][0].germplasmDbId + "\t";
         if(cpyResp[element].length===1){
             tsvString+=cpyResp[element][0].markerProfileDbId;
