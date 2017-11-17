@@ -1,8 +1,17 @@
 "use strict";
-let urlEndPoint = "", token = "", selectedMap = "";
-let selectedMarkersProfils=[], selectedMarkers=[], hmapsType=undefined , hmapsLinkageGroup = [], response = [], cpyResp = [];
+const URL_MAPS = "maps";
+const URL_STUDIES = "studies-search";
+const URL_MARKERS = "markers";
+const URL_MARKER_PROFILES = "markerprofiles";
+const URL_ALLELE_MATRIX = "allelematrix-search";
+const URL_TOKEN="token";
+const URL_CALLS = "calls";
+const REQUIRED_CALLS = [URL_MAPS, URL_MARKERS, URL_STUDIES, URL_MARKER_PROFILES, URL_ALLELE_MATRIX];
+const  ALL_CALLS = ['token', 'calls', 'markers', 'studies-search', 'maps', 'maps/{id}', 'maps/{id}/positions', 'markerprofiles', 'studies/{id}/germplasm', 'allelematrix-search', 'allelematrix-search/status', 'germplasm/id'];
+let urlEndPoint1 = "", urlEndPoint2="", tokenUrl2="" , tokenUrl1 = "", selectedMap = "", calls;
+let selectedMarkersProfils=[], selectedMarkers=[], hmapsType=undefined , hmapsLinkageGroup = [], response = [], cpyResp = [], Call2Url=[], url2Token = [];
 let clientPageSize=1000, startmentindex=0, sizeOfResquestedMatrix=0, totalPage =0;
-let isEndPointInUrl=false, isMapIdInUrl=false, auth=true, isAbort = false;
+let isEndPointInUrl=false, isMapIdInUrl=false, auth=true, isAbort = false , is2EndPoint = false;
 
 async function init(){
 	await setVisibleField();
@@ -19,16 +28,26 @@ async function setVisibleField(){
 	 // $('#ErrorMessage').hide();
     $('#topMarkerDiv').hide();
     $('#topTypeDiv').hide();
-	if($_GET("baseUrl")!==null && await urlBrapiEndPointIsOk($_GET("baseUrl"))){
-		urlEndPoint = $_GET("baseUrl");
-		$('#urlForm').hide();
-		isEndPointInUrl=true;
-		if ($_GET("mapDbId")!==null && await urlMapIdIsOk(urlEndPoint,$_GET("mapDbId"))){
-			selectedMap=$_GET("mapDbId");
-			$('#mapForm').hide();
-			isMapIdInUrl=true;
+	if($_GET("baseUrl")!==null){
+		let urlTab = $_GET("baseUrl").split(';');
+   		if(await urlBrapiEndPointIsOk(urlTab[0])){
+            urlEndPoint1 = urlTab[0];
+            $('#urlForm').hide();
+            isEndPointInUrl=true;
+            if ($_GET("mapDbId")!==null && await urlMapIdIsOk(urlEndPoint1,$_GET("mapDbId"))){
+                selectedMap=$_GET("mapDbId");
+                $('#mapForm').hide();
+                isMapIdInUrl=true;
+            }
+        }
+        if(await urlBrapiEndPointIsOk(urlTab[1])){
+            urlEndPoint2 = urlTab[1];
+            is2EndPoint=true;
 		}
+		console.log(urlEndPoint1);
+        console.log(urlEndPoint2);
 	}
+
 	if ($_GET("auth")!=="true"){
 		$('#loginForm').hide();
 		auth = false;
@@ -40,14 +59,26 @@ async function setVisibleField(){
 }
 
 async function login(){
-	let stringUserId = $("#UserId").val(), stringPassword = $("#Password").val();
-	if(!isEndPointInUrl){urlEndPoint = $("#urltoget").val()}
+	let stringUserId = $("#UserId").val(), stringPassword = $("#Password").val(), stringUserId2 = $("#UserId2").val(), stringPassword2 = $("#Password2").val();
+	if(!isEndPointInUrl){
+		urlEndPoint1 = $("#urltoget").val();
+		urlEndPoint2 = $('#urltoget2').val();
+        if(urlEndPoint2!=='' && urlEndPoint2!== undefined){
+			is2EndPoint=true;
+		}else{
+        	is2EndPoint=false;
+		}
+        console.log(urlEndPoint1);
+        console.log(urlEndPoint2);
+	}
 	if(stringPassword === "" || stringUserId === ""){
 		$('#mainForm').show();
 		startment();
 	}else{
-		token = await getToken(stringUserId, stringPassword, urlEndPoint);
-		if(token === ""){alert("Bad Username or password, You're are loged as public user, so you only have acces to public data");}
+		tokenUrl1 = await getToken(stringUserId, stringPassword, urlEndPoint1);
+		if(is2EndPoint){tokenUrl2 = getToken(stringUserId2, stringPassword2, urlEndPoint2);}
+        url2Token = createUrl2Token(urlEndPoint1, urlEndPoint2, tokenUrl1, tokenUrl2);
+		if(tokenUrl1 === ""){alert("Bad Username or password, You're are loged as public user, so you only have acces to public data");}
 		else{alert("You're loged as private user");}
 		$('#mainForm').show();
 		startment();
@@ -55,10 +86,52 @@ async function login(){
 }
 
 async function startment() {
-	let argumentsArray = {urlEndPoint, token};
-	let firtstInformation = await getFirstInformation(argumentsArray);
-	setup_select_tag(firtstInformation);
-}	
+	console.log(is2EndPoint);
+	let argumentsArray = is2EndPoint ? {urlEndPoint1, tokenUrl1, urlEndPoint2, tokenUrl2} :  {urlEndPoint1, tokenUrl1};
+	if(await requCallareImplement(argumentsArray)){
+        let firtstInformation = await getFirstInformation(argumentsArray);
+        setup_select_tag(firtstInformation);
+	}
+}
+
+async function requCallareImplement(argumentsArray) {
+	try{
+        let allCallsAreDetected;
+        if(argumentsArray.urlEndPoint2===undefined){
+            console.log('MDRR');
+            calls= await getCalls(argumentsArray);
+            allCallsAreDetected= callsAreInArray(calls, REQUIRED_CALLS);
+            console.log(allCallsAreDetected);
+        }else{
+            calls = await getCalls(argumentsArray);
+            allCallsAreDetected = callsAreInArray(calls, REQUIRED_CALLS);
+        }
+        console.log(allCallsAreDetected);
+        return allCallsAreDetected;
+	}catch (err){
+		handleErrors(err);
+	}
+}
+
+async function getFirstInformation(){
+    try{
+        let arrayOfStudies, arrayOfMaps = [];
+		Call2Url = bindCall2Url(calls, ALL_CALLS);
+		console.log(Call2Url);
+		console.log(url2Token);
+		let argumentsArray = setArgumentArray("studies-search");
+		arrayOfStudies= await readStudyList(argumentsArray);
+		if($_GET("mapDbId")!==null){console.log($_GET("mapDbId"));$('select#selectionMap').hide();$('#labelSelectionMap').hide();}
+		else{argumentsArray = setArgumentArray("maps");arrayOfMaps = await readMaps(argumentsArray);}
+		let firstInformation = {};
+		firstInformation.maps=arrayOfMaps;
+		firstInformation.studies=arrayOfStudies;
+		console.log(firstInformation);
+		return firstInformation;
+    }catch (err){
+        handleErrors('Bad URL')
+    }
+}
 
 async function launch_selection(){
     $('#topTypeDiv').hide();
@@ -72,7 +145,8 @@ async function launch_selection(){
 		let arrayOfLinkageGroup=[], arrayOfMarkersType=[], arrayMarkers=[];
 		let selectedStudy = $('#selectionStudies').find('option:selected').val();
 		let paginationManager = new PaginationManager(0);
-		let argumentsArray = {urlEndPoint, token, selectedStudy, selectedMap};
+		let argumentsArray = {selectedStudy, selectedMap};
+        argumentsArray = setArgumentArray("markerprofiles",argumentsArray);
 		let askedType=null;
         await paginationManager.pager(getmarkerProfileDbId,argumentsArray).then(function(arrayGermplasmsIDs){
 			response = getMarkerProfileHmap(arrayGermplasmsIDs);
@@ -81,31 +155,36 @@ async function launch_selection(){
 			cpyResp = response;
 			response=reversHmap(response);
 		});
+        argumentsArray = setArgumentArray("maps/{id}",argumentsArray);
 		let mapDetails = await getMapDetails(argumentsArray);
 		console.log(mapDetails.result.linkageGroups);
         //mapDetails.result.data[0].linkageGroups.forEach(function(element){
 		mapDetails.result.linkageGroups.forEach(function(element){
 			arrayOfLinkageGroup.push(element.linkageGroupId);
 		});
+        argumentsArray = setArgumentArray("markers",argumentsArray);
         arrayMarkers = await paginationManager.getFirstPage(getMarkers,argumentsArray);
-        argumentsArray = {urlEndPoint, token, selectedStudy, selectedMap, askedType};
+        argumentsArray = {selectedStudy, selectedMap, askedType};
+        argumentsArray = setArgumentArray("markers",argumentsArray);
         if(! await paginationManager.isCompleteTypeList(getMarkers,argumentsArray,arrayOfMarkersType)){
             console.log('uncomplete');
             $('#topTypeDiv').show();
         }else{
-            arrayMarkers = await paginationManager.pager(getMarkers,{urlEndPoint, token, selectedStudy, selectedMap});
+            arrayMarkers = await paginationManager.pager(getMarkers,{urlEndPoint: urlEndPoint1, token: tokenUrl1, selectedStudy, selectedMap});
             arrayOfMarkersType = setHmapType(arrayMarkers);
         }
         console.log(arrayOfMarkersType);
         console.log(arrayMarkers);
 		if(arrayOfLinkageGroup.length>100 || arrayMarkers.length<600000){
+            argumentsArray = setArgumentArray("maps/{id}/positions",argumentsArray);
             arrayMarkers = await paginationManager.pager(getMarkersPosition,argumentsArray);
 		}else{
 			arrayMarkers=[];
 			let tempArray=[];
 			for(let i=0; i<arrayOfLinkageGroup.length;i++){
 				let selectedLKG = arrayOfLinkageGroup[i];
-                let argumentsArray = {urlEndPoint, token, selectedStudy, selectedMap, selectedLKG};
+                let argumentsArray = {selectedStudy, selectedMap, selectedLKG};
+                argumentsArray = setArgumentArray("maps/{id}/positions",argumentsArray);
                 tempArray = await paginationManager.pager(getMarkersPosition, argumentsArray);
                 for(let p=0; p<tempArray.length;p++){
                     arrayMarkers=arrayMarkers.concat(tempArray[p]);
@@ -208,7 +287,8 @@ function launchMatrixRequest(index){
 		if (selectedMarkers.length*selectedMarkers.length<clientPageSize){
 			sendedMarkers = selectedMarkers;
 			sendedMarkersProlis = selectedMarkersProfils;
-			let argumentsArray = {urlEndPoint, token, sendedMarkers, sendedMarkersProlis, clientPageSize, isAnExport};
+			let argumentsArray = {sendedMarkers, sendedMarkersProlis, clientPageSize, isAnExport};
+            argumentsArray = setArgumentArray("allelematrix-search",argumentsArray);
 			paginationManager.pager(getMatrix,argumentsArray).then(function(matrix){
                 fill_result_table(sendedMarkers,sendedMarkersProlis,response);
                 insetMatrixInResultTable(matrix);
@@ -229,7 +309,8 @@ function launchMatrixRequest(index){
 			}
             sendedMarkersProlis = removeAll(sendedMarkersProlis, undefined);
 			console.log(sendedMarkersProlis);
-			let argumentsArray = {urlEndPoint,token,sendedMarkers,sendedMarkersProlis, clientPageSize};
+			let argumentsArray = {sendedMarkers,sendedMarkersProlis, clientPageSize};
+            argumentsArray = setArgumentArray("allelematrix-search",argumentsArray);
 			paginationManager.pager(getMatrix,argumentsArray).then(function(matrix){
 				fill_result_table(sendedMarkers,sendedMarkersProlis,response);
                 insetMatrixInResultTable(matrix);
@@ -252,54 +333,13 @@ async function exportMatrix(){
 	let sendedMarkers = selectedMarkers;
 	console.log(sendedMarkers);
 	let isAnExport= true, askedPage = undefined;
-	let argumentsArray = {urlEndPoint, token, sendedMarkers, sendedMarkersProlis, clientPageSize, isAnExport, askedPage};
+	let argumentsArray = {sendedMarkers, sendedMarkersProlis, clientPageSize, isAnExport, askedPage};
+    argumentsArray = setArgumentArray("allelematrix-search",argumentsArray);
 	let link = await getMatrix(argumentsArray);
 	console.log(link);
 	argumentsArray.asynchid = link.metadata.status[0].message;
 	console.log(argumentsArray.asynchid);
 	await getExportStatus(argumentsArray);
-}
-
-function nextPage(){
-	if (startmentindex+=clientPageSize<sizeOfResquestedMatrix){
-		startmentindex += clientPageSize;
-		launchMatrixRequest(startmentindex);
-	}else{
-		startmentindex=parseInt(clientPageSize)*(totalPage-1);
-		launchMatrixRequest(startmentindex);
-	}
-}
-
-function prevPage(){
-	if(startmentindex-clientPageSize>=0){
-		startmentindex -= clientPageSize; 
-		launchMatrixRequest(startmentindex);
-	}else{
-		startmentindex = 0; 
-		launchMatrixRequest(startmentindex)
-	}
-}
-
-function setCustomPageSize(){
-	if (parseInt($('#customPageSize').val())<5000){
-		clientPageSize=parseInt($('#customPageSize').val())
-	}else{
-		clientPageSize=5000;
-		$('#customPageSize').val(5000);
-	}	
-}
-
-function setCustomIndex(){
-	startmentindex = parseInt($('#customIndex').val()-1)*clientPageSize;
-	if(startmentindex>=0 && startmentindex<=totalPage*clientPageSize){
-		launchMatrixRequest(startmentindex);
-	}else if(startmentindex<0){
-		startmentindex=0;
-		launchMatrixRequest(0);
-	}else if(startmentindex>totalPage*clientPageSize){
-		startmentindex = (selectedMarkers.length*selectedMarkersProfils.length)-(clientPageSize);
-		launchMatrixRequest(startmentindex);
-	}
 }
 
 function abortExport(){

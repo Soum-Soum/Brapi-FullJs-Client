@@ -9,6 +9,7 @@
 		<script type="text/javascript" src="js/utilities.js"></script>
 		<script type="text/javascript" src="js/pager.js"></script>
 		<script src="js/main.js"></script>
+		<script src="js/paginantion.js"></script>
 		<script src="js/getting_Information.js"></script>
 		<script src="js/view.js"></script>
 		<script src="js/export.js"></script>
@@ -40,15 +41,18 @@
 							<div class=" row">
 								<div class="col-md-6">
 									<input type="text" name="UserId" class="form-control" id="UserId" placeholder="User Name">
+									<input type="text" name="UserId" class="form-control" id="UserId2" placeholder="User Name">
 								</div>	
 								<div class="col-md-6"> 
-									<input type="text" name="Password" class="form-control" id="Password" placeholder="Password">	
+									<input type="text" name="Password" class="form-control" id="Password" placeholder="Password">
+									<input type="text" name="Password" class="form-control" id="Password2" placeholder="Password">
 								</div>
 							</div>
 						</div>
 						<div class="row">
 							<div id="urlForm" class="input-group">
-								<input type="text" name="URL" class="form-control" placeholder="Ex : http://_____/brapi/v1" id="urltoget" onchange="setEmptyTheFields();">
+								<input value="http://localhost:8080/gigwaV2/rest/cactuar/brapi/v1" type="text" name="URL" class="form-control" placeholder="Ex : http://_____/brapi/v1" id="urltoget" onchange="setEmptyTheFields();">
+								<input value="https://ics.hutton.ac.uk/germinate-demo/cactuar/brapi/v1" type="text" name="URL" class="form-control" placeholder="Ex : http://_____/brapi/v1" id="urltoget2" onchange="setEmptyTheFields();">
 							</div>
 							<button class="btn btn-secondary btn-sm" id="Submit1" type="button" onclick="login()">Submit</button>
 						</div>

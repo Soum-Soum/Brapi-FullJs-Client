@@ -6,7 +6,8 @@ async function ExportDetailsGermplasms(){
     console.log(selectedGermplasms);
     for(let i=0; i<selectedGermplasms.length; i++){
         germplasmId=selectedGermplasms[i];
-        argumentsArray = {urlEndPoint, token, germplasmId};
+        argumentsArray = {germplasmId};
+        argumentsArray = setArgumentArray("germplasm/id",argumentsArray);
         let resp = await getGermplasmsDetails(argumentsArray);
         jsonHmap[germplasmId]=resp.result;
     }

@@ -1,11 +1,3 @@
-const URL_CALLS = "calls";
-const URL_MAPS = "maps";
-const URL_STUDIES = "studies-search";
-const URL_MARKERS = "markers";
-const URL_MARKER_PROFILES = "markerprofiles";
-const URL_ALLELE_MATRIX = "allelematrix-search";
-const URL_TOKEN="token";
-const REQUIRED_CALLS = [URL_MAPS, URL_MARKERS, URL_STUDIES, URL_MARKER_PROFILES, URL_ALLELE_MATRIX];
 
 async function getToken(stringUserId, stringPassword, urlEndPoint){
 	let myURL = urlEndPoint + "/" + URL_TOKEN, tokenString="";
@@ -19,7 +11,7 @@ async function getToken(stringUserId, stringPassword, urlEndPoint){
 		}else{return tokenString;}
 	}
 	catch(err) {
-	    handleErrors(err);
+	    handleErrors('Impossible to take the tokenUrl1');
 	}
 }
 
@@ -43,58 +35,37 @@ async function urlBrapiEndPointIsOk(brapiEndPoint){
 	return true;
 }
 
-async function getFirstInformation(argumentsArray){
-	try{
-        let arrayOfStudies, arrayOfMaps = [];
-        let paginationManager = new PaginationManager(0);
-        let calls = await paginationManager.pager(getCalls, argumentsArray);
-        let all_Calls_Are_Detected = callsAreInArray(calls, REQUIRED_CALLS);
-        if(all_Calls_Are_Detected){
-            arrayOfStudies= await readStudyList(argumentsArray);
-            if($_GET("mapDbId")!==null){console.log($_GET("mapDbId"));$('select#selectionMap').hide();$('#labelSelectionMap').hide();}
-            else{arrayOfMaps = await readMaps(argumentsArray);}
-            let firstInformation = {};
-            firstInformation.maps=arrayOfMaps;
-            firstInformation.studies=arrayOfStudies;
-            return firstInformation;
-        }else{
-            return null;
-        }
-	}catch (err){
-		handleErrors('Bad URL')
-	}
-}
-
 async function getCalls(argumentsArray){
-	let myURL = argumentsArray.urlEndPoint + "/" + URL_CALLS;
-	let myHeaders = new Headers();
-	let Authorization = argumentsArray.token==='' ? '' : "Bearer " + argumentsArray.token;
-	myHeaders = {Authorization};
-	try {
-    	let resp = await fetch(myURL, myHeaders);
-	    resp = await resp.json();
-		return resp;
+	console.log(argumentsArray);
+    let myURL1 = argumentsArray.urlEndPoint1 + "/" + URL_CALLS;
+    let myHeaders1 = new Headers();
+    let Authorization = argumentsArray.tokenUrl1==='' ? '' : "Bearer " + argumentsArray.tokenUrl1;
+    myHeaders1 = {Authorization};
+	if(argumentsArray.urlEndPoint2===undefined){
+        try {
+            let resp1 = await fetch(myURL1, myHeaders1);
+            resp1 = await resp1.json();
+            return [resp1];
+        }
+		catch(err) {
+			handleErrors('impossible to load call calls');
+		}
+	}else{
+        let myURL2 = argumentsArray.urlEndPoint2 + "/" + URL_CALLS;
+        let myHeaders2 = new Headers();
+        let Authorization = argumentsArray.tokenUrl2==='' ? '' : "Bearer " + argumentsArray.tokenUrl2;
+        myHeaders2 = {Authorization};
+        try {
+            let resp1 = await fetch(myURL1, myHeaders1);
+            let resp2 = await fetch(myURL2, myHeaders2);
+            resp1 = await resp1.json();
+            resp2 = await resp2.json();
+            return [resp1, resp2];
+        }
+        catch(err) {
+            handleErrors('impossible to load call calls');
+        }
 	}
-	catch(err) {
-	     handleErrors(err); 
-	}
-}
-
-function callsAreInArray(resp, required_calls_array){
-	let foundCalls = [];
-	let result=false;
-	resp.forEach(function(element){
-		element.forEach(function(element2){foundCalls.push(element2.call);});
-	});
-	required_calls_array.forEach(function(element){
-    	result = false;
-	    for(i=0; i<foundCalls.length; i++){
-	        if(foundCalls[i] === element){result = true;}
-	    }
-	});
-	if (result) {console.log("All required calls are detected");}
-	else{console.log("one or more required calls are not detected");}
-	return result;
 }
 
 async function readMaps(argumentsArray){
@@ -108,7 +79,7 @@ async function readMaps(argumentsArray){
 		return foundMaps;
 	}
 	catch(err) {
-	     handleErrors(err); 
+	     handleErrors('impossible to load call maps');
 	}  
 }
 
@@ -123,7 +94,7 @@ async function readStudyList(argumentsArray){
 		return foundStudies;
 	}
 	catch(err) {
-	     handleErrors(err); 
+	     handleErrors('impossible to load call studies');
 	}    
 }
 
@@ -137,7 +108,7 @@ async function getmarkerProfileDbId(argumentsArray){
 		return resp;
 	}
 	catch(err) {
-	     handleErrors(err); 
+	     handleErrors('impossible to load call Maker Profile');
 	} 
 }
 
@@ -154,7 +125,7 @@ async function getMarkers(argumentsArray){
 		return resp;	
 	}
 	catch(err) {
-	     handleErrors(err); 
+	     handleErrors('impossible to load call Marker');
 	} 
 }
 
@@ -182,7 +153,7 @@ async function getMarkersPosition(argumentsArray){
 		return resp;
 	}
 	catch(err) {
-	     handleErrors(err);
+	     handleErrors('impossible to load call map/id/position');
 	}
 }
 
@@ -215,7 +186,7 @@ async function getMatrix(argumentsArray){
 		return resp;
 	}
 	catch(err) {
-	     handleErrors(err); 
+	     handleErrors('impossible to load call matix');
 	}
 }
 

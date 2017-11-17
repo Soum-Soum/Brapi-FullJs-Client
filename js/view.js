@@ -144,7 +144,6 @@ function setloader(){
 }
 
 async function handleErrors(err) {
-	console.log(typeof err);
 	if (typeof err === "string"){
 		$('#ErrorMessage').show();
 	    $('#ErrorMessage').text(err);
