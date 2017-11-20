@@ -1380,7 +1380,7 @@ var Collapse = function () {
 }($);
 
 /**!
- * @fileOverview Kickass library to create and place poppers near their reference elements.
+ * @fileOverview Kickass extern_library to create and place poppers near their reference elements.
  * @version 1.12.5
  * @license
  * Copyright (c) 2016 Federico Zivolo and contributors
@@ -3262,7 +3262,7 @@ function inner(data) {
 /**
  * Modifiers are plugins used to alter the behavior of your poppers.<br />
  * Popper.js uses a set of 9 modifiers to provide all the basic functionalities
- * needed by the library.
+ * needed by the extern_library.
  *
  * Usually you don't want to override the `order`, `fn` and `onLoad` props.
  * All the other properties are configurations that could be tweaked.
@@ -3505,7 +3505,7 @@ var modifiers = {
    *
    * This modifier has `850` as `order` value to maintain backward compatibility
    * with previous versions of Popper.js. Expect the modifiers ordering method
-   * to change in future major versions of the library.
+   * to change in future major versions of the extern_library.
    *
    * @memberof modifiers
    * @inner
@@ -3541,7 +3541,7 @@ var modifiers = {
    * Applies the computed styles to the popper element.
    *
    * All the DOM manipulations are limited to this modifier. This is useful in case
-   * you want to integrate Popper.js inside a framework or view library and you
+   * you want to integrate Popper.js inside a framework or view extern_library and you
    * want to delegate all the DOM manipulations to it.
    *
    * Note that if you disable this modifier, you must make sure the popper element

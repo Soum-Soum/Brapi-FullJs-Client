@@ -7,7 +7,7 @@
   // Making your jQuery plugin work better with npm tools
   // http://blog.npmjs.org/post/112712169830/making-your-jquery-plugin-work-better-with-npm
   if(typeof module === "object" && typeof module.exports === "object") {
-    factory(require("jquery"), window, document);
+    factory(require("js/extern_library/jquery"), window, document);
   }
   else {
     factory(jQuery, window, document);

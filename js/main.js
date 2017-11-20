@@ -1,17 +1,4 @@
 "use strict";
-const URL_MAPS = "maps";
-const URL_STUDIES = "studies-search";
-const URL_MARKERS = "markers";
-const URL_MARKER_PROFILES = "markerprofiles";
-const URL_ALLELE_MATRIX = "allelematrix-search";
-const URL_TOKEN="token";
-const URL_CALLS = "calls";
-const REQUIRED_CALLS = [URL_MAPS, URL_MARKERS, URL_STUDIES, URL_MARKER_PROFILES, URL_ALLELE_MATRIX];
-const  ALL_CALLS = ['token', 'calls', 'markers', 'studies-search', 'maps', 'maps/{id}', 'maps/{id}/positions', 'markerprofiles', 'studies/{id}/germplasm', 'allelematrix-search', 'allelematrix-search/status', 'germplasm/id'];
-let urlEndPoint1 = "", urlEndPoint2="", tokenUrl2="" , tokenUrl1 = "", selectedMap = "", calls;
-let selectedMarkersProfils=[], selectedMarkers=[], hmapsType=undefined , hmapsLinkageGroup = [], response = [], cpyResp = [], Call2Url=[], url2Token = [];
-let clientPageSize=1000, startmentindex=0, sizeOfResquestedMatrix=0, totalPage =0;
-let isEndPointInUrl=false, isMapIdInUrl=false, auth=true, isAbort = false , is2EndPoint = false;
 
 async function init(){
 	await setVisibleField();
@@ -201,35 +188,6 @@ async function launch_selection(){
     setDisabled(false);
 }
 
-function setHmapLinkageGroup(arrayOfLinkageGroup, arrayMarkers){
-	hmapsLinkageGroup=null;
-	hmapsLinkageGroup=[];
-	for(let i =0; i<arrayOfLinkageGroup.length; i++){
-		hmapsLinkageGroup[arrayOfLinkageGroup[i]]=[];
-	}
-	for (let i = 0; i < arrayMarkers.length; i++) {
-		for (let j = 0; j < arrayMarkers[i].length; j++) {
-						hmapsLinkageGroup[arrayMarkers[i][j].linkageGroup].push(arrayMarkers[i][j].markerDbId);
-		}
-	}
-	console.log(hmapsLinkageGroup);
-}
-
-function setHmapType(arrayMarkers){
-	console.log(arrayMarkers);
-	hmapsType = [];
-	let arrayOfMarkersType=[];
-	for (let i = 0; i < arrayMarkers.length; i++) {
-		for (let j = 0; j < arrayMarkers[i].length; j++) {
-			hmapsType[arrayMarkers[i][j].markerDbId]=arrayMarkers[i][j].type;
-			if(!isInArray(arrayOfMarkersType, arrayMarkers[i][j].type)){
-				arrayOfMarkersType.push(arrayMarkers[i][j].type);
-			}
-		}
-	}
-	return arrayOfMarkersType;
-}
-
 function selectionMarkers(){
 	let selectedType = $("#typeMarker").val();
 	console.log(selectedType);
@@ -340,8 +298,4 @@ async function exportMatrix(){
 	argumentsArray.asynchid = link.metadata.status[0].message;
 	console.log(argumentsArray.asynchid);
 	await getExportStatus(argumentsArray);
-}
-
-function abortExport(){
-	isAbort = true;
 }
