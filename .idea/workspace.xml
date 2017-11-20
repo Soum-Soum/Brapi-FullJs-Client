@@ -2,21 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="35f502fc-e838-42db-8b8d-ae93addfb8b3" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/js/hmap.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/js/bootstrap.bundle.js" afterPath="$PROJECT_DIR$/js/extern_library/bootstrap.bundle.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/js/bootstrap.bundle.js.map" afterPath="$PROJECT_DIR$/js/extern_library/bootstrap.bundle.js.map" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/js/bootstrap.bundle.min.js" afterPath="$PROJECT_DIR$/js/extern_library/bootstrap.bundle.min.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/js/bootstrap.bundle.min.js.map" afterPath="$PROJECT_DIR$/js/extern_library/bootstrap.bundle.min.js.map" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/js/bootstrap.js" afterPath="$PROJECT_DIR$/js/extern_library/bootstrap.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/js/bootstrap.js.map" afterPath="$PROJECT_DIR$/js/extern_library/bootstrap.js.map" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/js/bootstrap.min.js" afterPath="$PROJECT_DIR$/js/extern_library/bootstrap.min.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/js/bootstrap.min.js.map" afterPath="$PROJECT_DIR$/js/extern_library/bootstrap.min.js.map" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/js/jquery.js" afterPath="$PROJECT_DIR$/js/extern_library/jquery.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/js/jquery.modal.js" afterPath="$PROJECT_DIR$/js/extern_library/jquery.modal.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/index.html" afterPath="$PROJECT_DIR$/index.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/export.js" afterPath="$PROJECT_DIR$/js/export.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/getting_Information.js" afterPath="$PROJECT_DIR$/js/getting_Information.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/hmap.js" afterPath="$PROJECT_DIR$/js/hmap.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/main.js" afterPath="$PROJECT_DIR$/js/main.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/pager.js" afterPath="$PROJECT_DIR$/js/pager.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/utilities.js" afterPath="$PROJECT_DIR$/js/utilities.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/view.js" afterPath="$PROJECT_DIR$/js/view.js" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -28,6 +21,9 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="ExportToHTMLSettings">
+    <option name="OUTPUT_DIRECTORY" value="$PROJECT_DIR$/exportToHTML" />
+  </component>
   <component name="FileColors">
     <fileColor scope="Non-Project Files (Material Default)" color="2E3C43" />
     <fileColor scope="Non-Project Files (Material Darker)" color="323232" />
@@ -37,11 +33,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="index.html" pinned="false" current-in-tab="true">
+      <file leaf-file-name="index.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="120">
-              <caret line="5" column="38" lean-forward="false" selection-start-line="5" selection-start-column="38" selection-end-line="5" selection-end-column="38" />
+            <state relative-caret-position="395">
+              <caret line="101" column="105" lean-forward="true" selection-start-line="101" selection-start-column="98" selection-end-line="101" selection-end-column="114" />
               <folding>
                 <element signature="n#style#0;n#h3#0;n#div#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#button#0;n#div#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
@@ -59,8 +55,8 @@
       <file leaf-file-name="main.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/js/main.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="48">
-              <caret line="2" column="0" lean-forward="false" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="0" />
+            <state relative-caret-position="336">
+              <caret line="122" column="0" lean-forward="false" selection-start-line="122" selection-start-column="0" selection-end-line="122" selection-end-column="0" />
               <folding>
                 <element signature="n#!!block;n#init#0" expanded="false" />
                 <element signature="n#!!block;n#setVisibleField#0" expanded="false" />
@@ -72,41 +68,32 @@
                 <element signature="n#!!block;n#selectionMarkers#0" expanded="false" />
                 <element signature="n#!!block;n#getRequestParameter#0" expanded="false" />
                 <element signature="n#!!block;n#launchMatrixRequest#0" expanded="false" />
-                <element signature="n#!!block;n#exportMatrix#0" expanded="false" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="variables.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/js/variables.js">
+      <file leaf-file-name="pager.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/js/pager.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="288">
-              <caret line="12" column="96" lean-forward="false" selection-start-line="12" selection-start-column="96" selection-end-line="12" selection-end-column="96" />
+            <state relative-caret-position="312">
+              <caret line="24" column="39" lean-forward="false" selection-start-line="24" selection-start-column="39" selection-end-line="24" selection-end-column="39" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="getting_Information.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/js/getting_Information.js">
+      <file leaf-file-name="hmap.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/js/hmap.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="504">
-              <caret line="159" column="0" lean-forward="false" selection-start-line="159" selection-start-column="0" selection-end-line="159" selection-end-column="0" />
+            <state relative-caret-position="432">
+              <caret line="69" column="5" lean-forward="false" selection-start-line="69" selection-start-column="5" selection-end-line="69" selection-end-column="5" />
               <folding>
-                <element signature="n#!!block;n#getToken#0" expanded="false" />
-                <element signature="n#!!block;n#urlMapIdIsOk#0" expanded="false" />
-                <element signature="n#!!block;n#urlBrapiEndPointIsOk#0" expanded="false" />
-                <element signature="n#!!block;n#getCalls#0" expanded="false" />
-                <element signature="n#!!block;n#readMaps#0" expanded="false" />
-                <element signature="n#!!block;n#readStudyList#0" expanded="false" />
-                <element signature="n#!!block;n#getmarkerProfileDbId#0" expanded="false" />
-                <element signature="n#!!block;n#getMarkers#0" expanded="false" />
-                <element signature="n#!!block;n#getMapDetails#0" expanded="false" />
-                <element signature="n#!!block;n#getMarkersPosition#0" expanded="false" />
-                <element signature="n#!!block;n#getMatrix#0" expanded="false" />
-                <element signature="n#!!block;n#getExportStatus#0" expanded="false" />
-                <element signature="n#!!block;n#getGermplasmsDetails#0" expanded="false" />
+                <element signature="n#!!block;n#getMarkerProfileHmap#0" expanded="false" />
+                <element signature="n#!!block;n#createUrl2Token#0" expanded="false" />
+                <element signature="n#!!block;n#reversHmap#0" expanded="false" />
+                <element signature="n#!!block;n#bindCall2Url#0" expanded="false" />
+                <element signature="n#!!block;n#setHmapType#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -115,8 +102,8 @@
       <file leaf-file-name="utilities.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/js/utilities.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="384">
-              <caret line="94" column="22" lean-forward="false" selection-start-line="94" selection-start-column="22" selection-end-line="94" selection-end-column="22" />
+            <state relative-caret-position="432">
+              <caret line="98" column="33" lean-forward="false" selection-start-line="98" selection-start-column="33" selection-end-line="98" selection-end-column="33" />
               <folding>
                 <element signature="n#!!block;n#isInArray#0" expanded="false" />
                 <element signature="n#!!block;n#sleep#0" expanded="false" />
@@ -127,31 +114,32 @@
                 <element signature="n#!!block;n#callsAreInArray#0" expanded="false" />
                 <element signature="n#!!block;n#setArgumentArray#0" expanded="false" />
                 <element signature="n#!!block;n#abortExport#0" expanded="false" />
+                <element signature="n#!!block;n#getTypeList#0" expanded="false" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="paginantion.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/js/paginantion.js">
+      <file leaf-file-name="export.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/js/export.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="96">
-              <caret line="20" column="0" lean-forward="false" selection-start-line="20" selection-start-column="0" selection-end-line="20" selection-end-column="0" />
+            <state relative-caret-position="48">
+              <caret line="17" column="1" lean-forward="false" selection-start-line="17" selection-start-column="1" selection-end-line="17" selection-end-column="1" />
               <folding>
-                <element signature="n#!!block;n#nextPage#0" expanded="false" />
-                <element signature="n#!!block;n#prevPage#0" expanded="false" />
-                <element signature="n#!!block;n#setCustomPageSize#0" expanded="false" />
-                <element signature="n#!!block;n#setCustomIndex#0" expanded="false" />
+                <element signature="n#!!block;n#exportMatrix#0" expanded="false" />
+                <element signature="n#!!block;n#getFieldFormJson#0" expanded="false" />
+                <element signature="n#!!block;n#buildTsvString#0" expanded="false" />
+                <element signature="n#!!block;n#download#0" expanded="false" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="view.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="view.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/js/view.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="528">
-              <caret line="145" column="0" lean-forward="false" selection-start-line="145" selection-start-column="0" selection-end-line="157" selection-end-column="1" />
+            <state relative-caret-position="624">
+              <caret line="140" column="26" lean-forward="false" selection-start-line="140" selection-start-column="26" selection-end-line="140" selection-end-column="26" />
               <folding>
                 <element signature="n#!!block;n#setup_select_tag#0" expanded="false" />
                 <element signature="n#!!block;n#setEmptyTheFields#0" expanded="false" />
@@ -162,7 +150,6 @@
                 <element signature="n#!!block;n#fill_result_table#0" expanded="false" />
                 <element signature="n#!!block;n#cleanTab#0" expanded="false" />
                 <element signature="n#!!block;n#insetMatrixInResultTable#0" expanded="false" />
-                <element signature="n#!!block;n#updateSelection#0" expanded="false" />
                 <element signature="n#!!block;n#setloader#0" expanded="false" />
                 <element signature="n#!!block;n#handleErrors#0" expanded="false" />
                 <element signature="n#!!block;n#setDisabled#0" expanded="false" />
@@ -175,8 +162,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>getMarkerProfileHmap</find>
-      <find>setCustomPageSize</find>
       <find>setCustomIndex</find>
       <find>sendedMarkersProlis</find>
       <find>pageNumber</find>
@@ -205,6 +190,8 @@
       <find>argumentsArray</find>
       <find>getGermplasmsDetails</find>
       <find>createUrl2Token</find>
+      <find>startmen</find>
+      <find>badge</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -219,16 +206,16 @@
         <option value="$PROJECT_DIR$/css/bootstrap.css" />
         <option value="$PROJECT_DIR$/Main.html" />
         <option value="$PROJECT_DIR$/css/style.css" />
-        <option value="$PROJECT_DIR$/js/pager.js" />
-        <option value="$PROJECT_DIR$/js/view.js" />
         <option value="$PROJECT_DIR$/js/paginantion.js" />
-        <option value="$PROJECT_DIR$/js/getting_Information.js" />
-        <option value="$PROJECT_DIR$/js/export.js" />
-        <option value="$PROJECT_DIR$/js/utilities.js" />
-        <option value="$PROJECT_DIR$/js/hmap.js" />
-        <option value="$PROJECT_DIR$/js/main.js" />
         <option value="$PROJECT_DIR$/js/variables.js" />
+        <option value="$PROJECT_DIR$/js/export.js" />
+        <option value="$PROJECT_DIR$/js/getting_Information.js" />
+        <option value="$PROJECT_DIR$/js/main.js" />
+        <option value="$PROJECT_DIR$/js/utilities.js" />
+        <option value="$PROJECT_DIR$/js/pager.js" />
+        <option value="$PROJECT_DIR$/js/hmap.js" />
         <option value="$PROJECT_DIR$/index.html" />
+        <option value="$PROJECT_DIR$/js/view.js" />
       </list>
     </option>
   </component>
@@ -357,7 +344,7 @@
       <workItem from="1510818755216" duration="9970000" />
       <workItem from="1510906687624" duration="4071000" />
       <workItem from="1510911033719" duration="11276000" />
-      <workItem from="1511165548231" duration="5126000" />
+      <workItem from="1511165548231" duration="11972000" />
     </task>
     <task id="LOCAL-00001" summary="lol">
       <created>1509353050692</created>
@@ -370,7 +357,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="132650000" />
+    <option name="totallyTimeSpent" value="139496000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="608" y="0" width="1244" height="1024" extended-state="6" />
@@ -411,7 +398,7 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="18" />
+      <option name="time" value="21" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -454,6 +441,7 @@
             <element signature="n#!!block;n#callsAreInArray#0" expanded="false" />
             <element signature="n#!!block;n#setArgumentArray#0" expanded="false" />
             <element signature="n#!!block;n#abortExport#0" expanded="false" />
+            <element signature="n#!!block;n#getTypeList#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -472,7 +460,6 @@
             <element signature="n#!!block;n#fill_result_table#0" expanded="false" />
             <element signature="n#!!block;n#cleanTab#0" expanded="false" />
             <element signature="n#!!block;n#insetMatrixInResultTable#0" expanded="false" />
-            <element signature="n#!!block;n#updateSelection#0" expanded="false" />
             <element signature="n#!!block;n#setloader#0" expanded="false" />
             <element signature="n#!!block;n#handleErrors#0" expanded="false" />
             <element signature="n#!!block;n#setDisabled#0" expanded="false" />
@@ -517,7 +504,6 @@
             <element signature="n#!!block;n#selectionMarkers#0" expanded="false" />
             <element signature="n#!!block;n#getRequestParameter#0" expanded="false" />
             <element signature="n#!!block;n#launchMatrixRequest#0" expanded="false" />
-            <element signature="n#!!block;n#exportMatrix#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -536,6 +522,7 @@
             <element signature="n#!!block;n#callsAreInArray#0" expanded="false" />
             <element signature="n#!!block;n#setArgumentArray#0" expanded="false" />
             <element signature="n#!!block;n#abortExport#0" expanded="false" />
+            <element signature="n#!!block;n#getTypeList#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -571,7 +558,6 @@
             <element signature="n#!!block;n#fill_result_table#0" expanded="false" />
             <element signature="n#!!block;n#cleanTab#0" expanded="false" />
             <element signature="n#!!block;n#insetMatrixInResultTable#0" expanded="false" />
-            <element signature="n#!!block;n#updateSelection#0" expanded="false" />
             <element signature="n#!!block;n#setloader#0" expanded="false" />
             <element signature="n#!!block;n#handleErrors#0" expanded="false" />
             <element signature="n#!!block;n#setDisabled#0" expanded="false" />
@@ -616,7 +602,6 @@
             <element signature="n#!!block;n#selectionMarkers#0" expanded="false" />
             <element signature="n#!!block;n#getRequestParameter#0" expanded="false" />
             <element signature="n#!!block;n#launchMatrixRequest#0" expanded="false" />
-            <element signature="n#!!block;n#exportMatrix#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -685,7 +670,6 @@
             <element signature="n#!!block;n#selectionMarkers#0" expanded="false" />
             <element signature="n#!!block;n#getRequestParameter#0" expanded="false" />
             <element signature="n#!!block;n#launchMatrixRequest#0" expanded="false" />
-            <element signature="n#!!block;n#exportMatrix#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -956,18 +940,23 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/pager.js">
+    <entry file="file://$PROJECT_DIR$/js/paginantion.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="24">
-          <caret line="48" column="21" lean-forward="false" selection-start-line="48" selection-start-column="21" selection-end-line="48" selection-end-column="21" />
-          <folding />
+        <state relative-caret-position="96">
+          <caret line="20" column="0" lean-forward="false" selection-start-line="20" selection-start-column="0" selection-end-line="20" selection-end-column="0" />
+          <folding>
+            <element signature="n#!!block;n#nextPage#0" expanded="false" />
+            <element signature="n#!!block;n#prevPage#0" expanded="false" />
+            <element signature="n#!!block;n#setCustomPageSize#0" expanded="false" />
+            <element signature="n#!!block;n#setCustomIndex#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/export.js">
+    <entry file="file://$PROJECT_DIR$/js/variables.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="580">
-          <caret line="64" column="77" lean-forward="false" selection-start-line="64" selection-start-column="77" selection-end-line="64" selection-end-column="77" />
+        <state relative-caret-position="288">
+          <caret line="12" column="96" lean-forward="false" selection-start-line="12" selection-start-column="96" selection-end-line="12" selection-end-column="96" />
           <folding />
         </state>
       </provider>
@@ -975,7 +964,7 @@
     <entry file="file://$PROJECT_DIR$/js/getting_Information.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="504">
-          <caret line="159" column="0" lean-forward="false" selection-start-line="159" selection-start-column="0" selection-end-line="159" selection-end-column="0" />
+          <caret line="159" column="40" lean-forward="false" selection-start-line="159" selection-start-column="40" selection-end-line="159" selection-end-column="40" />
           <folding>
             <element signature="n#!!block;n#getToken#0" expanded="false" />
             <element signature="n#!!block;n#urlMapIdIsOk#0" expanded="false" />
@@ -994,25 +983,31 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/hmap.js">
+    <entry file="file://$PROJECT_DIR$/js/pager.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="87" column="1" lean-forward="false" selection-start-line="87" selection-start-column="1" selection-end-line="87" selection-end-column="1" />
+        <state relative-caret-position="312">
+          <caret line="24" column="39" lean-forward="false" selection-start-line="24" selection-start-column="39" selection-end-line="24" selection-end-column="39" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/export.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="48">
+          <caret line="17" column="1" lean-forward="false" selection-start-line="17" selection-start-column="1" selection-end-line="17" selection-end-column="1" />
           <folding>
-            <element signature="n#!!block;n#getMarkerProfileHmap#0" expanded="false" />
-            <element signature="n#!!block;n#createUrl2Token#0" expanded="false" />
-            <element signature="n#!!block;n#reversHmap#0" expanded="false" />
-            <element signature="n#!!block;n#bindCall2Url#0" expanded="false" />
-            <element signature="n#!!block;n#setHmapLinkageGroup#0" expanded="false" />
-            <element signature="n#!!block;n#setHmapType#0" expanded="false" />
+            <element signature="n#!!block;n#exportMatrix#0" expanded="false" />
+            <element signature="n#!!block;n#getFieldFormJson#0" expanded="false" />
+            <element signature="n#!!block;n#buildTsvString#0" expanded="false" />
+            <element signature="n#!!block;n#download#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/js/utilities.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="384">
-          <caret line="94" column="22" lean-forward="false" selection-start-line="94" selection-start-column="22" selection-end-line="94" selection-end-column="22" />
+        <state relative-caret-position="432">
+          <caret line="98" column="33" lean-forward="false" selection-start-line="98" selection-start-column="33" selection-end-line="98" selection-end-column="33" />
           <folding>
             <element signature="n#!!block;n#isInArray#0" expanded="false" />
             <element signature="n#!!block;n#sleep#0" expanded="false" />
@@ -1023,49 +1018,29 @@
             <element signature="n#!!block;n#callsAreInArray#0" expanded="false" />
             <element signature="n#!!block;n#setArgumentArray#0" expanded="false" />
             <element signature="n#!!block;n#abortExport#0" expanded="false" />
+            <element signature="n#!!block;n#getTypeList#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/paginantion.js">
+    <entry file="file://$PROJECT_DIR$/js/hmap.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="96">
-          <caret line="20" column="0" lean-forward="false" selection-start-line="20" selection-start-column="0" selection-end-line="20" selection-end-column="0" />
+        <state relative-caret-position="432">
+          <caret line="69" column="5" lean-forward="false" selection-start-line="69" selection-start-column="5" selection-end-line="69" selection-end-column="5" />
           <folding>
-            <element signature="n#!!block;n#nextPage#0" expanded="false" />
-            <element signature="n#!!block;n#prevPage#0" expanded="false" />
-            <element signature="n#!!block;n#setCustomPageSize#0" expanded="false" />
-            <element signature="n#!!block;n#setCustomIndex#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js/view.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="528">
-          <caret line="145" column="0" lean-forward="false" selection-start-line="145" selection-start-column="0" selection-end-line="157" selection-end-column="1" />
-          <folding>
-            <element signature="n#!!block;n#setup_select_tag#0" expanded="false" />
-            <element signature="n#!!block;n#setEmptyTheFields#0" expanded="false" />
-            <element signature="n#!!block;n#setUpGermplasms#0" expanded="false" />
-            <element signature="n#!!block;n#setUpMarkerProfils#0" expanded="false" />
-            <element signature="n#!!block;n#setUpLinkageGroupAndMarkersType#0" expanded="false" />
-            <element signature="n#!!block;n#setupMarkersId#0" expanded="false" />
-            <element signature="n#!!block;n#fill_result_table#0" expanded="false" />
-            <element signature="n#!!block;n#cleanTab#0" expanded="false" />
-            <element signature="n#!!block;n#insetMatrixInResultTable#0" expanded="false" />
-            <element signature="n#!!block;n#updateSelection#0" expanded="false" />
-            <element signature="n#!!block;n#setloader#0" expanded="false" />
-            <element signature="n#!!block;n#handleErrors#0" expanded="false" />
-            <element signature="n#!!block;n#setDisabled#0" expanded="false" />
+            <element signature="n#!!block;n#getMarkerProfileHmap#0" expanded="false" />
+            <element signature="n#!!block;n#createUrl2Token#0" expanded="false" />
+            <element signature="n#!!block;n#reversHmap#0" expanded="false" />
+            <element signature="n#!!block;n#bindCall2Url#0" expanded="false" />
+            <element signature="n#!!block;n#setHmapType#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/js/main.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="48">
-          <caret line="2" column="0" lean-forward="false" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="0" />
+        <state relative-caret-position="336">
+          <caret line="122" column="0" lean-forward="false" selection-start-line="122" selection-start-column="0" selection-end-line="122" selection-end-column="0" />
           <folding>
             <element signature="n#!!block;n#init#0" expanded="false" />
             <element signature="n#!!block;n#setVisibleField#0" expanded="false" />
@@ -1077,23 +1052,14 @@
             <element signature="n#!!block;n#selectionMarkers#0" expanded="false" />
             <element signature="n#!!block;n#getRequestParameter#0" expanded="false" />
             <element signature="n#!!block;n#launchMatrixRequest#0" expanded="false" />
-            <element signature="n#!!block;n#exportMatrix#0" expanded="false" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js/variables.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="288">
-          <caret line="12" column="96" lean-forward="false" selection-start-line="12" selection-start-column="96" selection-end-line="12" selection-end-column="96" />
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="5" column="38" lean-forward="false" selection-start-line="5" selection-start-column="38" selection-end-line="5" selection-end-column="38" />
+        <state relative-caret-position="395">
+          <caret line="101" column="105" lean-forward="true" selection-start-line="101" selection-start-column="98" selection-end-line="101" selection-end-column="114" />
           <folding>
             <element signature="n#style#0;n#h3#0;n#div#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#button#0;n#div#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
@@ -1103,6 +1069,27 @@
             <element signature="n#style#0;n#p#0;n#div#0;n#div#2;n#div#1;n#form#0;n#div#2;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#div#0;n#div#2;n#form#0;n#div#2;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#form#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/view.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="624">
+          <caret line="140" column="26" lean-forward="false" selection-start-line="140" selection-start-column="26" selection-end-line="140" selection-end-column="26" />
+          <folding>
+            <element signature="n#!!block;n#setup_select_tag#0" expanded="false" />
+            <element signature="n#!!block;n#setEmptyTheFields#0" expanded="false" />
+            <element signature="n#!!block;n#setUpGermplasms#0" expanded="false" />
+            <element signature="n#!!block;n#setUpMarkerProfils#0" expanded="false" />
+            <element signature="n#!!block;n#setUpLinkageGroupAndMarkersType#0" expanded="false" />
+            <element signature="n#!!block;n#setupMarkersId#0" expanded="false" />
+            <element signature="n#!!block;n#fill_result_table#0" expanded="false" />
+            <element signature="n#!!block;n#cleanTab#0" expanded="false" />
+            <element signature="n#!!block;n#insetMatrixInResultTable#0" expanded="false" />
+            <element signature="n#!!block;n#setloader#0" expanded="false" />
+            <element signature="n#!!block;n#handleErrors#0" expanded="false" />
+            <element signature="n#!!block;n#setDisabled#0" expanded="false" />
           </folding>
         </state>
       </provider>

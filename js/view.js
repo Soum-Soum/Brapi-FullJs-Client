@@ -19,6 +19,13 @@ function setEmptyTheFields(){
 	$("#chromosome").html("");
 	$("#Markers").html("");
 	$('#Germplasms').html("");
+	$('#labelGermplasms').hide();
+    $('#markerProfileLabel').hide();
+    $('#typeLabel').hide();
+    $('#chromosomeLabel').hide();
+    $('#markersLabel').hide();
+    $('#topMarkerDiv').hide();
+    $('#topTypeDiv').hide();
 }
 
 function setUpGermplasms(response){
@@ -96,7 +103,7 @@ function fill_result_table(sendedMarkers,sendedMarkersProlis,response) {
     console.log(sendedMarkersProlis);
     for(let i=0;i<sendedMarkersProlis.length;i++){
     	for(let j=0;j<sendedMarkers.length;j++){
-            htmlString += '<tr><td>'+sendedMarkers[j]+'</td><td>'+response[sendedMarkersProlis[i]]+'</td><td>'+sendedMarkersProlis[i]+'</td><td id="'+sendedMarkers[j]+'--'+sendedMarkersProlis[i]+'">Missing Data</td></tr>';
+            htmlString += '<tr><td>'+sendedMarkers[j]+'</td><td>'+response[sendedMarkersProlis[i]]+'</td><td>'+sendedMarkersProlis[i]+'</td><td id="'+sendedMarkers[j]+'--'+sendedMarkersProlis[i]+'"></td></tr>';
 		}
 	}
     $("#resulttable").find("> tbody").html(htmlString);
@@ -107,7 +114,7 @@ function cleanTab(sendedMarkers,sendedMarkersProlis){
         for(let j=0;j<sendedMarkers.length;j++){
             let id = '#' + sendedMarkers[j]+'--'+sendedMarkersProlis[i];
             let temp = $(id);
-            if(temp.text()==='Missing Data'){
+            if(temp.text()===''){
                 temp.parent().remove();
             }
         }
@@ -117,8 +124,8 @@ function cleanTab(sendedMarkers,sendedMarkersProlis){
 function insetMatrixInResultTable(matrix){
     for(let i=0; i<matrix.length;i++){
         matrix[i].forEach(function (element) {
-            let tempString = element[0] + '--' + element[1];
-            $('#'+tempString).text(element[2]);
+			let tempString = element[0] + '--' + element[1];
+			$('#'+tempString).text(element[2]);
         });
     }
 }
@@ -131,6 +138,7 @@ function updateSelection(idLabel, idSelect){
 	nbOption = removeAll(nbOption,"");
 	nbOption=nbOption.length;
 	$('#'+idLabel).text(nbSelectionOption + ' / ' + nbOption);
+    $('#'+idLabel).show();
 }
 
 function setloader(){

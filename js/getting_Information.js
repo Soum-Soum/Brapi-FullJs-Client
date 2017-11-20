@@ -169,7 +169,8 @@ async function getMatrix(argumentsArray){
 		for(i=0;i<argumentsArray.sendedMarkers.length; i++){
 			matrixString+= (i==0 ? '' : '&') + 'markerDbId=' +argumentsArray.sendedMarkers[i];
 		}
-		if(argumentsArray.isAnExport == true){matrixString += "&format=tsv&unknownString=MissingData";}
+		matrixString+='&unknownString=';
+		if(argumentsArray.isAnExport == true){matrixString += "&format=tsv";}
 		let myHeaders = new Headers();
 		if(argumentsArray.token!=='""'){
 			myHeaders = {'Authorization': 'Bearer '+argumentsArray.token,
@@ -209,7 +210,7 @@ async function getExportStatus(argumentsArray){
 		}
 		if(isAbort===false){
             console.log(resp);
-            //window.location = resp.metadata.datafiles[0];
+            window.location = resp.metadata.datafiles[0];
 		}
 	}
 	catch(err) {

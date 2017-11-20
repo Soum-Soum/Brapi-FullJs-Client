@@ -23,7 +23,6 @@ class PaginationManager{
 			if (currentPage === totalPages-1) {
 				this.setEvolutionOfPagination(100);
 				this.updateEvolution();
-                console.log(arrayOfResp);
 				return arrayOfResp;
 			}else{
 				while(argumentsArray.askedPage <= totalPages-1){
@@ -44,7 +43,6 @@ class PaginationManager{
         try{
             argumentsArray.askedPage=0;
             let resp = await function_to_launch(argumentsArray);
-            console.log(resp);
             return [resp.result.data];
         }catch (err){
             handleErrors();

@@ -95,3 +95,17 @@ function setArgumentArray(callName, argumentsArray){
 function abortExport(){
     isAbort = true;
 }
+
+function getTypeList(arrayMarker){
+    console.log(arrayMarker);
+    let arrayMarkerType =[];
+    for(let i=0; i<arrayMarker.length;i++){
+        for(let j=0; j<arrayMarker[i].length; j++){
+            if(arrayMarker[i][j].type !== undefined && arrayMarker[i][j].type !== null && !isInArray(arrayMarkerType, arrayMarker[i][j].type)){
+                arrayMarkerType.push(arrayMarker[i][j].type);
+            }
+        }
+    }
+    console.log(arrayMarkerType);
+    return arrayMarkerType;
+}

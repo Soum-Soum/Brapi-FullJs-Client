@@ -1,3 +1,20 @@
+async function exportMatrix(){
+    isAbort=false;
+    setloader();
+    let sendedMarkersProlis = $("#MarkersProfils option:selected").map(function(){return $(this).val().split(",");}).get();
+    sendedMarkersProlis = removeAll(sendedMarkersProlis, "");
+    let sendedMarkers = selectedMarkers;
+    console.log(sendedMarkers);
+    let isAnExport= true, askedPage = undefined;
+    let argumentsArray = {sendedMarkers, sendedMarkersProlis, clientPageSize, isAnExport, askedPage};
+    argumentsArray = setArgumentArray("allelematrix-search",argumentsArray);
+    let link = await getMatrix(argumentsArray);
+    console.log(link);
+    argumentsArray.asynchid = link.metadata.status[0].message;
+    console.log(argumentsArray.asynchid);
+    await getExportStatus(argumentsArray);
+}
+
 async function ExportDetailsGermplasms(){
     let jsonHmap = [],  argumentsArray;
     let selectedGermplasms = $("#Germplasms option:selected").map(function(){return $(this).text().split(",");}).get();

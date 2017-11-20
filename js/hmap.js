@@ -54,7 +54,6 @@ function bindCall2Url(resp, calls) {
             hmapCall2Url[element]="";
         }
     });
-    console.log(hmapCall2Url);
     return hmapCall2Url;
 }
 
@@ -69,7 +68,6 @@ function setHmapLinkageGroup(arrayOfLinkageGroup, arrayMarkers){
             hmapsLinkageGroup[arrayMarkers[i][j].linkageGroup].push(arrayMarkers[i][j].markerDbId);
         }
     }
-    console.log(hmapsLinkageGroup);
 }
 
 function setHmapType(arrayMarkers){

@@ -27,7 +27,7 @@ async function setVisibleField(){
                 isMapIdInUrl=true;
             }
         }
-        if(await urlBrapiEndPointIsOk(urlTab[1])){
+        if(urlTab[1]!==undefined && await urlBrapiEndPointIsOk(urlTab[1])){
             urlEndPoint2 = urlTab[1];
             is2EndPoint=true;
 		}
@@ -151,6 +151,8 @@ async function launch_selection(){
 		});
         argumentsArray = setArgumentArray("markers",argumentsArray);
         arrayMarkers = await paginationManager.getFirstPage(getMarkers,argumentsArray);
+        arrayOfMarkersType = getTypeList(arrayMarkers);
+        console.log(arrayOfMarkersType);
         argumentsArray = {selectedStudy, selectedMap, askedType};
         argumentsArray = setArgumentArray("markers",argumentsArray);
         if(! await paginationManager.isCompleteTypeList(getMarkers,argumentsArray,arrayOfMarkersType)){
@@ -214,7 +216,9 @@ function selectionMarkers(){
 
 function getRequestParameter(){
 	selectedMarkersProfils=null;
+    startmentindex=0;
 	$('#customIndex').val(1);
+	console.log($('#customIndex').val());
 	$('#secondForm').show();
 	if($('#MarkersProfils').is('[disabled=disabled]')){
         selectedMarkersProfils = $("#Germplasms option:selected").map(function(){return $(this).val().split(",");}).get();
@@ -283,19 +287,3 @@ function launchMatrixRequest(index){
 	}
 }
 
-async function exportMatrix(){
-	isAbort=false;
-	setloader();
-	let sendedMarkersProlis = $("#MarkersProfils option:selected").map(function(){return $(this).val().split(",");}).get();
-	sendedMarkersProlis = removeAll(sendedMarkersProlis, "");
-	let sendedMarkers = selectedMarkers;
-	console.log(sendedMarkers);
-	let isAnExport= true, askedPage = undefined;
-	let argumentsArray = {sendedMarkers, sendedMarkersProlis, clientPageSize, isAnExport, askedPage};
-    argumentsArray = setArgumentArray("allelematrix-search",argumentsArray);
-	let link = await getMatrix(argumentsArray);
-	console.log(link);
-	argumentsArray.asynchid = link.metadata.status[0].message;
-	console.log(argumentsArray.asynchid);
-	await getExportStatus(argumentsArray);
-}
