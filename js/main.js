@@ -21,11 +21,11 @@ async function init(){
 }
 
 async function setVisibleField(){
-	 // $('#mainForm').hide();
-	 // $('#secondForm').hide();
-	 // $('#resulttable').hide();
-	 // $('#loadingScreen').hide();
-	 // $('#ErrorMessage').hide();
+	$('#mainForm').hide();
+	$('#secondForm').hide();
+	$('#resulttable').hide();
+	$('#loadingScreen').hide();
+	$('#ErrorMessage').hide();
     $('#topMarkerDiv').hide();
     $('#topTypeDiv').hide();
 	if($_GET("baseUrl")!==null){

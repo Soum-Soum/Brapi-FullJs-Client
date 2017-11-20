@@ -9,6 +9,7 @@ async function ExportDetailsGermplasms(){
         argumentsArray = {germplasmId};
         argumentsArray = setArgumentArray("germplasm/id",argumentsArray);
         let resp = await getGermplasmsDetails(argumentsArray);
+        console.log(resp);
         jsonHmap[germplasmId]=resp.result;
     }
     console.log(jsonHmap);
@@ -41,13 +42,14 @@ function getFieldFormJson(HMap){
 }
 
 function buildTsvString(jsonHamp, selectedGermplasms, fieldTab){
-    let tsvString = 'germplasmDbId \tmarkerProfileDbId \t';
+    let tsvString ='';
+    let tempstring = 'germplasmDbId \tmarkerProfileDbId \t';
     Object.keys(fieldTab).forEach(function (element){
        if(fieldTab[element]===true){
-           tsvString += element + '\t';
+           tempstring += element + '\t';
        }
     });
-    tsvString+='\n';
+    tempstring+='\n';
     selectedGermplasms.forEach(function (element){
         tsvString+=cpyResp[element][0].germplasmDbId + "\t";
         if(cpyResp[element].length===1){
@@ -60,15 +62,18 @@ function buildTsvString(jsonHamp, selectedGermplasms, fieldTab){
         tsvString+='\t';
         Object.keys(fieldTab).forEach(function (element2){
             if(fieldTab[element2]===true){
-                if(jsonHamp[element][element2]!==null && jsonHamp[element][element2]!== undefined){
-                    tsvString+= jsonHamp[element][element2] + '\t'
-                }else{
-                    tsvString+='\t';
+                if(jsonHamp[element]!== null && jsonHamp[element]!==undefined){
+                    if(jsonHamp[element][element2]!==null && jsonHamp[element][element2]!== undefined){
+                        tsvString+= jsonHamp[element][element2] + '\t'
+                    }else{
+                        tsvString+='\t';
+                    }
                 }
             }
         });
         tsvString+='\n';
     });
+    tsvString = tempstring + tsvString;
     console.log(tsvString);
     return tsvString;
 }
