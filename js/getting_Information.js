@@ -210,7 +210,7 @@ async function getExportStatus(argumentsArray){
 		}
 		if(isAbort===false){
             console.log(resp);
-            window.location = resp.metadata.datafiles[0];
+            //window.location = resp.metadata.datafiles[0];
 		}
 	}
 	catch(err) {
