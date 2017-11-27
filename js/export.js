@@ -1,6 +1,5 @@
 async function exportMatrix(){
     isAbort=false;
-    setloader();
     let sendedMarkersProlis = $("#MarkersProfils option:selected").map(function(){return $(this).val().split(",");}).get();
     sendedMarkersProlis = removeAll(sendedMarkersProlis, "");
     let sendedMarkers = selectedMarkers;
@@ -12,28 +11,45 @@ async function exportMatrix(){
     console.log(link);
     argumentsArray.asynchid = link.metadata.status[0].message;
     console.log(argumentsArray.asynchid);
+    argumentsArray = setArgumentArray('allelematrix-search/status', argumentsArray);
     await getExportStatus(argumentsArray);
 }
 
 async function ExportDetailsGermplasms(){
     let jsonHmap = [],  argumentsArray;
     let selectedGermplasms = $("#Germplasms option:selected").map(function(){return $(this).text().split(",");}).get();
-    let germplasmId;
+    let l = Ladda.create( document.querySelector( '#ExportGermplasmsDetails'));
+    let step = (1/(selectedGermplasms.length/100)), avancement = 0;
+    l.start();
+    l.setProgress( avancement );
     selectedGermplasms = removeAll(selectedGermplasms, "");
     console.log(selectedGermplasms);
-    for(let i=0; i<selectedGermplasms.length; i++){
-        germplasmId=selectedGermplasms[i];
-        argumentsArray = {germplasmId};
-        argumentsArray = setArgumentArray("germplasm/id",argumentsArray);
+    for(let i=0; i<selectedGermplasms.length; i){
+        let j;
+        let germplasmIdArray=[];
+        for(j=i; j<i+100; j++){
+            germplasmIdArray.push(selectedGermplasms[j]);
+        }
+        i=j;
+        argumentsArray = {germplasmIdArray};
+        argumentsArray = setArgumentArray("germplasm-search",argumentsArray);
         let resp = await getGermplasmsDetails(argumentsArray);
         console.log(resp);
-        jsonHmap[germplasmId]=resp.result;
+        avancement += step;
+        l.setProgress(avancement);
+        console.log(step);
+        console.log(avancement);
+        for(let j=0; j<resp.result.data.length; j++){
+            jsonHmap[resp.result.data[j].germplasmDbId]=resp.result.data[j];
+        }
     }
+    l.setProgress(1);
     console.log(jsonHmap);
     let fieldTab = getFieldFormJson(jsonHmap);
     console.log(fieldTab);
     let tsvString = buildTsvString(jsonHmap, selectedGermplasms, fieldTab);
     download('GermplasmsDetails.tsv',tsvString);
+    l.stop();
 }
 
 function getFieldFormJson(HMap){
@@ -91,7 +107,6 @@ function buildTsvString(jsonHamp, selectedGermplasms, fieldTab){
         tsvString+='\n';
     });
     tsvString = tempstring + tsvString;
-    console.log(tsvString);
     return tsvString;
 }
 

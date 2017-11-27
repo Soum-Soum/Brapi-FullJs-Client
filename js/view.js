@@ -173,3 +173,22 @@ function setDisabled(bool){
     $('#ExportGermplasmsTsv').prop('disabled', bool);
     $('#ExportGermplasmsDetails').prop('disabled', bool);
 }
+
+function animatForm(){
+	if($('#Use2Url').is(':checked')){
+        $('#UserId2').show();
+        $('#Password2').show();
+        $('#urltoget2').show();
+        $('#UserId2').addClass('animated bounceInRight');
+        $('#Password2').addClass('animated bounceInRight');
+        $('#urltoget2').addClass('animated bounceInRight');
+	}else{
+        $('#UserId2').hide(300);
+        $('#Password2').hide(300);
+        $('#urltoget2').hide(300);
+        $('#UserId2').removeClass('animated bounceInRight');
+        $('#Password2').removeClass('animated bounceInRight');
+        $('#urltoget2').removeClass('animated bounceInRight');
+	}
+
+}

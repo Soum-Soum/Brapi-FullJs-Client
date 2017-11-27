@@ -64,10 +64,11 @@ async function login(){
 	}else{
 		tokenUrl1 = await getToken(stringUserId, stringPassword, urlEndPoint1);
 		if(is2EndPoint){tokenUrl2 = getToken(stringUserId2, stringPassword2, urlEndPoint2);}
-        url2Token = createUrl2Token(urlEndPoint1, urlEndPoint2, tokenUrl1, tokenUrl2);
+        url2Token = createUrl2Token(urlEndPoint1, tokenUrl1, urlEndPoint2, tokenUrl2);
 		if(tokenUrl1 === ""){alert("Bad Username or password, You're are loged as public user, so you only have acces to public data");}
 		else{alert("You're loged as private user");}
 		$('#mainForm').show();
+        $('#toAnimate').addClass('animated fadeIn');
 		startment();
 	}
 }
@@ -84,15 +85,8 @@ async function startment() {
 async function requCallareImplement(argumentsArray) {
 	try{
         let allCallsAreDetected;
-        if(argumentsArray.urlEndPoint2===undefined){
-            console.log('MDRR');
-            calls= await getCalls(argumentsArray);
-            allCallsAreDetected= callsAreInArray(calls, REQUIRED_CALLS);
-            console.log(allCallsAreDetected);
-        }else{
-            calls = await getCalls(argumentsArray);
-            allCallsAreDetected = callsAreInArray(calls, REQUIRED_CALLS);
-        }
+        calls= await getCalls(argumentsArray);
+        allCallsAreDetected= callsAreInArray(calls, REQUIRED_CALLS);
         console.log(allCallsAreDetected);
         return allCallsAreDetected;
 	}catch (err){

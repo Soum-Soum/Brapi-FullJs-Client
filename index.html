@@ -17,9 +17,10 @@
 		<script src="js/export.js"></script>
 		<script src="js/extern_library/spin.min.js"></script>
 		<script src="js/extern_library/ladda.min.js"></script>
-		<link rel="stylesheet" type="text/css" href="css/bootstrap.css">
-		<link rel="stylesheet" type="text/css" href="css/style.css">
 		<link rel="stylesheet" type="text/css" href="css/ladda-themeless.min.css">
+		<link rel="stylesheet" type="text/css" href="css/bootstrap.css">
+		<link rel="stylesheet" type="text/css" href="css/animate.css">
+		<link rel="stylesheet" type="text/css" href="css/style.css">
 	</head>
 	<body>
 	<div class=" container-fluid">
@@ -44,11 +45,9 @@
 						<div id="loginForm">
 							<p>Log-in for private data, or just submit for public data</p>
 							<div class=" row">
-								<div class="col-md-6">
-									<input type="text" name="UserId" class="form-control" id="UserId" placeholder="User Name">
-                                    <input type="text" name="Password" class="form-control" id="Password" placeholder="Password">
-								</div>	
-								<div class="col-md-6">
+								<div class="input-group">
+									<input type="text" value="pierre" name="UserId" class="form-control" id="UserId" placeholder="User Name">
+									<input type="text" value="test" name="Password" class="form-control" id="Password" placeholder="Password">
                                     <input type="text" name="UserId" class="form-control" id="UserId2" placeholder="User Name">
 									<input type="text" name="Password" class="form-control" id="Password2" placeholder="Password">
 								</div>
@@ -56,17 +55,24 @@
 						</div>
 						<div class="row">
 							<div id="urlForm" class="input-group">
-								<input value="http://localhost:8080/gigwaV2/rest/Rice-MSU7/brapi/v1" type="text" name="URL" class="form-control" placeholder="Ex : http://_____/brapi/v1" id="urltoget" onchange="setEmptyTheFields();">
+								<input value="http://localhost:8080/gigwa/rest/Rice-MSU7/brapi/v1" type="text" name="URL" class="form-control" placeholder="Ex : http://_____/brapi/v1" id="urltoget" onchange="setEmptyTheFields();">
 								<input value="https://ics.hutton.ac.uk/germinate-demo/cactuar/brapi/v1" type="text" name="URL" class="form-control" placeholder="Ex : http://_____/brapi/v1" id="urltoget2" onchange="setEmptyTheFields();">
 							</div>
-							<button class="btn btn-secondary btn-sm" id="Submit1" type="button" onclick="login()">Submit</button>
+						</div>
+						<div class="row">
+							<div class=" col-6">
+								<button class="mx-auto btn btn-secondary btn-sm" id="Submit1" type="button" onclick="login()">Submit</button>
+							</div>
+							<div class=" col-6">
+								<label class="form-check-label mx-auto" for="Use2Url">Use 2 Url <input checked type="checkbox" name="Use2Url" id="Use2Url" onchange="animatForm();"></label>
+							</div>
 						</div>
 					</div>
 				</form>	
 			</div>
 		</div>
 		<br><br><br>
-		<div class="container">
+		<div id="toAnimate" class="container">
 			<form id="mainForm">
 				<div class="row">
 					<div class="col-md-4">
@@ -117,9 +123,8 @@
 				<div class="row">
 					<div class="col-md-12" style="text-align: center;">
 						<input disabled type="button" id="Search" value="Search" class="btn btn-primary btn-sm" onclick="getRequestParameter();">
-						<input disabled type="button" id="Export" value="Export genotypes" class="btn btn-primary btn-sm" onclick="exportMatrix();">
-						<input disabled type="button" id="ExportGermplasmsDetails" value=" Export Germplasms Details" class="btn btn-primary btn-sm" onclick="ExportDetailsGermplasms();">
-						<h5 class="Evolution alert alert-primary" role="alert">Loading : </h5>
+												<button disabled type="button" id="Export" class="btn btn-primary btn-sm ladda-button" data-style="expand-right" onclick="exportMatrix();">Export genotypes</button>
+						<button disabled type="button" id="ExportGermplasmsDetails" class="btn btn-primary btn-sm ladda-button" data-style="expand-right" onclick="ExportDetailsGermplasms();"> Export Germplasms Details</button>
 					</div>
 				</div>
 			</form>

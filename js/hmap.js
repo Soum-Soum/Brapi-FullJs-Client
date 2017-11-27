@@ -1,5 +1,4 @@
 function getMarkerProfileHmap(arrayGermplasmsIDs){
-    console.log(arrayGermplasmsIDs);
     let hmap=[], alreadyTreated = [];
     for (let i = 0; i < arrayGermplasmsIDs.length; i++) {
         for (let j = 0; j < arrayGermplasmsIDs[i].length; j++) {
@@ -21,7 +20,6 @@ function createUrl2Token(urlEndPoint1, tokenUrl1, urlEndPoint2, tokenUrl2) {
     if(urlEndPoint2!==undefined && urlEndPoint2!== '' && urlEndPoint2!== null && tokenUrl2!==null &&  tokenUrl2!==undefined){
         url2Token[urlEndPoint2]=tokenUrl2;
     }
-    console.log(url2Token);
     return url2Token;
 }
 
@@ -71,7 +69,6 @@ function setHmapLinkageGroup(arrayOfLinkageGroup, arrayMarkers){
 }
 
 function setHmapType(arrayMarkers){
-    console.log(arrayMarkers);
     hmapsType = [];
     let arrayOfMarkersType=[];
     for (let i = 0; i < arrayMarkers.length; i++) {

@@ -61,22 +61,29 @@ function sortAlphaNum(a,b) {
 }
 
 function callsAreInArray(resp, requCall){
-    let foundCalls = [];
-    console.log(resp);
-    resp.forEach(function (element){
-        element.result.data.forEach(function (element2){
-            if(!isInArray(foundCalls, element2.call)){
-                foundCalls.push(element2.call);
+    try {
+        let foundCalls = [];
+        console.log(resp);
+        removeAll(resp, undefined);
+        removeAll(resp, null);
+        resp.forEach(function (element){
+            element.result.data.forEach(function (element2){
+                if(!isInArray(foundCalls, element2.call)){
+                    foundCalls.push(element2.call);
+                }
+            });
+        });
+        requCall.forEach(function (element){
+            if(!isInArray(foundCalls, element)){
+                console.log(false);
+                return false;
             }
         });
-    });
-    requCall.forEach(function (element){
-        if(!isInArray(foundCalls, element)){
-            console.log(false);
-            return false;
-        }
-    });
-    return true;
+        return true;
+    }catch(err){
+        handleErrors('Bad Url')
+    }
+
 }
 
 function setArgumentArray(callName, argumentsArray){

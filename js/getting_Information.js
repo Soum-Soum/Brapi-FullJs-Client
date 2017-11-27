@@ -1,7 +1,7 @@
 
 async function getToken(stringUserId, stringPassword, urlEndPoint){
 	let myURL = urlEndPoint + "/" + URL_TOKEN, tokenString="";
-	let body = {username : stringUserId, password : stringPassword}
+	let body = {username : stringUserId, password : stringPassword};
 	body = JSON.stringify(body);
 	try {
     	let resp = await fetch(myURL,{method: "POST",body: body, headers: {'Content-Type': 'application/json'}});
@@ -11,7 +11,7 @@ async function getToken(stringUserId, stringPassword, urlEndPoint){
 		}else{return tokenString;}
 	}
 	catch(err) {
-	    handleErrors('Impossible to take the tokenUrl1');
+	    handleErrors('Impossible to take one tokenUrl');
 	}
 }
 
@@ -36,36 +36,35 @@ async function urlBrapiEndPointIsOk(brapiEndPoint){
 }
 
 async function getCalls(argumentsArray){
-	console.log(argumentsArray);
-    let myURL1 = argumentsArray.urlEndPoint1 + "/" + URL_CALLS;
-    let myHeaders1 = new Headers();
-    let Authorization = argumentsArray.tokenUrl1==='' ? '' : "Bearer " + argumentsArray.tokenUrl1;
-    myHeaders1 = {Authorization};
-	if(argumentsArray.urlEndPoint2===undefined){
-        try {
-            let resp1 = await fetch(myURL1, myHeaders1);
-            resp1 = await resp1.json();
-            return [resp1];
+        console.log(argumentsArray);
+        let myURL1 = argumentsArray.urlEndPoint1 + "/" + URL_CALLS;
+        let myHeaders1 = new Headers();
+        let Authorization = argumentsArray.tokenUrl1==='' ? '' : "Bearer " + argumentsArray.tokenUrl1;
+        myHeaders1 = {Authorization};
+        if(argumentsArray.urlEndPoint2===undefined || typeof(argumentsArray.tokenUrl2)!== String){
+        	try{
+                let resp1 = await fetch(myURL1, myHeaders1);
+                resp1 = await resp1.json();
+                return [resp1];
+			}catch(err){
+        		handleErrors('Bad Url');
+			}
+		}else{
+        	try{
+                let myURL2 = argumentsArray.urlEndPoint2 + "/" + URL_CALLS;
+                let myHeaders2 = new Headers();
+                let Authorization = argumentsArray.tokenUrl2==='' ? '' : "Bearer " + argumentsArray.tokenUrl2;
+                myHeaders2 = {Authorization};
+                let resp1 = await fetch(myURL1, myHeaders1);
+                let resp2 = await fetch(myURL2, myHeaders2);
+                resp1 = await resp1.json();
+                resp2 = await resp2.json();
+                return [resp1, resp2];
+			}catch(err){
+        		handleErrors('Error with one Url')
+			}
+
         }
-		catch(err) {
-			handleErrors('impossible to load call calls');
-		}
-	}else{
-        let myURL2 = argumentsArray.urlEndPoint2 + "/" + URL_CALLS;
-        let myHeaders2 = new Headers();
-        let Authorization = argumentsArray.tokenUrl2==='' ? '' : "Bearer " + argumentsArray.tokenUrl2;
-        myHeaders2 = {Authorization};
-        try {
-            let resp1 = await fetch(myURL1, myHeaders1);
-            let resp2 = await fetch(myURL2, myHeaders2);
-            resp1 = await resp1.json();
-            resp2 = await resp2.json();
-            return [resp1, resp2];
-        }
-        catch(err) {
-            handleErrors('impossible to load call calls');
-        }
-	}
 }
 
 async function readMaps(argumentsArray){
@@ -192,7 +191,9 @@ async function getMatrix(argumentsArray){
 }
 
 async function getExportStatus(argumentsArray){
+    let l = Ladda.create( document.querySelector( '#Export'));
     try {
+        l.start();
 		let myURL = argumentsArray.urlEndPoint + "/" + URL_ALLELE_MATRIX + "/status/" + argumentsArray.asynchid;
 		let myInit = returnInit(argumentsArray.token);
 		let resp = await fetch(myURL, myInit);
@@ -202,26 +203,41 @@ async function getExportStatus(argumentsArray){
 		console.log(myURL);
 		while(resp.metadata.status[0].message==="INPROCESS" && isAbort===false){
 			console.log(myURL);
+			console.log(resp.metadata.status[0].message);
 			resp = await fetch(myURL, myInit);
 			resp = await resp.json();
 			console.log(resp.metadata.pagination.currentPage);
-			$('#EvolutionLoadingScreen').html("Loading : " + resp.metadata.pagination.currentPage + "%");
+			l.setProgress(resp.metadata.pagination.currentPage/100);
+			console.log(resp.metadata.pagination.currentPage/100);
 			await sleep(1500);
 		}
-		if(isAbort===false){
+		if(isAbort===false && resp.metadata.status[0].message==="FAILED"){
             console.log(resp);
+            l.setProgress(1);
             //window.location = resp.metadata.datafiles[0];
+			console.log('end');
 		}
 	}
 	catch(err) {
 		handleErrors(err);
 	}
-	$.modal.close();
+    l.stop();
 }
 
 async function getGermplasmsDetails(argumentsArray){
-    let myURL = argumentsArray.urlEndPoint + "/germplasm/" + argumentsArray.germplasmId;
-    let myInit = returnInit(argumentsArray.token);
-    let resp = await fetch(myURL, myInit);
+    let myURL = argumentsArray.urlEndPoint + "/germplasm-search";//?germplasmDbId=";
+	let temp = {germplasmDbIds : argumentsArray.germplasmIdArray};
+    let myHeaders = new Headers();
+    temp = JSON.stringify(temp);
+    if(argumentsArray.token!=='""'){
+        myHeaders = {'Authorization': 'Bearer '+argumentsArray.token,
+            'Content-Type': 'application/json'
+        };
+    }else {
+        myHeaders = {
+            'Content-Type': 'application/json'
+        };
+    }
+    let resp = await fetch(myURL,{method: "POST",body: temp, headers: myHeaders});
     return await resp.json();
 }
