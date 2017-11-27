@@ -57,7 +57,6 @@ function getFieldFormJson(HMap){
     Object.keys(HMap).forEach(function(element){
         for(let key in HMap[element]){
             if(!isInArray(fieldTab,key) && key !== 'germplasmDbId'){
-                //fieldTab.push(key);
                 if(HMap[element][key]!==null && HMap[element][key]!==undefined && HMap[element][key]!==''){
                     fieldTab[key]=true;
                 }else{

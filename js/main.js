@@ -63,7 +63,7 @@ async function login(){
 		startment();
 	}else{
 		tokenUrl1 = await getToken(stringUserId, stringPassword, urlEndPoint1);
-		if(is2EndPoint){tokenUrl2 = getToken(stringUserId2, stringPassword2, urlEndPoint2);}
+		if(is2EndPoint){tokenUrl2 = await getToken(stringUserId2, stringPassword2, urlEndPoint2);}
         url2Token = createUrl2Token(urlEndPoint1, tokenUrl1, urlEndPoint2, tokenUrl2);
 		if(tokenUrl1 === ""){alert("Bad Username or password, You're are loged as public user, so you only have acces to public data");}
 		else{alert("You're loged as private user");}
@@ -99,7 +99,6 @@ async function getFirstInformation(){
         let arrayOfStudies, arrayOfMaps = [];
 		Call2Url = bindCall2Url(calls, ALL_CALLS);
 		console.log(Call2Url);
-		console.log(url2Token);
 		let argumentsArray = setArgumentArray("studies-search");
 		arrayOfStudies= await readStudyList(argumentsArray);
 		if($_GET("mapDbId")!==null){console.log($_GET("mapDbId"));$('select#selectionMap').hide();$('#labelSelectionMap').hide();}

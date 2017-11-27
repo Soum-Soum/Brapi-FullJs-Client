@@ -41,7 +41,8 @@ async function getCalls(argumentsArray){
         let myHeaders1 = new Headers();
         let Authorization = argumentsArray.tokenUrl1==='' ? '' : "Bearer " + argumentsArray.tokenUrl1;
         myHeaders1 = {Authorization};
-        if(argumentsArray.urlEndPoint2===undefined || typeof(argumentsArray.tokenUrl2)!== String){
+        if(argumentsArray.urlEndPoint2===undefined || typeof(argumentsArray.tokenUrl2)!== 'string'){
+        	console.log(typeof(argumentsArray.tokenUrl2)!== 'string');
         	try{
                 let resp1 = await fetch(myURL1, myHeaders1);
                 resp1 = await resp1.json();
@@ -137,7 +138,7 @@ async function getMapDetails(argumentsArray){
 		return resp;
 	}
 	catch(err) {
-	     handleErrors(err); 
+	     handleErrors('unable to get map details');
 	} 
 }
 
@@ -219,25 +220,30 @@ async function getExportStatus(argumentsArray){
 		}
 	}
 	catch(err) {
-		handleErrors(err);
+		handleErrors('unable to export data');
 	}
     l.stop();
 }
 
 async function getGermplasmsDetails(argumentsArray){
-    let myURL = argumentsArray.urlEndPoint + "/germplasm-search";//?germplasmDbId=";
-	let temp = {germplasmDbIds : argumentsArray.germplasmIdArray};
-    let myHeaders = new Headers();
-    temp = JSON.stringify(temp);
-    if(argumentsArray.token!=='""'){
-        myHeaders = {'Authorization': 'Bearer '+argumentsArray.token,
-            'Content-Type': 'application/json'
-        };
-    }else {
-        myHeaders = {
-            'Content-Type': 'application/json'
-        };
-    }
-    let resp = await fetch(myURL,{method: "POST",body: temp, headers: myHeaders});
-    return await resp.json();
+    try{
+        let myURL = argumentsArray.urlEndPoint + "/germplasm-search";//?germplasmDbId=";
+        let temp = {germplasmDbIds : argumentsArray.germplasmIdArray};
+        let myHeaders = new Headers();
+        temp = JSON.stringify(temp);
+        if(argumentsArray.token!=='""'){
+            myHeaders = {'Authorization': 'Bearer '+argumentsArray.token,
+                'Content-Type': 'application/json'
+            };
+        }else {
+            myHeaders = {
+                'Content-Type': 'application/json'
+            };
+        }
+        let resp = await fetch(myURL,{method: "POST",body: temp, headers: myHeaders});
+        return await resp.json();
+	}catch (err){
+		handleErrors('unable to export data');
+	}
+
 }
