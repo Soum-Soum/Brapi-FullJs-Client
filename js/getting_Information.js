@@ -114,9 +114,13 @@ async function getmarkerProfileDbId(argumentsArray){
 
 async function getMarkers(argumentsArray){
     let myURL = argumentsArray.askedPage===undefined ? argumentsArray.urlEndPoint + "/" + URL_MARKERS : argumentsArray.urlEndPoint + "/" + URL_MARKERS +"?page="+argumentsArray.askedPage ;
-	if(argumentsArray.arrayOfMarkersType !== undefined){
-		myURL += '&' + argumentsArray.arrayOfMarkersType[i] + '&pageSize=1';
+    if(argumentsArray.askedType !== undefined && argumentsArray.askedType !== null){
+		myURL += '&type=' + argumentsArray.askedType;
 	}
+	if(argumentsArray.pageSize !== undefined && argumentsArray.pageSize !== null){
+        myURL += '&pageSize=' + argumentsArray.pageSize;
+    }
+
     let myInit = returnInit(argumentsArray.token);
 	try {
 		console.log(myURL);
@@ -181,7 +185,7 @@ async function getMatrix(argumentsArray){
 				'Content-Type':'application/x-www-form-urlencoded'
 			};
 		}
-		console.log(myURL);
+/*		// console.log(matrixString);*/
     	let resp = await fetch(myURL,{method: "POST",body: matrixString, headers: myHeaders});
 		resp = await resp.json();
 		return resp;
@@ -215,8 +219,7 @@ async function getExportStatus(argumentsArray){
 		if(isAbort===false && resp.metadata.status[0].message==="FAILED"){
             console.log(resp);
             l.setProgress(1);
-            //window.location = resp.metadata.datafiles[0];
-			console.log('end');
+            window.location = resp.metadata.datafiles[0];
 		}
 	}
 	catch(err) {

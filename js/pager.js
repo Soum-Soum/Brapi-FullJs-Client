@@ -51,17 +51,28 @@ class PaginationManager{
 	}
 
 	async isCompleteTypeList(function_to_launch, argumentsArray,arrayOfMarkersType){
-		let tantamount= 0, count = 0, resp=null;
+		let tantamount= 0, count = 0, currentNumber = 0 , max = 0, resp=null;
         try{
             argumentsArray.askedPage=0;
+            argumentsArray.pageSize=1;
+            console.log(argumentsArray);
             resp= await function_to_launch(argumentsArray);
+            console.log(resp);
             tantamount=resp.metadata.pagination.totalCount;
+            console.log(tantamount);
 		    for(let i=0; i<arrayOfMarkersType.length;i++){
 		    	console.log(arrayOfMarkersType[i]);
 		    	if(arrayOfMarkersType[i]!== undefined && arrayOfMarkersType[i]!== null && arrayOfMarkersType[i]!==''){
-                    argumentsArray.askedType=arrayOfMarkersType[i];
+		    		argumentsArray.askedType=arrayOfMarkersType[i];
                     resp = await function_to_launch(argumentsArray);
-                    count += resp.metadata.pagination.totalCount;
+                    console.log(resp);
+                    currentNumber = resp.metadata.pagination.totalCount;
+                    if(currentNumber>max){
+                    	max=currentNumber;
+                    	mostPresentType =arrayOfMarkersType[i];
+                    }
+                    count += currentNumber;
+                    console.log(count);
 				}
             }
             return tantamount === count;

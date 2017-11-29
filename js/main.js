@@ -122,7 +122,7 @@ async function launch_selection(){
 		if(!isMapIdInUrl){
 			selectedMap = $('#selectionMap').find('option:selected').val();
 		}
-		let arrayOfLinkageGroup=[], arrayOfMarkersType=[], arrayMarkers=[];
+		let arrayOfLinkageGroup=[], arrayOfMarkersType,  arrayMarkers=[];
 		let selectedStudy = $('#selectionStudies').find('option:selected').val();
 		let paginationManager = new PaginationManager(0);
 		let argumentsArray = {selectedStudy, selectedMap};
@@ -137,35 +137,35 @@ async function launch_selection(){
 		});
         argumentsArray = setArgumentArray("maps/{id}",argumentsArray);
 		let mapDetails = await getMapDetails(argumentsArray);
-		console.log(mapDetails.result.linkageGroups);
-        //mapDetails.result.data[0].linkageGroups.forEach(function(element){
 		mapDetails.result.linkageGroups.forEach(function(element){
 			arrayOfLinkageGroup.push(element.linkageGroupId);
 		});
         argumentsArray = setArgumentArray("markers",argumentsArray);
-        arrayMarkers = await paginationManager.getFirstPage(getMarkers,argumentsArray);
-        arrayOfMarkersType = getTypeList(arrayMarkers);
+        arrayOfMarkersType = getTypeList(await paginationManager.getFirstPage(getMarkers,argumentsArray));
         console.log(arrayOfMarkersType);
-        argumentsArray = {selectedStudy, selectedMap, askedType};
-        argumentsArray = setArgumentArray("markers",argumentsArray);
         if(! await paginationManager.isCompleteTypeList(getMarkers,argumentsArray,arrayOfMarkersType)){
             console.log('uncomplete');
             $('#topTypeDiv').show();
         }else{
-            arrayMarkers = await paginationManager.pager(getMarkers,{urlEndPoint: urlEndPoint1, token: tokenUrl1, selectedStudy, selectedMap});
-            arrayOfMarkersType = setHmapType(arrayMarkers);
+            console.log('complete');
+            argumentsArray = {selectedStudy, selectedMap, askedType, pageSize : undefined};
+            argumentsArray = setArgumentArray("markers",argumentsArray);
+            for(let i=0 ; i<arrayOfMarkersType.length; i++){
+            	if(arrayOfMarkersType[i]!== mostPresentType){
+            		argumentsArray.askedType=arrayOfMarkersType[i];
+                    arrayMarkers.push(await paginationManager.pager(getMarkers,argumentsArray));
+				}
+			}
+            hmapsType = setHmapType(arrayMarkers);
         }
-        console.log(arrayOfMarkersType);
-        console.log(arrayMarkers);
-		if(arrayOfLinkageGroup.length>100 || arrayMarkers.length<600000){
+		if(arrayOfLinkageGroup.length>100 || arrayMarkers.length<100000){
             argumentsArray = setArgumentArray("maps/{id}/positions",argumentsArray);
             arrayMarkers = await paginationManager.pager(getMarkersPosition,argumentsArray);
 		}else{
 			arrayMarkers=[];
 			let tempArray=[];
 			for(let i=0; i<arrayOfLinkageGroup.length;i++){
-				let selectedLKG = arrayOfLinkageGroup[i];
-                let argumentsArray = {selectedStudy, selectedMap, selectedLKG};
+                let argumentsArray = {selectedStudy, selectedMap, selectedLKG: selectedLKG};
                 argumentsArray = setArgumentArray("maps/{id}/positions",argumentsArray);
                 tempArray = await paginationManager.pager(getMarkersPosition, argumentsArray);
                 for(let p=0; p<tempArray.length;p++){
@@ -174,11 +174,8 @@ async function launch_selection(){
 			}
             arrayMarkers = [arrayMarkers];
 		}
-		console.log(arrayMarkers);
         setHmapLinkageGroup(arrayOfLinkageGroup, arrayMarkers);
-        console.log(hmapsLinkageGroup);
 		setUpLinkageGroupAndMarkersType(arrayOfLinkageGroup,arrayOfMarkersType);
-		arrayMarkers=null;
 	}
     setDisabled(false);
 }
@@ -194,11 +191,13 @@ function selectionMarkers(){
 		}
 		console.log(selectedMarkers);
 		if (hmapsType!==undefined){
-		    console.log(hmapsType);
 			for (let i = 0; i < selectedMarkers.length; i++) {
-				if (!isInArray(selectedType,hmapsType[selectedMarkers[i]])){
-					selectedMarkers.splice(i,1);
-					i--;
+				if((hmapsType[selectedMarkers[i]]===undefined && !isInArray(selectedType, mostPresentType))){
+                    selectedMarkers.splice(i,1);
+                    i--;
+				}else if((hmapsType[selectedMarkers[i]]!==undefined && !isInArray(selectedType,hmapsType[selectedMarkers[i]]))){
+                    selectedMarkers.splice(i,1);
+                    i--
 				}
 			}
 		}

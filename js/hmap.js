@@ -70,14 +70,12 @@ function setHmapLinkageGroup(arrayOfLinkageGroup, arrayMarkers){
 
 function setHmapType(arrayMarkers){
     hmapsType = [];
-    let arrayOfMarkersType=[];
     for (let i = 0; i < arrayMarkers.length; i++) {
         for (let j = 0; j < arrayMarkers[i].length; j++) {
-            hmapsType[arrayMarkers[i][j].markerDbId]=arrayMarkers[i][j].type;
-            if(!isInArray(arrayOfMarkersType, arrayMarkers[i][j].type)){
-                arrayOfMarkersType.push(arrayMarkers[i][j].type);
+            for (let k = 0; k < arrayMarkers[i][j].length; k++) {
+                hmapsType[arrayMarkers[i][j][k].markerDbId]=arrayMarkers[i][j][k].type;
             }
         }
     }
-    return arrayOfMarkersType;
+    return hmapsType;
 }
