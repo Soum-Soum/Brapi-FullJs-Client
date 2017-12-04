@@ -16,7 +16,7 @@ class PaginationManager{
 			let arrayOfResp = [];
 			argumentsArray.askedPage=0;
 			let resp = await function_to_launch(argumentsArray);
-			argumentsArray.askedPage++;
+            argumentsArray.askedPage++;
 			let totalPages = resp.metadata.pagination.totalPages;
 			let currentPage = resp.metadata.pagination.currentPage;
 			arrayOfResp.push(resp.result.data);
@@ -37,6 +37,13 @@ class PaginationManager{
 		}catch(err){
 			handleErrors(err);
 		}
+	}
+
+	async getPagination(function_to_launch, argumentsArray){
+        argumentsArray.askedPage=0;
+        argumentsArray.pageSize=1;
+        let resp = await function_to_launch(argumentsArray);
+        return resp.metadata.pagination
 	}
 
 	async getFirstPage(function_to_launch, argumentsArray){

@@ -56,7 +56,6 @@ function bindCall2Url(resp, calls) {
 }
 
 function setHmapLinkageGroup(arrayOfLinkageGroup, arrayMarkers){
-    hmapsLinkageGroup=null;
     hmapsLinkageGroup=[];
     for(let i =0; i<arrayOfLinkageGroup.length; i++){
         hmapsLinkageGroup[arrayOfLinkageGroup[i]]=[];
@@ -68,14 +67,18 @@ function setHmapLinkageGroup(arrayOfLinkageGroup, arrayMarkers){
     }
 }
 
-function setHmapType(arrayMarkers){
+function setHmapType(arrayOfMarkersType,arrayMarkers){
     hmapsType = [];
+    for(let i =0; i<arrayOfMarkersType.length; i++){
+        hmapsType[arrayOfMarkersType[i]]=[];
+    }
     for (let i = 0; i < arrayMarkers.length; i++) {
         for (let j = 0; j < arrayMarkers[i].length; j++) {
             for (let k = 0; k < arrayMarkers[i][j].length; k++) {
-                hmapsType[arrayMarkers[i][j][k].markerDbId]=arrayMarkers[i][j][k].type;
+                hmapsType[arrayMarkers[i][j][k].type].push(arrayMarkers[i][j][k].markerDbId);
             }
         }
     }
+    console.log(hmapsType);
     return hmapsType;
 }

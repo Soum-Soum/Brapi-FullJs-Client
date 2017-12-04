@@ -82,18 +82,6 @@ async function startment() {
 	}
 }
 
-async function requCallareImplement(argumentsArray) {
-	try{
-        let allCallsAreDetected;
-        calls= await getCalls(argumentsArray);
-        allCallsAreDetected= callsAreInArray(calls, REQUIRED_CALLS);
-        console.log(allCallsAreDetected);
-        return allCallsAreDetected;
-	}catch (err){
-		handleErrors(err);
-	}
-}
-
 async function getFirstInformation(){
     try{
         let arrayOfStudies, arrayOfMaps = [];
@@ -122,7 +110,7 @@ async function launch_selection(){
 		if(!isMapIdInUrl){
 			selectedMap = $('#selectionMap').find('option:selected').val();
 		}
-		let arrayOfLinkageGroup=[], arrayOfMarkersType,  arrayMarkers=[];
+		let arrayOfLinkageGroup=[],  arrayMarkers=[];
 		let selectedStudy = $('#selectionStudies').find('option:selected').val();
 		let paginationManager = new PaginationManager(0);
 		let argumentsArray = {selectedStudy, selectedMap};
@@ -156,18 +144,20 @@ async function launch_selection(){
                     arrayMarkers.push(await paginationManager.pager(getMarkers,argumentsArray));
 				}
 			}
-            hmapsType = setHmapType(arrayMarkers);
+            hmapsType = setHmapType(arrayOfMarkersType,arrayMarkers);
         }
 		if(arrayOfLinkageGroup.length>100 || arrayMarkers.length<100000){
             argumentsArray = setArgumentArray("maps/{id}/positions",argumentsArray);
-            arrayMarkers = await paginationManager.pager(getMarkersPosition,argumentsArray);
+            arrayMarkers = await getBy2(getMarkersPosition,argumentsArray);
+            //arrayMarkers = await paginationManager.pager(getMarkersPosition,argumentsArray);
 		}else{
 			arrayMarkers=[];
 			let tempArray=[];
 			for(let i=0; i<arrayOfLinkageGroup.length;i++){
                 let argumentsArray = {selectedStudy, selectedMap, selectedLKG: selectedLKG};
                 argumentsArray = setArgumentArray("maps/{id}/positions",argumentsArray);
-                tempArray = await paginationManager.pager(getMarkersPosition, argumentsArray);
+                tempArray = await paginationManag
+				er.lol(getMarkersPosition, argumentsArray);
                 for(let p=0; p<tempArray.length;p++){
                     arrayMarkers=arrayMarkers.concat(tempArray[p]);
 				}
@@ -180,6 +170,24 @@ async function launch_selection(){
     setDisabled(false);
 }
 
+async function getBy2(function_to_launch, argumentsArray){
+	let p1 = new PaginationManager(0), p2 = new PaginationManager(0);
+	let argArrayCpy = argumentsArray;
+	argumentsArray.askedPage=0
+	console.log(argumentsArray);
+	argArrayCpy.askedPage=1;
+	console.log(argArrayCpy);
+	//let test = await Promise.all([ p1.pagerby2(function_to_launch, argArrayCpy),  p2.pagerby2(function_to_launch, argumentsArray)]);
+	let resp1 = p1.pagerby2(function_to_launch, argumentsArray);
+	let resp2 = p2.pagerby2(function_to_launch, argArrayCpy);
+    let test = await Promise.all([resp1,resp2]);
+    console.log(test);
+	//let pagination = p1.getPagination(function_to_launch, argumentsArray);
+	//console.log(pagination);
+
+
+}
+
 function selectionMarkers(){
 	let selectedType = $("#typeMarker").val();
 	console.log(selectedType);
@@ -189,20 +197,29 @@ function selectionMarkers(){
 		for(let i=0; i<selectedLinkageGroup.length;i++){
 			selectedMarkers = selectedMarkers.concat(hmapsLinkageGroup[selectedLinkageGroup[i]]);	
 		}
-		console.log(selectedMarkers);
-		if (hmapsType!==undefined){
-			for (let i = 0; i < selectedMarkers.length; i++) {
-				if((hmapsType[selectedMarkers[i]]===undefined && !isInArray(selectedType, mostPresentType))){
-                    selectedMarkers.splice(i,1);
-                    i--;
-				}else if((hmapsType[selectedMarkers[i]]!==undefined && !isInArray(selectedType,hmapsType[selectedMarkers[i]]))){
-                    selectedMarkers.splice(i,1);
-                    i--
-				}
-			}
-		}
+        selectedMarkers = compareOrSubtract(selectedType);
 		setupMarkersId(selectedMarkers);
 		console.log(selectedMarkers);
+	}
+}
+
+function compareOrSubtract(selectedType){
+	if(isInArray(selectedType, mostPresentType)){
+        let set = new Set(selectedType);
+		let unselectedType = [...new Set([...arrayOfMarkersType].filter(x => !set.has(x)))];
+		for(let i=0; i<unselectedType.length; i++){
+			let tempSet = new Set(hmapsType[unselectedType[i]]);
+			selectedMarkers = [...new Set([...selectedMarkers].filter(x => !tempSet.has(x)))];
+		}
+		console.log(selectedMarkers);
+		return selectedMarkers
+	}else{
+        let intersection = [];
+        for(let i=0; i<selectedType.length; i++){
+        	intersection = intersection.concat(array_big_intersect(selectedMarkers, hmapsType[selectedType[i]]));
+		}
+		console.log(intersection);
+		return intersection;
 	}
 }
 

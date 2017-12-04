@@ -60,32 +60,6 @@ function sortAlphaNum(a,b) {
     }
 }
 
-function callsAreInArray(resp, requCall){
-    try {
-        let foundCalls = [];
-        console.log(resp);
-        removeAll(resp, undefined);
-        removeAll(resp, null);
-        resp.forEach(function (element){
-            element.result.data.forEach(function (element2){
-                if(!isInArray(foundCalls, element2.call)){
-                    foundCalls.push(element2.call);
-                }
-            });
-        });
-        requCall.forEach(function (element){
-            if(!isInArray(foundCalls, element)){
-                console.log(false);
-                return false;
-            }
-        });
-        return true;
-    }catch(err){
-        handleErrors('Bad Url')
-    }
-
-}
-
 function setArgumentArray(callName, argumentsArray){
 	if(argumentsArray=== undefined || argumentsArray === null){
         let argumentsArray = [];
@@ -115,4 +89,49 @@ function getTypeList(arrayMarker){
     }
     console.log(arrayMarkerType);
     return arrayMarkerType;
+}
+
+function array_big_intersect () {
+    let args = Array.prototype.slice.call(arguments), aLower = [], aStack = [],
+        count, i,nArgs, nLower,
+        oRest = {}, oTmp = {}, value,
+        compareArrayLength = function (a, b) {
+            return (a.length - b.length);
+        },
+        indexes = function (array, oStack) {
+            let i = 0,
+                value,
+                nArr = array.length,
+                oTmp = {};
+            for (; nArr > i; ++i) {
+                value = array[i];
+                if (!oTmp[value]) {
+                    oStack[value] = 1 + (oStack[value] || 0); // counter
+                    oTmp[value] = true;
+                }
+            }
+            return oStack;
+        };
+    args.sort(compareArrayLength);
+    aLower = args.shift();
+    nLower = aLower.length;
+    if (0 === nLower) {
+        return aStack;
+    }
+    nArgs = args.length;
+    i = nArgs;
+    while (i--) {
+        oRest = indexes(args.shift(), oRest);
+    }
+    for (i = 0; nLower > i; ++i) {
+        value = aLower[i];
+        count = oRest[value];
+        if (!oTmp[value]) {
+            if (nArgs === count) {
+                aStack.push(value);
+                oTmp[value] = true;
+            }
+        }
+    }
+    return aStack;
 }
