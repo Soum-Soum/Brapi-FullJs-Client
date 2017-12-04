@@ -50,16 +50,12 @@ async function login(){
 	if(!isEndPointInUrl){
 		urlEndPoint1 = $("#urltoget").val();
 		urlEndPoint2 = $('#urltoget2').val();
-        if(urlEndPoint2!=='' && urlEndPoint2!== undefined){
-			is2EndPoint=true;
-		}else{
-        	is2EndPoint=false;
-		}
+        is2EndPoint = urlEndPoint2 !== '' && urlEndPoint2 !== undefined;
         console.log(urlEndPoint1);
         console.log(urlEndPoint2);
 	}
 	if(stringPassword === "" || stringUserId === ""){
-		$('#mainForm').show();
+        setMainFormVisible();
 		startment();
 	}else{
 		tokenUrl1 = await getToken(stringUserId, stringPassword, urlEndPoint1);
@@ -67,7 +63,7 @@ async function login(){
         url2Token = createUrl2Token(urlEndPoint1, tokenUrl1, urlEndPoint2, tokenUrl2);
 		if(tokenUrl1 === ""){alert("Bad Username or password, You're are loged as public user, so you only have acces to public data");}
 		else{alert("You're loged as private user");}
-		$('#mainForm').show();
+        setMainFormVisible();
         $('#toAnimate').addClass('animated fadeIn');
 		startment();
 	}
@@ -148,8 +144,7 @@ async function launch_selection(){
         }
 		if(arrayOfLinkageGroup.length>100 || arrayMarkers.length<100000){
             argumentsArray = setArgumentArray("maps/{id}/positions",argumentsArray);
-            arrayMarkers = await getBy2(getMarkersPosition,argumentsArray);
-            //arrayMarkers = await paginationManager.pager(getMarkersPosition,argumentsArray);
+            arrayMarkers = await paginationManager.pager(getMarkersPosition,argumentsArray);
 		}else{
 			arrayMarkers=[];
 			let tempArray=[];
@@ -168,24 +163,6 @@ async function launch_selection(){
 		setUpLinkageGroupAndMarkersType(arrayOfLinkageGroup,arrayOfMarkersType);
 	}
     setDisabled(false);
-}
-
-async function getBy2(function_to_launch, argumentsArray){
-	let p1 = new PaginationManager(0), p2 = new PaginationManager(0);
-	let argArrayCpy = argumentsArray;
-	argumentsArray.askedPage=0
-	console.log(argumentsArray);
-	argArrayCpy.askedPage=1;
-	console.log(argArrayCpy);
-	//let test = await Promise.all([ p1.pagerby2(function_to_launch, argArrayCpy),  p2.pagerby2(function_to_launch, argumentsArray)]);
-	let resp1 = p1.pagerby2(function_to_launch, argumentsArray);
-	let resp2 = p2.pagerby2(function_to_launch, argArrayCpy);
-    let test = await Promise.all([resp1,resp2]);
-    console.log(test);
-	//let pagination = p1.getPagination(function_to_launch, argumentsArray);
-	//console.log(pagination);
-
-
 }
 
 function selectionMarkers(){
@@ -228,8 +205,8 @@ function getRequestParameter(){
     startmentindex=0;
 	$('#customIndex').val(1);
 	console.log($('#customIndex').val());
-	$('#secondForm').show();
-	if($('#MarkersProfils').is('[disabled=disabled]')){
+    $('#secondForm').show();
+    if($('#MarkersProfils').is('[disabled=disabled]')){
         selectedMarkersProfils = $("#Germplasms option:selected").map(function(){return $(this).val().split(",");}).get();
         selectedMarkersProfils = removeAll(selectedMarkersProfils, "");
     }else{

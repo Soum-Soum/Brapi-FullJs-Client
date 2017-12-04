@@ -39,13 +39,6 @@ class PaginationManager{
 		}
 	}
 
-	async getPagination(function_to_launch, argumentsArray){
-        argumentsArray.askedPage=0;
-        argumentsArray.pageSize=1;
-        let resp = await function_to_launch(argumentsArray);
-        return resp.metadata.pagination
-	}
-
 	async getFirstPage(function_to_launch, argumentsArray){
         try{
             argumentsArray.askedPage=0;

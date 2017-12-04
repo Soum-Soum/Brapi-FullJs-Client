@@ -190,5 +190,13 @@ function animatForm(){
         $('#Password2').removeClass('animated bounceInRight');
         $('#urltoget2').removeClass('animated bounceInRight');
 	}
+}
 
+function setMainFormVisible(){
+    $('#mainForm').show();
+	if($('#Use2Url').is(':checked')){
+		$('#ExportGermplasmsDetails').attr("disabled", true);
+	}else{
+        $('#ExportGermplasmsDetails').attr("disabled", false);
+	}
 }
