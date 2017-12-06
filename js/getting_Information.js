@@ -216,7 +216,7 @@ async function getExportStatus(argumentsArray){
 			console.log(resp.metadata.pagination.currentPage/100);
 			await sleep(1500);
 		}
-		if(isAbort===false && resp.metadata.status[0].message==="FAILED"){
+		if(isAbort===false && resp.metadata.status[0].message!=="FAILED"){
             console.log(resp);
             l.setProgress(1);
             window.location = resp.metadata.datafiles[0];

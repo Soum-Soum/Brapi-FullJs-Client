@@ -103,7 +103,7 @@ function fill_result_table(sendedMarkers,sendedMarkersProlis,response) {
     console.log(sendedMarkersProlis);
     for(let i=0;i<sendedMarkersProlis.length;i++){
     	for(let j=0;j<sendedMarkers.length;j++){
-            htmlString += '<tr><td>'+sendedMarkers[j]+'</td><td>'+response[sendedMarkersProlis[i]]+'</td><td>'+sendedMarkersProlis[i]+'</td><td id="'+sendedMarkers[j]+'--'+sendedMarkersProlis[i]+'"></td></tr>';
+            htmlString += '<tr><td>'+sendedMarkers[j]+'</td><td>'+response[sendedMarkersProlis[i]]+'</td><td>'+sendedMarkersProlis[i]+'</td><td id="'+(sendedMarkers[j]+sendedMarkersProlis[i]).hashCode()+'"></td></tr>';
 		}
 	}
     $("#resulttable").find("> tbody").html(htmlString);
@@ -112,7 +112,7 @@ function fill_result_table(sendedMarkers,sendedMarkersProlis,response) {
 function cleanTab(sendedMarkers,sendedMarkersProlis){
     for(let i=0;i<sendedMarkersProlis.length;i++){
         for(let j=0;j<sendedMarkers.length;j++){
-            let id = '#' + sendedMarkers[j]+'--'+sendedMarkersProlis[i];
+            let id = '#' + (sendedMarkers[j]+sendedMarkersProlis[i]).hashCode();
             let temp = $(id);
             if(temp.text()===''){
                 temp.parent().remove();
@@ -124,7 +124,7 @@ function cleanTab(sendedMarkers,sendedMarkersProlis){
 function insetMatrixInResultTable(matrix){
     for(let i=0; i<matrix.length;i++){
         matrix[i].forEach(function (element) {
-			let tempString = element[0] + '--' + element[1];
+			let tempString = (element[0]+element[1]).hashCode();
 			$('#'+tempString).text(element[2]);
         });
     }

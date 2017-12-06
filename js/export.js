@@ -20,27 +20,29 @@ async function ExportDetailsGermplasms(){
     let selectedGermplasms = $("#Germplasms option:selected").map(function(){return $(this).text().split(",");}).get();
     let l = Ladda.create( document.querySelector( '#ExportGermplasmsDetails'));
     let step = (1/(selectedGermplasms.length/100)), avancement = 0;
+    argumentsArray = setArgumentArray("germplasm-search");
     l.start();
     l.setProgress( avancement );
     selectedGermplasms = removeAll(selectedGermplasms, "");
     console.log(selectedGermplasms);
-    for(let i=0; i<selectedGermplasms.length; i){
-        let j;
-        let germplasmIdArray=[];
-        for(j=i; j<i+100; j++){
-            germplasmIdArray.push(selectedGermplasms[j]);
-        }
-        i=j;
-        argumentsArray = {germplasmIdArray};
-        argumentsArray = setArgumentArray("germplasm-search",argumentsArray);
-        let resp = await getGermplasmsDetails(argumentsArray);
-        console.log(resp);
-        avancement += step;
-        l.setProgress(avancement);
-        console.log(step);
-        console.log(avancement);
-        for(let j=0; j<resp.result.data.length; j++){
-            jsonHmap[resp.result.data[j].germplasmDbId]=resp.result.data[j];
+    if(argumentsArray.urlEndPoint!=='' && argumentsArray.urlEndPoint!==undefined && argumentsArray.urlEndPoint!==null){
+        for(let i=0; i<selectedGermplasms.length; i){
+            let j;
+            let germplasmIdArray=[];
+            for(j=i; j<i+100; j++){
+                germplasmIdArray.push(selectedGermplasms[j]);
+            }
+            i=j;
+            argumentsArray.germplasmIdArray = germplasmIdArray;
+            let resp = await getGermplasmsDetails(argumentsArray);
+            console.log(resp);
+            avancement += step;
+            l.setProgress(avancement);
+            console.log(step);
+            console.log(avancement);
+            for(let j=0; j<resp.result.data.length; j++){
+                jsonHmap[resp.result.data[j].germplasmDbId]=resp.result.data[j];
+            }
         }
     }
     l.setProgress(1);

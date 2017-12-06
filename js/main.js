@@ -20,6 +20,7 @@ async function setVisibleField(){
    		if(await urlBrapiEndPointIsOk(urlTab[0])){
             urlEndPoint1 = urlTab[0];
             $('#urlForm').hide();
+            $('#labelUse2Url').hide();
             isEndPointInUrl=true;
             if ($_GET("mapDbId")!==null && await urlMapIdIsOk(urlEndPoint1,$_GET("mapDbId"))){
                 selectedMap=$_GET("mapDbId");
@@ -81,6 +82,7 @@ async function startment() {
 async function getFirstInformation(){
     try{
         let arrayOfStudies, arrayOfMaps = [];
+        console.log(calls);
 		Call2Url = bindCall2Url(calls, ALL_CALLS);
 		console.log(Call2Url);
 		let argumentsArray = setArgumentArray("studies-search");

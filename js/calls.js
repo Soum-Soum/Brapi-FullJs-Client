@@ -2,6 +2,7 @@ async function requCallareImplement(argumentsArray) {
     try{
         let allCallsAreDetected;
         calls= await getCalls(argumentsArray);
+        console.log(calls);
         allCallsAreDetected= callsAreInArray(calls, REQUIRED_CALLS);
         console.log(allCallsAreDetected);
         return allCallsAreDetected;

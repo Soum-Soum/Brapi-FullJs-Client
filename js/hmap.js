@@ -34,6 +34,7 @@ function reversHmap(hMap){
 }
 
 function bindCall2Url(resp, calls) {
+    console.log(resp);
     let callUrl1= [], callUrl2=[], hmapCall2Url=[];
     resp[0].result.data.forEach(function (element){
         callUrl1.push(element.call);
