@@ -109,7 +109,7 @@
 					<div class="col-md-4">
 						<label for="chromosome" class="alignTop"> Sequences : </label>
 						<label class="badge badge-success" id="chromosomeLabel" class="alignTop"></label><br>
-						<select name="chromosome" id="chromosome" size="10" multiple="" onchange="selectionMarkers();updateSelection('chromosomeLabel','chromosome');"></select>
+						<select name="chromosome" id="chromosome" size="10" multiple="" onchange="setEmptyMarkerSelect();selectionMarkers();updateSelection('chromosomeLabel','chromosome');"></select>
 					</div>
 					<div class="col-md-4">
 						<div class="badge badge-danger text-center" style="position: absolute; z-index: 5; text-align: center; opacity: 0.7; height: 100%;" id="topMarkerDiv">

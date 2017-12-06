@@ -26,6 +26,11 @@ function setEmptyTheFields(){
     $('#markersLabel').hide();
     $('#topMarkerDiv').hide();
     $('#topTypeDiv').hide();
+    enmptResultTab();
+}
+
+function setEmptyMarkerSelect() {
+	$('#Markers').html("");
 }
 
 function setUpGermplasms(response){
