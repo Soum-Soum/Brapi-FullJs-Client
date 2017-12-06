@@ -177,7 +177,12 @@ function selectionMarkers(){
 		for(let i=0; i<selectedLinkageGroup.length;i++){
 			selectedMarkers = selectedMarkers.concat(hmapsLinkageGroup[selectedLinkageGroup[i]]);	
 		}
-        selectedMarkers = compareOrSubtract(selectedType);
+		if(selectedType.length!==0){
+            selectedMarkers = compareOrSubtract(selectedType);
+		}else{
+			handleErrors('No type are selected');
+		}
+
 		setupMarkersId(selectedMarkers);
 		console.log(selectedMarkers);
 	}
