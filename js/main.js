@@ -88,7 +88,7 @@ async function getFirstInformation(){
 		console.log(Call2Url);
 		let argumentsArray = setArgumentArray("studies-search");
 		arrayOfStudies= await readStudyList(argumentsArray);
-		if($_GET("mapDbId")!==null){console.log($_GET("mapDbId"));$('select#selectionMap').hide();$('#labelSelectionMap').hide();}
+		if($_GET("mapDbId")!==null){console.log($_GET("mapDbId"));$('#selectionMap').hide();$('#labelSelectionMap').hide();}
 		else{argumentsArray = setArgumentArray("maps");arrayOfMaps = await readMaps(argumentsArray);}
 		let firstInformation = {};
 		firstInformation.maps=arrayOfMaps;

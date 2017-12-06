@@ -50,7 +50,7 @@ async function ExportDetailsGermplasms(){
     let fieldTab = getFieldFormJson(jsonHmap);
     console.log(fieldTab);
     let tsvString = buildTsvString(jsonHmap, selectedGermplasms, fieldTab);
-    download('GermplasmsDetails.tsv',tsvString);
+    download($('#selectionMap').find('option:selected').val()+'.tsv',tsvString);
     l.stop();
 }
 
