@@ -5,6 +5,7 @@ async function init(){
 	if (window !== top){
 		$('#title').hide();
 	}
+    animatForm();
 }
 
 async function setVisibleField(){
@@ -203,6 +204,7 @@ function compareOrSubtract(selectedType){
 }
 
 function getRequestParameter(){
+    enmptResultTab();
 	selectedMarkersProfils=null;
     startmentindex=0;
 	$('#customIndex').val(1);
@@ -264,7 +266,7 @@ function launchMatrixRequest(index){
 			paginationManager.pager(getMatrix,argumentsArray).then(function(matrix){
 				fill_result_table(sendedMarkers,sendedMarkersProlis,response);
                 insetMatrixInResultTable(matrix);
-                if($('#missingData').prop('checked')){
+                if(!$('#missingData').prop('checked')){
 					cleanTab(sendedMarkers,sendedMarkersProlis);
                 }
 			});

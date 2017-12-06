@@ -62,17 +62,17 @@
 						</div>
 						<div class="row">
 							<div class=" col-6">
-								<button class="mx-auto btn btn-secondary btn-sm" id="Submit1" type="button" onclick="login()">Submit</button>
+								<button class="mx-auto btn btn-secondary btn-sm" id="Submit1" type="button" onclick="setEmptyTheFields();login();">Submit</button>
 							</div>
 							<div class=" col-6">
-								<label id="labelUse2Url" class="form-check-label mx-auto" for="Use2Url">Use 2 Url <input checked type="checkbox" name="Use2Url" id="Use2Url" onchange="animatForm();"></label>
+								<label id="labelUse2Url" class="form-check-label mx-auto" for="Use2Url">Use 2 Url <input type="checkbox" name="Use2Url" id="Use2Url" onchange="animatForm();"></label>
 							</div>
 						</div>
 					</div>
 				</form>	
 			</div>
 		</div>
-		<br><br><br>
+		<br>
 		<div id="toAnimate" class="container">
 			<form id="mainForm">
 				<div class="row">
@@ -139,7 +139,7 @@
 			<input type="button" name="next" value=">" class="btn btn-primary btn-sm" onclick="nextPage()">
 			<label class="badge badge-success" for="customPageSize">Genotypes per page : </label>
 			<input type="text" id="customPageSize" size="5" value="1000" onchange="setCustomPageSize();launchMatrixRequest(startmentindex);">
-			<label class="badge badge-success" for="missingData">Hide missing data</label>
+			<label class="badge badge-success" for="missingData">Show missing data</label>
 			<input type="checkbox" name="missingData" id="missingData" onchange="launchMatrixRequest(startmentindex);" checked>
 			<br>
 		</form>

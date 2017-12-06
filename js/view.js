@@ -183,9 +183,9 @@ function animatForm(){
         $('#Password2').addClass('animated bounceInRight');
         $('#urltoget2').addClass('animated bounceInRight');
 	}else{
-        $('#UserId2').hide(300);
-        $('#Password2').hide(300);
-        $('#urltoget2').hide(300);
+        $('#UserId2').hide();
+        $('#Password2').hide();
+        $('#urltoget2').hide();
         $('#UserId2').removeClass('animated bounceInRight');
         $('#Password2').removeClass('animated bounceInRight');
         $('#urltoget2').removeClass('animated bounceInRight');
@@ -199,4 +199,8 @@ function setMainFormVisible(){
 	}else{
         $('#ExportGermplasmsDetails').attr("disabled", false);
 	}
+}
+
+function  enmptResultTab(){
+	$('tbody').html('');
 }
