@@ -75,7 +75,11 @@ function setArgumentArray(callName, argumentsArray){
 }
 
 function abortExport(){
-    isAbort = true;
+    exportIsAbort = true;
+}
+
+function abortGermplasmsExport() {
+    exportGermplasmsIsAbort = true;
 }
 
 function getTypeList(arrayMarker){
@@ -147,3 +151,4 @@ String.prototype.hashCode = function() {
     }
     return hash;
 };
+

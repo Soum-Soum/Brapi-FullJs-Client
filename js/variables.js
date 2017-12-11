@@ -10,4 +10,4 @@ const  ALL_CALLS = ['token', 'calls', 'markers', 'studies-search', 'maps', 'maps
 let urlEndPoint1 = "", urlEndPoint2="", tokenUrl2="" , tokenUrl1 = "", selectedMap = "", calls = "", mostPresentType = "";
 let selectedMarkersProfils=[], selectedMarkers=[], hmapsType=undefined , hmapsLinkageGroup = [], response = [], cpyResp = [], Call2Url=[], url2Token = [], arrayOfMarkersType=[];
 let clientPageSize=1000, startmentindex=0, sizeOfResquestedMatrix=0, totalPage =0;
-let isEndPointInUrl=false, isMapIdInUrl=false, auth=true, isAbort = false , is2EndPoint = false;
+let isEndPointInUrl=false, isMapIdInUrl=false, auth=true, exportIsAbort = false ,exportGermplasmsIsAbort = false ,is2EndPoint = false;

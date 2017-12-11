@@ -206,7 +206,7 @@ async function getExportStatus(argumentsArray){
 		console.log(resp);
 		console.log(argumentsArray.asynchid);
 		console.log(myURL);
-		while(resp.metadata.status[0].message==="INPROCESS" && isAbort===false){
+		while(resp.metadata.status[0].message==="INPROCESS" && exportIsAbort===false){
 			console.log(myURL);
 			console.log(resp.metadata.status[0].message);
 			resp = await fetch(myURL, myInit);
@@ -216,7 +216,7 @@ async function getExportStatus(argumentsArray){
 			console.log(resp.metadata.pagination.currentPage/100);
 			await sleep(1500);
 		}
-		if(isAbort===false && resp.metadata.status[0].message!=="FAILED"){
+		if(exportIsAbort===false && resp.metadata.status[0].message!=="FAILED"){
             console.log(resp);
             l.setProgress(1);
             window.location = resp.metadata.datafiles[0];
@@ -225,6 +225,7 @@ async function getExportStatus(argumentsArray){
 	catch(err) {
 		handleErrors('unable to export data');
 	}
+    $('#AbortExport').hide();
     l.stop();
 }
 

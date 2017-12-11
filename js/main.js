@@ -16,6 +16,8 @@ async function setVisibleField(){
 	$('#ErrorMessage').hide();
     $('#topMarkerDiv').hide();
     $('#topTypeDiv').hide();
+    $('#AbortExport').hide();
+    $('#AbortExportGermplasmsDetails').hide();
 	if($_GET("baseUrl")!==null){
 		let urlTab = $_GET("baseUrl").split(';');
    		if(await urlBrapiEndPointIsOk(urlTab[0])){

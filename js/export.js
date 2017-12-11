@@ -1,5 +1,6 @@
 async function exportMatrix(){
-    isAbort=false;
+    $('#AbortExport').show();
+    exportIsAbort=false;
     let sendedMarkersProlis = $("#MarkersProfils option:selected").map(function(){return $(this).val().split(",");}).get();
     sendedMarkersProlis = removeAll(sendedMarkersProlis, "");
     let sendedMarkers = selectedMarkers;
@@ -21,27 +22,36 @@ async function ExportDetailsGermplasms(){
     let l = Ladda.create( document.querySelector( '#ExportGermplasmsDetails'));
     let step = (1/(selectedGermplasms.length/100)), avancement = 0;
     argumentsArray = setArgumentArray("germplasm-search");
+    exportGermplasmsIsAbort=false;
+    $('#AbortExportGermplasmsDetails').show();
     l.start();
     l.setProgress( avancement );
     selectedGermplasms = removeAll(selectedGermplasms, "");
     console.log(selectedGermplasms);
     if(argumentsArray.urlEndPoint!=='' && argumentsArray.urlEndPoint!==undefined && argumentsArray.urlEndPoint!==null){
         for(let i=0; i<selectedGermplasms.length; i){
-            let j;
-            let germplasmIdArray=[];
-            for(j=i; j<i+100; j++){
-                germplasmIdArray.push(selectedGermplasms[j]);
-            }
-            i=j;
-            argumentsArray.germplasmIdArray = germplasmIdArray;
-            let resp = await getGermplasmsDetails(argumentsArray);
-            console.log(resp);
-            avancement += step;
-            l.setProgress(avancement);
-            console.log(step);
-            console.log(avancement);
-            for(let j=0; j<resp.result.data.length; j++){
-                jsonHmap[resp.result.data[j].germplasmDbId]=resp.result.data[j];
+            if(exportGermplasmsIsAbort===false){
+                let j;
+                let germplasmIdArray=[];
+                for(j=i; j<i+100; j++){
+                    germplasmIdArray.push(selectedGermplasms[j]);
+                }
+                i=j;
+                argumentsArray.germplasmIdArray = germplasmIdArray;
+                let resp = await getGermplasmsDetails(argumentsArray);
+                console.log(resp);
+                avancement += step;
+                l.setProgress(avancement);
+                console.log(step);
+                console.log(avancement);
+                for(let j=0; j<resp.result.data.length; j++){
+                    jsonHmap[resp.result.data[j].germplasmDbId]=resp.result.data[j];
+                }
+            }else{
+                l.setProgress(1);
+                l.stop();
+                $('#AbortExportGermplasmsDetails').hide();
+                return;
             }
         }
     }
@@ -51,6 +61,7 @@ async function ExportDetailsGermplasms(){
     console.log(fieldTab);
     let tsvString = buildTsvString(jsonHmap, selectedGermplasms, fieldTab);
     download($('#selectionMap').find('option:selected').val()+'.tsv',tsvString);
+    $('#AbortExportGermplasmsDetails').hide();
     l.stop();
 }
 
