@@ -1,11 +1,24 @@
-async function requCallareImplement(argumentsArray) {
+async function requCallareImplement() {
     try{
-        let allCallsAreDetected;
-        calls= await getCalls(argumentsArray);
-        console.log(calls);
-        allCallsAreDetected= callsAreInArray(calls, REQUIRED_CALLS);
-        console.log(allCallsAreDetected);
-        return allCallsAreDetected;
+        for(let i=0; i<groupTab.length; i++){
+            let callsimplementInTheGroup = [];
+            for(let j=0; j<groupTab[i].length; j++){
+                for(let k =0; k<groupTab[i][j].callsImplemented.length;k++){
+                    if(!isInArray(callsimplementInTheGroup, groupTab[i][j].callsImplemented[k])){
+                        callsimplementInTheGroup.push(groupTab[i][j].callsImplemented[k]);
+                    }
+                }
+            }
+            if(!callsAreInArray(callsimplementInTheGroup, REQUIRED_CALLS)){
+                groupTab.splice(i, 1);
+                if(i!==groupTab.length){
+                    i--;
+                }
+            }
+        }
+        console.log(groupTab);
+        return groupTab.length>0;
+
     }catch (err){
         handleErrors(err);
     }
@@ -14,15 +27,12 @@ async function requCallareImplement(argumentsArray) {
 function callsAreInArray(resp, requCall){
     try {
         let foundCalls = [];
-        console.log(resp);
         removeAll(resp, undefined);
         removeAll(resp, null);
         resp.forEach(function (element){
-            element.result.data.forEach(function (element2){
-                if(!isInArray(foundCalls, element2.call)){
-                    foundCalls.push(element2.call);
-                }
-            });
+            if(!isInArray(foundCalls, element)){
+                foundCalls.push(element);
+            }
         });
         requCall.forEach(function (element){
             if(!isInArray(foundCalls, element)){

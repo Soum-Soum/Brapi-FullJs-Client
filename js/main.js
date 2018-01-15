@@ -8,95 +8,111 @@ async function init(){
     animatForm();
 }
 
-async function setVisibleField(){
+async function setVisibleField() {
 	$('#mainForm').hide();
 	$('#secondForm').hide();
 	$('#resulttable').hide();
 	$('#loadingScreen').hide();
 	$('#ErrorMessage').hide();
-    $('#topMarkerDiv').hide();
-    $('#topTypeDiv').hide();
-    $('#AbortExport').hide();
-    $('#AbortExportGermplasmsDetails').hide();
-	if($_GET("baseUrl")!==null){
-		let urlTab = $_GET("baseUrl").split(';');
-   		if(await urlBrapiEndPointIsOk(urlTab[0])){
-            urlEndPoint1 = urlTab[0];
-            $('#urlForm').hide();
-            $('#labelUse2Url').hide();
-            isEndPointInUrl=true;
-            if ($_GET("mapDbId")!==null && await urlMapIdIsOk(urlEndPoint1,$_GET("mapDbId"))){
-                selectedMap=$_GET("mapDbId");
-                $('#mapForm').hide();
-                isMapIdInUrl=true;
-            }
-        }
-        if(urlTab[1]!==undefined && await urlBrapiEndPointIsOk(urlTab[1])){
-            urlEndPoint2 = urlTab[1];
-            is2EndPoint=true;
+	$('#topMarkerDiv').hide();
+	$('#topTypeDiv').hide();
+	$('#AbortExport').hide();
+	$('#AbortExportGermplasmsDetails').hide();
+	if ($_GET("baseUrl") !== null) {
+		let temp = $_GET("baseUrl").split(';');
+		for (let i = 0; i < temp.length; i++) {
+			groupTab[i] = temp[i].split(',');
 		}
-		console.log(urlEndPoint1);
-        console.log(urlEndPoint2);
-	}
-
-	if ($_GET("auth")!=="true"){
-		$('#loginForm').hide();
-		auth = false;
-	}
-	if (isEndPointInUrl && auth===false){
-		$('#Submit1').hide();
-		await login();
+		for (let i = 0; i < groupTab.length; i++){
+			for (let j = 0; j < groupTab[i].length; j++) {
+				groupTab[i][j] = await urlWithAuth.staticConstructor2(groupTab[i][j]);
+				if (groupTab[i][j].url===null) {
+					groupTab[i].splice(j, 1);
+					if(groupTab[i].length>0){
+                        j--;
+					}
+				}
+			}
+            if(groupTab[i].length===0){
+                groupTab.splice(i, 1);
+                if(i!==groupTab.length){
+                    i--;
+                }
+            }
+		}
+		console.log(groupTab);
+		if (groupTab.length > 0) {
+			$('#urlForm').hide();
+			$('#labelUse2Url').hide();
+			isEndPointInUrl = true;
+		}
+		if ($_GET("auth") !== "true") {
+			$('#loginForm').hide();
+			auth = false;
+		}
+		if (isEndPointInUrl && auth === false) {
+			$('#Submit1').hide();
+			await login();
+		}
 	}
 }
 
 async function login(){
 	let stringUserId = $("#UserId").val(), stringPassword = $("#Password").val(), stringUserId2 = $("#UserId2").val(), stringPassword2 = $("#Password2").val();
-	if(!isEndPointInUrl){
+	let urlEndPoint1, urlEndPoint2;
+    if(!isEndPointInUrl){
 		urlEndPoint1 = $("#urltoget").val();
 		urlEndPoint2 = $('#urltoget2').val();
-        is2EndPoint = urlEndPoint2 !== '' && urlEndPoint2 !== undefined;
-        console.log(urlEndPoint1);
-        console.log(urlEndPoint2);
+		is2EndPoint = urlEndPoint2 !== '' && urlEndPoint2 !== undefined;
 	}
 	if(stringPassword === "" || stringUserId === ""){
-        setMainFormVisible();
+		setMainFormVisible();
 		startment();
 	}else{
-		tokenUrl1 = await getToken(stringUserId, stringPassword, urlEndPoint1);
-		if(is2EndPoint){tokenUrl2 = await getToken(stringUserId2, stringPassword2, urlEndPoint2);}
-        url2Token = createUrl2Token(urlEndPoint1, tokenUrl1, urlEndPoint2, tokenUrl2);
-		if(tokenUrl1 === ""){alert("Bad Username or password, You're are loged as public user, so you only have acces to public data");}
-		else{alert("You're loged as private user");}
-        setMainFormVisible();
+		console.log("lol")
+        groupTab.push(urlWithAuth.staticConstructor(urlEndPoint1,stringUserId,stringPassword));
+		if(is2EndPoint){ groupTab.push(urlWithAuth.staticConstructor(urlEndPoint2,stringUserId2,stringPassword2));}
+        groupTab.forEach(function (element) {
+            if(element.token===""){alert("Bad Username or password, You're are loged as public user to " + element.url +  ", so you only have acces to public data");}
+			else{alert("You're loged as private user to " + element.url);}
+        });
+		setMainFormVisible();
         $('#toAnimate').addClass('animated fadeIn');
+        console.log(groupTab);
 		startment();
 	}
 }
 
 async function startment() {
-	console.log(is2EndPoint);
-	let argumentsArray = is2EndPoint ? {urlEndPoint1, tokenUrl1, urlEndPoint2, tokenUrl2} :  {urlEndPoint1, tokenUrl1};
+	let argumentsArray = groupTab;
 	if(await requCallareImplement(argumentsArray)){
-        let firtstInformation = await getFirstInformation(argumentsArray);
+		firtstInformation = await getFirstInformation(argumentsArray);
         setup_select_tag(firtstInformation);
 	}
 }
 
 async function getFirstInformation(){
     try{
-        let arrayOfStudies, arrayOfMaps = [];
-        console.log(calls);
-		Call2Url = bindCall2Url(calls, ALL_CALLS);
-		console.log(Call2Url);
-		let argumentsArray = setArgumentArray("studies-search");
-		arrayOfStudies= await readStudyList(argumentsArray);
-		if($_GET("mapDbId")!==null){console.log($_GET("mapDbId"));$('#selectionMap').hide();$('#labelSelectionMap').hide();}
-		else{argumentsArray = setArgumentArray("maps");arrayOfMaps = await readMaps(argumentsArray);}
-		let firstInformation = {};
-		firstInformation.maps=arrayOfMaps;
-		firstInformation.studies=arrayOfStudies;
-		console.log(firstInformation);
-		return firstInformation;
+        let arrayOfStudies=[], arrayOfMaps = [];
+		bindCall2Url(groupTab, ALL_CALLS);
+		console.log(call2UrlTab);
+		if($_GET("mapDbId")!==null){
+			console.log($_GET("mapDbId"));
+			$('#selectionMap').hide();
+			$('#labelSelectionMap').hide();
+            for(let i=0; i<groupTab.length;i++){
+                let argumentsArray = {urlEndPoint : call2UrlTab[i]['studies-search'].split(';')[0], token : call2UrlTab[i]['studies-search'].split(';')[1]}
+                arrayOfStudies = arrayOfStudies.concat(await readStudyList(argumentsArray));
+            }
+		}else{
+            for(let i=0; i<groupTab.length;i++){
+                let argumentsArray = {urlEndPoint : call2UrlTab[i]['studies-search'].split(';')[0], token : call2UrlTab[i]['studies-search'].split(';')[1]}
+                arrayOfStudies = arrayOfStudies.concat(await readStudyList(argumentsArray));
+				arrayOfMaps = arrayOfMaps.concat(await readMaps(argumentsArray));
+            }
+		}
+		console.log({maps : arrayOfMaps, studies : arrayOfStudies});
+		return {maps : arrayOfMaps, studies : arrayOfStudies};
     }catch (err){
         handleErrors('Bad URL')
     }
@@ -110,6 +126,8 @@ async function launch_selection(){
 	}else{
 		if(!isMapIdInUrl){
 			selectedMap = $('#selectionMap').find('option:selected').val();
+            currentGroupId =$('#selectionMap').find('option:selected').attr('id');
+            console.log(selectedMap);
 		}
 		let arrayOfLinkageGroup=[],  arrayMarkers=[];
 		let selectedStudy = $('#selectionStudies').find('option:selected').val();

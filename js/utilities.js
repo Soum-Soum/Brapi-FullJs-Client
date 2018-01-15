@@ -1,6 +1,6 @@
 function isInArray(array, a){
 	for (let i = 0; i < array.length; i++) {
-		if (array[i]===a){
+		if (array[i]==a){
 			return true;
 		}
 	}
@@ -61,16 +61,22 @@ function sortAlphaNum(a,b) {
 }
 
 function setArgumentArray(callName, argumentsArray){
-    console.log(Call2Url);
+    console.log(call2UrlTab);
 	if(argumentsArray=== undefined || argumentsArray === null){
         let argumentsArray = [];
-        argumentsArray.urlEndPoint = Call2Url[callName];
-        argumentsArray.token = url2Token[Call2Url[callName]];
+        if(call2UrlTab[currentGroupId][callName]!== undefined){
+            argumentsArray.urlEndPoint = call2UrlTab[currentGroupId][callName].split(';')[0];
+            argumentsArray.token = call2UrlTab[currentGroupId][callName].split(';')[1];
+            return argumentsArray;
+        }else{
+            return[]
+        }
+	}else if(call2UrlTab[currentGroupId][callName]!== undefined){
+        argumentsArray.urlEndPoint = call2UrlTab[currentGroupId][callName].split(';')[0];
+        argumentsArray.token = call2UrlTab[currentGroupId][callName].split(';')[1];
         return argumentsArray;
-	}else{
-        argumentsArray.urlEndPoint = Call2Url[callName];
-        argumentsArray.token = url2Token[Call2Url[callName]];
-        return argumentsArray;
+    }else{
+	    return [];
     }
 }
 
@@ -151,4 +157,3 @@ String.prototype.hashCode = function() {
     }
     return hash;
 };
-

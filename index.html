@@ -8,7 +8,7 @@
 		<script src="js/extern_library/jquery.modal.js" type="text/javascript" charset="utf-8"></script>
 		<link rel="stylesheet" href="css/jquery.modal.css" type="text/css" media="screen" />
 		<script type="text/javascript" src="js/utilities.js"></script>
-		<script type="text/javascript" src="js/pager.js"></script>
+		<script type="text/javascript" src="js/classes/pager.js"></script>
 		<script src="js/main.js"></script>
 		<script src="js/calls.js"></script>
         <script src="js/hmap.js"></script>
@@ -18,6 +18,7 @@
 		<script src="js/export.js"></script>
 		<script src="js/extern_library/spin.min.js"></script>
 		<script src="js/extern_library/ladda.min.js"></script>
+		<script src="js/classes/urlWithAuth.js"></script>
 		<link rel="stylesheet" type="text/css" href="css/ladda-themeless.min.css">
 		<link rel="stylesheet" type="text/css" href="css/bootstrap.css">
 		<link rel="stylesheet" type="text/css" href="css/animate.css">
@@ -56,8 +57,8 @@
 						</div>
 						<div class="row">
 							<div id="urlForm" class="input-group">
-								<input value="http://localhost:8080/gigwa/rest/cactuar/brapi/v1" type="text" name="URL" class="form-control" placeholder="Ex : http://_____/brapi/v1" id="urltoget" onchange="setEmptyTheFields();">
-								<input value="https://ics.hutton.ac.uk/germinate-demo/cactuar/brapi/v1" type="text" name="URL" class="form-control" placeholder="Ex : http://_____/brapi/v1" id="urltoget2" onchange="setEmptyTheFields();">
+								<input value="http://localhost:8080/gigwa/rest/Rice-MSU7/brapi/v1" type="text" name="URL" class="form-control" placeholder="Ex : http://_____/brapi/v1" id="urltoget" onchange="setEmptyTheFields();">
+								<input value="http://localhost:8080/gigwa/rest/Rice-MSU7/brapi/v1" type="text" name="URL" class="form-control" placeholder="Ex : http://_____/brapi/v1" id="urltoget2" onchange="setEmptyTheFields();">
 							</div>
 						</div>
 						<div class="row">
@@ -80,7 +81,7 @@
 						<div id="mapForm">
 							<label for="selectionMap" id="labelSelectionMap">Map : </label>
                             <br>
-							<select name="selectionMap" id="selectionMap" class="custom-select"></select>
+							<select name="selectionMap" id="selectionMap" class="custom-select" onchange="selectStudies();"></select>
 						</div>
 						<label for="selectionStudies">Study : </label>
                         <br>
@@ -146,7 +147,7 @@
 			<label class="badge badge-success" for="customPageSize">Genotypes per page : </label>
 			<input type="text" id="customPageSize" size="5" value="1000" onchange="setCustomPageSize();launchMatrixRequest(startmentindex);">
 			<label class="badge badge-success" for="missingData">Show missing data</label>
-			<input type="checkbox" name="missingData" id="missingData" onchange="launchMatrixRequest(startmentindex);" checked>
+
 			<br>
 		</form>
 		<div class="container">

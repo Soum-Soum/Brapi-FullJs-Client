@@ -14,15 +14,6 @@ function getMarkerProfileHmap(arrayGermplasmsIDs){
     return hmap;
 }
 
-function createUrl2Token(urlEndPoint1, tokenUrl1, urlEndPoint2, tokenUrl2) {
-    let url2Token =[];
-    url2Token[urlEndPoint1]=tokenUrl1;
-    if(urlEndPoint2!==undefined && urlEndPoint2!== '' && urlEndPoint2!== null && tokenUrl2!==null &&  tokenUrl2!==undefined){
-        url2Token[urlEndPoint2]=tokenUrl2;
-    }
-    return url2Token;
-}
-
 function reversHmap(hMap){
     let newHMap = [];
     Object.keys(hMap).forEach(function(element){
@@ -35,25 +26,17 @@ function reversHmap(hMap){
 
 function bindCall2Url(resp, calls) {
     console.log(resp);
-    let callUrl1= [], callUrl2=[], hmapCall2Url=[];
-    resp[0].result.data.forEach(function (element){
-        callUrl1.push(element.call);
-    });
-    if(resp[1]!=undefined){
-        resp[1].result.data.forEach(function (element){
-            callUrl2.push(element.call);
-        });
-    }
-    calls.forEach(function (element){
-        if(isInArray(callUrl1, element)){
-            hmapCall2Url[element]=urlEndPoint1;
-        }else if(callUrl2!==[] && isInArray(callUrl2, element)){
-            hmapCall2Url[element]=urlEndPoint2;
-        }else{
-            hmapCall2Url[element]="";
+    for(let i=0; i<resp.length; i++){
+        let hmapCall2Url=[];
+        for(let j=0; j<resp[i].length;j++) {
+            calls.forEach(function (element) {
+                if (isInArray(resp[i][j].callsImplemented, element)) {
+                    hmapCall2Url[element] = resp[i][j].url + ';' + resp[i][j].token;
+                }
+            });
         }
-    });
-    return hmapCall2Url;
+        call2UrlTab.push(hmapCall2Url);
+    }
 }
 
 function setHmapLinkageGroup(arrayOfLinkageGroup, arrayMarkers){

@@ -1,15 +1,22 @@
-function setup_select_tag(first_informations){
-	let htmlString ="";
+function setup_select_tag(firstinformations){
+	let htmlString='<option value="">---Select one---</option>';
 	if($_GET("mapDbId")===null){
-		first_informations.maps.forEach(function(element){
-		htmlString += '<option value="' + element.mapDbId + '">' + element.name + '</option>\n';
-    });
-    $('select#selectionMap').html(htmlString);
-	}	
-    htmlString='<option value="">---Select one---</option>';
-    first_informations.studies.forEach(function(element){
-    	htmlString += '<option value="' + element.studyDbId + '">' + element.name + '</option>\n';
-    });
+        for(let key in firstinformations.studies){
+            htmlString += '<option id="'+key+'" value="' + firstinformations.maps[key].mapDbId + '">' + firstinformations.maps[key].name + '</option>\n';
+        }
+		$('select#selectionMap').html(htmlString);
+	}
+}
+
+function selectStudies(){
+    let selectedMapId = currentGroupId =$('#selectionMap').find('option:selected').attr('id');
+    $('select#selectionStudies').html('');
+    let htmlString='<option value="">---Select one---</option>';
+    for(let key in firtstInformation.studies){
+        if(selectedMapId === key){
+            htmlString += '<option id="'+key+'" value="' + firtstInformation.studies[key].studyDbId + '">' + firtstInformation.studies[key].name + '</option>\n';
+        }
+    }
     $('select#selectionStudies').html(htmlString);
 }
 

@@ -27,7 +27,11 @@ async function urlMapIdIsOk(brapiEndPoint, mapDbId){
 
 async function urlBrapiEndPointIsOk(brapiEndPoint){
 	try{
-        await fetch(brapiEndPoint + "/" + URL_CALLS);
+        let reponse = await fetch(brapiEndPoint + "/" + URL_CALLS);
+        if(!reponse.ok){
+            handleErrors("Bad barpi end point in Url");
+            return false;
+		}
     }catch(err){
 		handleErrors("Bad barpi end point in Url");
 		return false;
@@ -35,37 +39,19 @@ async function urlBrapiEndPointIsOk(brapiEndPoint){
 	return true;
 }
 
-async function getCalls(argumentsArray){
-        console.log(argumentsArray);
-        let myURL1 = argumentsArray.urlEndPoint1 + "/" + URL_CALLS;
+async function getCalls(urlWithToken){
+        let myURL1 = urlWithToken.url + "/" + URL_CALLS;
         let myHeaders1 = new Headers();
-        let Authorization = argumentsArray.tokenUrl1==='' ? '' : "Bearer " + argumentsArray.tokenUrl1;
+        let Authorization = urlWithToken.token==='' ? '' : "Bearer " + urlWithToken.tokenUrl1;
         myHeaders1 = {Authorization};
-        if(argumentsArray.urlEndPoint2===undefined || typeof(argumentsArray.tokenUrl2)!== 'string'){
-        	console.log(typeof(argumentsArray.tokenUrl2)!== 'string');
-        	try{
-                let resp1 = await fetch(myURL1, myHeaders1);
-                resp1 = await resp1.json();
-                return [resp1];
-			}catch(err){
-        		handleErrors('Bad Url');
-			}
-		}else{
-        	try{
-                let myURL2 = argumentsArray.urlEndPoint2 + "/" + URL_CALLS;
-                let myHeaders2 = new Headers();
-                let Authorization = argumentsArray.tokenUrl2==='' ? '' : "Bearer " + argumentsArray.tokenUrl2;
-                myHeaders2 = {Authorization};
-                let resp1 = await fetch(myURL1, myHeaders1);
-                let resp2 = await fetch(myURL2, myHeaders2);
-                resp1 = await resp1.json();
-                resp2 = await resp2.json();
-                return [resp1, resp2];
-			}catch(err){
-        		handleErrors('Error with one Url')
-			}
+		try{
+			let resp1 = await fetch(myURL1, myHeaders1);
+			resp1 = await resp1.json();
+			return resp1.result.data;
+		}catch(err){
+			handleErrors('Bad Url');
+		}
 
-        }
 }
 
 async function readMaps(argumentsArray){
