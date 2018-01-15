@@ -26,7 +26,7 @@ async function setVisibleField() {
 		for (let i = 0; i < groupTab.length; i++){
 			for (let j = 0; j < groupTab[i].length; j++) {
 				groupTab[i][j] = await urlWithAuth.staticConstructor2(groupTab[i][j]);
-				if (groupTab[i][j].url===null) {
+				if (groupTab[i][j].url===undefined) {
 					groupTab[i].splice(j, 1);
 					if(groupTab[i].length>0){
                         j--;
@@ -58,30 +58,18 @@ async function setVisibleField() {
 }
 
 async function login(){
-	let stringUserId = $("#UserId").val(), stringPassword = $("#Password").val(), stringUserId2 = $("#UserId2").val(), stringPassword2 = $("#Password2").val();
-	let urlEndPoint1, urlEndPoint2;
+    let tempGroup =[];
     if(!isEndPointInUrl){
-		urlEndPoint1 = $("#urltoget").val();
-		urlEndPoint2 = $('#urltoget2').val();
-		is2EndPoint = urlEndPoint2 !== '' && urlEndPoint2 !== undefined;
-	}
-	if(stringPassword === "" || stringUserId === ""){
-		setMainFormVisible();
-		startment();
-	}else{
-		console.log("lol")
-        groupTab.push(urlWithAuth.staticConstructor(urlEndPoint1,stringUserId,stringPassword));
-		if(is2EndPoint){ groupTab.push(urlWithAuth.staticConstructor(urlEndPoint2,stringUserId2,stringPassword2));}
-        groupTab.forEach(function (element) {
-            if(element.token===""){alert("Bad Username or password, You're are loged as public user to " + element.url +  ", so you only have acces to public data");}
-			else{alert("You're loged as private user to " + element.url);}
-        });
-		setMainFormVisible();
-        $('#toAnimate').addClass('animated fadeIn');
-        console.log(groupTab);
-		startment();
-	}
+        tempGroup.push(await urlWithAuth.staticConstructor($("#urltoget").val(),$("#UserId").val(),$("#Password").val()));
+        if($('#urltoget2').val()!==""){tempGroup.push(await urlWithAuth.staticConstructor($("#urltoget2").val(),$("#UserId2").val(),$("#Password2").val()));}
+        groupTab.push(tempGroup);
+    }
+	setMainFormVisible();
+	$('#toAnimate').addClass('animated fadeIn');
+	console.log(groupTab);
+	startment();
 }
+
 
 async function startment() {
 	let argumentsArray = groupTab;

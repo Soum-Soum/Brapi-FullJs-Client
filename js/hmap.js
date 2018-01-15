@@ -29,6 +29,11 @@ function bindCall2Url(resp, calls) {
     for(let i=0; i<resp.length; i++){
         let hmapCall2Url=[];
         for(let j=0; j<resp[i].length;j++) {
+            /*for(let k=0; k<calls.length; k++){
+                if (isInArray(resp[i][j].callsImplemented, calls[k])) {
+                    hmapCall2Url[calls[k]] = resp[i][j].url + ';' + resp[i][j].token;
+                }
+            }*/
             calls.forEach(function (element) {
                 if (isInArray(resp[i][j].callsImplemented, element)) {
                     hmapCall2Url[element] = resp[i][j].url + ';' + resp[i][j].token;

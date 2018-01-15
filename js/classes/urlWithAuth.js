@@ -14,33 +14,47 @@ class urlWithAuth{
                 tempUrl.url=url;
                 tempUrl.userName = tab[0];
                 tempUrl.pswrd=tab[1];
-                tempUrl.token= await getToken(tempUrl.userName, tempUrl.pswrd, tempUrl.url);
+                tempUrl.connect();
                 tempUrl.callsImplemented=[];
-                let tempcalls = await getCalls(tempUrl);
-                for(let k =0; k<tempcalls.length;k++){
-                    if(!isInArray(tempUrl.callsImplemented, tempcalls[k]['call'])){
-                        tempUrl.callsImplemented.push(tempcalls[k]['call']);
-                    }
-                }
-            }else{
-                tempUrl.userName=null;
-                tempUrl.pswrd=null;
-                tempUrl.url=null;
-                tempUrl.token=null;
-                //a changer ???
+                tempUrl.allocateCall();
             }
-
         }
+        tempUrl.printUrl();
         return tempUrl;
     }
 
-    static staticConstructor(url, userName, pswrs, token){
+    static async staticConstructor(url, userName, pswrs){
         let tempUrl = new urlWithAuth();
-        tempUrl.url=url;
-        tempUrl.pswrd=pswrs;
-        tempUrl.userName=userName;
-        tempUrl.token=token;
+        if(await urlBrapiEndPointIsOk(url)){
+            tempUrl.url=url;
+            tempUrl.pswrd=pswrs;
+            tempUrl.userName=userName;
+            tempUrl.connect();
+            tempUrl.allocateCall();
+        }
+        tempUrl.printUrl();
         return tempUrl;
+    }
+
+    async connect(){
+        this.token = "";
+        if(this.pswrd === "" || this.userName === ""){
+            alert("No Username or Password for this url : " + this.url);
+        }else{
+            this.token= await getToken(this.userName, this.pswrd, this.url);
+            if(this.token===""){alert("Bad Username or password, You're are loged as public user to " + this.url +  ", so you only have acces to public data");}
+            else{alert("You're loged as private user to " + this.url);}
+        }
+    }
+
+    async allocateCall(){
+        this.callsImplemented=[];
+        let tempcalls = await getCalls(this);
+        for(let k =0; k<tempcalls.length;k++){
+            if(!isInArray(this.callsImplemented, tempcalls[k]['call'])){
+                this.callsImplemented.push(tempcalls[k]['call']);
+            }
+        }
     }
 
     printUrl(){

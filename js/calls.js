@@ -36,7 +36,6 @@ function callsAreInArray(resp, requCall){
         });
         requCall.forEach(function (element){
             if(!isInArray(foundCalls, element)){
-                console.log(false);
                 return false;
             }
         });
