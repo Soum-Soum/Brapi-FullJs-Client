@@ -4,8 +4,11 @@ function setup_select_tag(firstinformations){
         for(let key in firstinformations.studies){
             htmlString += '<option id="'+key+'" value="' + firstinformations.maps[key].mapDbId + '">' + firstinformations.maps[key].name + '</option>\n';
         }
-		$('select#selectionMap').html(htmlString);
+	}else{
+        htmlString = '<option id="'+0+'" value="' + firstinformations.maps[0] + '">' + firstinformations.maps[0] + '</option>\n';
 	}
+    $('select#selectionMap').html(htmlString);
+    selectStudies();
 }
 
 function selectStudies(){
@@ -187,7 +190,8 @@ function setDisabled(bool){
 }
 
 function animatForm(){
-	if($('#Use2Url').is(':checked')){
+	if(!$('#UserId2').is(':visible')){
+		$('#btnChangeName').text('Use one url');
         $('#UserId2').show();
         $('#Password2').show();
         $('#urltoget2').show();
@@ -195,6 +199,7 @@ function animatForm(){
         $('#Password2').addClass('animated bounceInRight');
         $('#urltoget2').addClass('animated bounceInRight');
 	}else{
+        $('#btnChangeName').text('Use tow url');
         $('#UserId2').hide();
         $('#Password2').hide();
         $('#urltoget2').hide();
@@ -202,6 +207,10 @@ function animatForm(){
         $('#Password2').removeClass('animated bounceInRight');
         $('#urltoget2').removeClass('animated bounceInRight');
 	}
+}
+
+function useMoreUrl() {
+	
 }
 
 function setMainFormVisible(){
@@ -215,4 +224,45 @@ function setMainFormVisible(){
 
 function  enmptResultTab(){
 	$('tbody').html('');
+}
+
+function  addUrl(caller){
+    $(caller).parent().append('<div class=" row space container-fluid animated pulse">\n' +
+        '                        <input class="form-control  col-8" type="text" placeholder="Url">\n' +
+        '                        <input class="form-control col-2" type="text" placeholder="UserName">\n' +
+        '                        <input class="form-control col-2" type="text" placeholder="Password">\n' +
+        '                    </div>');
+}
+
+async function  rmUrl(caller){
+    if($(caller).parent().children().length>4){
+        $(caller).parent().children().last().addClass('fadeOut');
+        sleep(300).then(function () {
+            $(caller).parent().children().last().remove();
+        });
+    }else{
+
+    }
+
+}
+function addGrp(caller){
+    $(caller).parent().append('<div class="row col-12 lol animated pulse" style="background-color: #fd7e14;">\n' +
+        '                    <button class="col-5 btn btn-primary" onclick="addUrl(this);">Add one URL</button>\n' +
+        '                    <button class="col-5 btn btn-danger" onclick="rmUrl(this);">Remove one URL</button>\n' +
+        '                    <button type="button" class="col-2 close" aria-label="Close" onclick="rmThisGrp(this);">\n' +
+        '                        <span aria-hidden="true">&times;</span>\n' +
+        '                    </button>\n' +
+        '                    <div class=" row space container-fluid animated pulse">\n' +
+        '                        <input class="form-control  col-8" type="text" placeholder="Url">\n' +
+        '                        <input class="form-control col-2" type="text" placeholder="UserName">\n' +
+        '                        <input class="form-control col-2" type="text" placeholder="Password">\n' +
+        '                    </div>\n' +
+        '                </div>');
+}
+
+async function rmThisGrp (caller) {
+    $(caller).parent().addClass('fadeOut');
+    await sleep(400).then(function () {
+        $(caller).parent().remove();
+    });
 }

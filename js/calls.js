@@ -16,7 +16,6 @@ async function requCallareImplement() {
                 }
             }
         }
-        console.log(groupTab);
         return groupTab.length>0;
 
     }catch (err){

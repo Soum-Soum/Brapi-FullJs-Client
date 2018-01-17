@@ -1,16 +1,32 @@
-function isInArray(array, a){
+/**
+ * Return true if value is present in the table, wrong if not
+ *
+ * @param {array} array - The array you want to scan.
+ * @param {string} value - The value you search .
+ */
+function isInArray(array, value){
 	for (let i = 0; i < array.length; i++) {
-		if (array[i]==a){
+		if (array[i]==value){
 			return true;
 		}
 	}
 	return false;
 }
 
+/**
+ * Stop the program for a given period of time
+ *
+ * @param {int} ms - The number of ms you want to wait befor the resolution of the promise .
+ */
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
+/**
+ * Returns the standard header
+ *
+ * @param {strint} token - A token.
+ */
 function returnInit(token){
 	let myHeaders = new Headers();
 	myHeaders = token==='' ? {} : {'Authorization': 'Bearer '+token};
@@ -22,6 +38,11 @@ function returnInit(token){
     };
 }
 
+/**
+ * Allows you to get information from the url of the page
+ *
+ * @param {string} param - The tag you want to check.
+ */
 function $_GET(param) {
     let vars = {};
     window.location.href.replace(location.hash, '').replace(
@@ -36,14 +57,20 @@ function $_GET(param) {
     return vars;
 }
 
-function removeAll(tab, val){
-	for (let i = 0; i < tab.length; i++) {
-		if (tab[i]===val) {
-			tab.splice(i,1);
+/**
+ * Remove all occurrence of a value from an array
+ *
+ * @param {array} array - The array you want to scan.
+ * @param {string} value - The value you want to remove .
+ */
+function removeAll(array, value){
+	for (let i = 0; i < array.length; i++) {
+		if (array[i]===value) {
+			array.splice(i,1);
 			i--;
 		}
 	}
-	return tab;
+	return array;
 }
 
 function sortAlphaNum(a,b) {
@@ -60,8 +87,13 @@ function sortAlphaNum(a,b) {
     }
 }
 
+/**
+ * Set up the argumentArray for the call you want to call
+ *
+ * @param {string} callName - The call you want to call
+ * @param {Array} argumentsArray - Array containing the parameters required by the function
+ */
 function setArgumentArray(callName, argumentsArray){
-    console.log(call2UrlTab);
 	if(argumentsArray=== undefined || argumentsArray === null){
         let argumentsArray = [];
         if(call2UrlTab[currentGroupId][callName]!== undefined){
@@ -80,14 +112,27 @@ function setArgumentArray(callName, argumentsArray){
     }
 }
 
+/**
+ * Abort the export of datamatrix
+ *
+ */
 function abortExport(){
     exportIsAbort = true;
 }
 
+/**
+ * Abort the export of Germplasms Details tsv
+ *
+ */
 function abortGermplasmsExport() {
     exportGermplasmsIsAbort = true;
 }
 
+/**
+ * Get type list from a marker tab
+ *
+ * @param {array} arrayMarker - Marker table
+ */
 function getTypeList(arrayMarker){
     console.log(arrayMarker);
     let arrayMarkerType =[];
@@ -102,6 +147,10 @@ function getTypeList(arrayMarker){
     return arrayMarkerType;
 }
 
+/**
+ * Return intersection of 2 array
+ *
+ */
 function array_big_intersect () {
     let args = Array.prototype.slice.call(arguments), aLower = [], aStack = [],
         count, i,nArgs, nLower,
@@ -147,6 +196,9 @@ function array_big_intersect () {
     return aStack;
 }
 
+/**
+ * Return the hash of a string
+ */
 String.prototype.hashCode = function() {
     let hash = 0, i, chr;
     if (this.length === 0) return hash;

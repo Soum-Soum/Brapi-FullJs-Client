@@ -40,7 +40,6 @@ async function setVisibleField() {
                 }
             }
 		}
-		console.log(groupTab);
 		if (groupTab.length > 0) {
 			$('#urlForm').hide();
 			$('#labelUse2Url').hide();
@@ -66,7 +65,6 @@ async function login(){
     }
 	setMainFormVisible();
 	$('#toAnimate').addClass('animated fadeIn');
-	console.log(groupTab);
 	startment();
 }
 
@@ -81,22 +79,26 @@ async function startment() {
 
 async function getFirstInformation(){
     try{
-        let arrayOfStudies=[], arrayOfMaps = [];
+    	let arrayOfStudies = [];
+        let  arrayOfMaps = [];
+        let argumentsArray =[];
 		bindCall2Url(groupTab, ALL_CALLS);
 		console.log(call2UrlTab);
 		if($_GET("mapDbId")!==null){
-			console.log($_GET("mapDbId"));
 			$('#selectionMap').hide();
 			$('#labelSelectionMap').hide();
             for(let i=0; i<groupTab.length;i++){
-                let argumentsArray = {urlEndPoint : call2UrlTab[i]['studies-search'].split(';')[0], token : call2UrlTab[i]['studies-search'].split(';')[1]}
-                arrayOfStudies = arrayOfStudies.concat(await readStudyList(argumentsArray));
+            	console.log(call2UrlTab);
+                argumentsArray = {urlEndPoint : call2UrlTab[i]['studies-search'].split(';')[0], token : call2UrlTab[i]['studies-search'].split(';')[1]};
+				arrayOfStudies = arrayOfStudies.concat(await readStudyList(argumentsArray));
+				arrayOfMaps = arrayOfMaps.concat($_GET("mapDbId"));
             }
 		}else{
             for(let i=0; i<groupTab.length;i++){
-                let argumentsArray = {urlEndPoint : call2UrlTab[i]['studies-search'].split(';')[0], token : call2UrlTab[i]['studies-search'].split(';')[1]}
+                argumentsArray = {urlEndPoint : call2UrlTab[i]['studies-search'].split(';')[0], token : call2UrlTab[i]['studies-search'].split(';')[1]};
                 arrayOfStudies = arrayOfStudies.concat(await readStudyList(argumentsArray));
-				arrayOfMaps = arrayOfMaps.concat(await readMaps(argumentsArray));
+                argumentsArray = {urlEndPoint : call2UrlTab[i]['maps'].split(';')[0], token : call2UrlTab[i]['maps'].split(';')[1]};
+                arrayOfMaps = arrayOfMaps.concat(await readMaps(argumentsArray));
             }
 		}
 		console.log({maps : arrayOfMaps, studies : arrayOfStudies});

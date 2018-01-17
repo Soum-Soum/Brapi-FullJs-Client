@@ -1,7 +1,13 @@
-
-async function getToken(stringUserId, stringPassword, urlEndPoint){
+/**
+ * Get a Token.
+ * @async
+ * @param {string} stringUserName - The User Name.
+ * @param {string} stringPassword - The Password.
+ * @param {string} urlEndPoint - The brapi endpoint.
+ */
+async function getToken(stringUserName, stringPassword, urlEndPoint){
 	let myURL = urlEndPoint + "/" + URL_TOKEN, tokenString="";
-	let body = {username : stringUserId, password : stringPassword};
+	let body = {username : stringUserName, password : stringPassword};
 	body = JSON.stringify(body);
 	try {
     	let resp = await fetch(myURL,{method: "POST",body: body, headers: {'Content-Type': 'application/json'}});
@@ -15,6 +21,12 @@ async function getToken(stringUserId, stringPassword, urlEndPoint){
 	}
 }
 
+/**
+ * Check the map coming from the url.
+ * @async
+ * @param {string} brapiEndPoint - The brapi endpoint.
+ * @param {string} mapDbId - The Password.
+ */
 async function urlMapIdIsOk(brapiEndPoint, mapDbId){
     try {
         await fetch(brapiEndPoint + "/" + URL_MAPS + "/" + mapDbId);
@@ -25,6 +37,11 @@ async function urlMapIdIsOk(brapiEndPoint, mapDbId){
 	return true;
 }
 
+/**
+ * Check the brapiEndPoint coming from the url.
+ * @async
+ * @param {string} brapiEndPoint - The brapi endpoint.
+ */
 async function urlBrapiEndPointIsOk(brapiEndPoint){
 	try{
         let reponse = await fetch(brapiEndPoint + "/" + URL_CALLS);
@@ -39,6 +56,11 @@ async function urlBrapiEndPointIsOk(brapiEndPoint){
 	return true;
 }
 
+/**
+ * Get the liste of call implemented by the brapi endpoint you passed
+ * @async
+ * @param {urlWithAuth} urlWithToken - The Url
+ */
 async function getCalls(urlWithToken){
         let myURL1 = urlWithToken.url + "/" + URL_CALLS;
         let myHeaders1 = new Headers();
@@ -54,6 +76,11 @@ async function getCalls(urlWithToken){
 
 }
 
+/**
+ * Return the list of maps for a given url
+ * @async
+ * @param {array} argumentsArray - Array containing the parameters required by the function
+ */
 async function readMaps(argumentsArray){
 	let myURL = argumentsArray.urlEndPoint + "/" + URL_MAPS;
 	let foundMaps = [];
@@ -69,6 +96,11 @@ async function readMaps(argumentsArray){
 	}  
 }
 
+/**
+ * Return the list of studies for a given url
+ * @async
+ * @param {array} argumentsArray - Array containing the parameters required by the function
+ */
 async function readStudyList(argumentsArray){
 	let myURL = argumentsArray.urlEndPoint + "/" + URL_STUDIES + "?studyType=genotype";
 	let foundStudies = new Array();
@@ -84,6 +116,11 @@ async function readStudyList(argumentsArray){
 	}    
 }
 
+/**
+ * Return the list of Marker Profile for a given url
+ * @async
+ * @param {array} argumentsArray - Array containing the parameters required by the function
+ */
 async function getmarkerProfileDbId(argumentsArray){
     let myURL = argumentsArray.askedPage===undefined ? argumentsArray.urlEndPoint + "/" + URL_MARKER_PROFILES : argumentsArray.urlEndPoint + "/" + URL_MARKER_PROFILES +"?page="+argumentsArray.askedPage ;
 	let myInit = returnInit(argumentsArray.token);
@@ -98,6 +135,11 @@ async function getmarkerProfileDbId(argumentsArray){
 	} 
 }
 
+/**
+ * Return the list of Marker for a given url
+ * @async
+ * @param {array} argumentsArray - Array containing the parameters required by the function
+ */
 async function getMarkers(argumentsArray){
     let myURL = argumentsArray.askedPage===undefined ? argumentsArray.urlEndPoint + "/" + URL_MARKERS : argumentsArray.urlEndPoint + "/" + URL_MARKERS +"?page="+argumentsArray.askedPage ;
     if(argumentsArray.askedType !== undefined && argumentsArray.askedType !== null){
@@ -119,6 +161,11 @@ async function getMarkers(argumentsArray){
 	} 
 }
 
+/**
+ * Return the details for a given map
+ * @async
+ * @param {array} argumentsArray - Array containing the parameters required by the function
+ */
 async function getMapDetails(argumentsArray){
 	let myURL=argumentsArray.urlEndPoint+"/"+URL_MAPS+"/"+argumentsArray.selectedMap;
 	let myInit = returnInit(argumentsArray.token);
@@ -132,6 +179,11 @@ async function getMapDetails(argumentsArray){
 	} 
 }
 
+/**
+ * Return the list of Marker Position for a given url
+ * @async
+ * @param {array} argumentsArray - Array containing the parameters required by the function
+ */
 async function getMarkersPosition(argumentsArray){
     let myURL = argumentsArray.askedPage===undefined ? argumentsArray.urlEndPoint+"/"+URL_MAPS+"/"+argumentsArray.selectedMap+"/positions" : argumentsArray.urlEndPoint+"/"+URL_MAPS+"/"+argumentsArray.selectedMap+"/positions?page="+argumentsArray.askedPage;
     if(argumentsArray.selectedLKG!==undefined){myURL = myURL + '&linkageGroupId=' + argumentsArray.selectedLKG;}
@@ -147,6 +199,11 @@ async function getMarkersPosition(argumentsArray){
 	}
 }
 
+/**
+ * Return the data matrix for a given marker list/ marker profile list
+ * @async
+ * @param {array} argumentsArray - Array containing the parameters required by the function
+ */
 async function getMatrix(argumentsArray){
     try {
 		let myURL = argumentsArray.askedPage===undefined ? argumentsArray.urlEndPoint + "/" +URL_ALLELE_MATRIX : argumentsArray.urlEndPoint + "/" +URL_ALLELE_MATRIX+ "?pageSize="+argumentsArray.clientPageSize+"&page="+argumentsArray.askedPage;
@@ -181,6 +238,11 @@ async function getMatrix(argumentsArray){
 	}
 }
 
+/**
+ * Function responsible for exporting the matrix
+ * @async
+ * @param {array} argumentsArray - Array containing the parameters required by the function
+ */
 async function getExportStatus(argumentsArray){
     let l = Ladda.create( document.querySelector( '#Export'));
     try {
@@ -215,6 +277,11 @@ async function getExportStatus(argumentsArray){
     l.stop();
 }
 
+/**
+ * Return the details for a given Germplasms
+ * @async
+ * @param {array} argumentsArray - Array containing the parameters required by the function
+ */
 async function getGermplasmsDetails(argumentsArray){
     try{
         let myURL = argumentsArray.urlEndPoint + "/germplasm-search";//?germplasmDbId=";
