@@ -214,10 +214,10 @@ async function getMatrix(argumentsArray){
 		}
 		argumentsArray.sendedMarkers = removeAll(argumentsArray.sendedMarkers, undefined);
 		for(i=0;i<argumentsArray.sendedMarkers.length; i++){
-			matrixString+= (i==0 ? '' : '&') + 'markerDbId=' +argumentsArray.sendedMarkers[i];
+			matrixString+= (i===0 ? '' : '&') + 'markerDbId=' +argumentsArray.sendedMarkers[i];
 		}
 		matrixString+='&unknownString=';
-		if(argumentsArray.isAnExport == true){matrixString += "&format=tsv";}
+		if(argumentsArray.isAnExport === true){matrixString += "&format=tsv";}
 		let myHeaders = new Headers();
 		if(argumentsArray.token!=='""'){
 			myHeaders = {'Authorization': 'Bearer '+argumentsArray.token,

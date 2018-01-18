@@ -1,4 +1,4 @@
-"use strict";
+
 
 async function init(){
 	await setVisibleField();
@@ -56,13 +56,28 @@ async function setVisibleField() {
 	}
 }
 
+async function geneateGroupTab(caller) {
+	let groups = $(caller).parent().children();
+	for(let i=2; i<groups.length;i++){
+		let urls = $(groups[i]).children();
+		for(let j=3; j<urls.length;j++){
+			if(undefined ===groupTab[i-2]){groupTab[i-2]=[];}
+			groupTab[i-2].push(await urlWithAuth.staticConstructor(urls[j].children[0].value,urls[j].children[1].value,urls[j].children[2].value));
+		}
+	}
+	console.log(groupTab);
+}
+
 async function login(){
-    let tempGroup =[];
-    if(!isEndPointInUrl){
-        tempGroup.push(await urlWithAuth.staticConstructor($("#urltoget").val(),$("#UserId").val(),$("#Password").val()));
-        if($('#urltoget2').val()!==""){tempGroup.push(await urlWithAuth.staticConstructor($("#urltoget2").val(),$("#UserId2").val(),$("#Password2").val()));}
-        groupTab.push(tempGroup);
-    }
+	console.log(groupTab);
+	if(groupTab.length===0){
+        let tempGroup =[];
+        if(!isEndPointInUrl){
+            tempGroup.push(await urlWithAuth.staticConstructor($("#urltoget").val(),$("#UserId").val(),$("#Password").val()));
+            if($('#urltoget2').val()!==""){tempGroup.push(await urlWithAuth.staticConstructor($("#urltoget2").val(),$("#UserId2").val(),$("#Password2").val()));}
+            groupTab.push(tempGroup);
+        }
+	}
 	setMainFormVisible();
 	$('#toAnimate').addClass('animated fadeIn');
 	startment();

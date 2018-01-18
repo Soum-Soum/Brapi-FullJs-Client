@@ -3,28 +3,6 @@
 	<head>
 		<meta charset="utf-8"/>
 		<title>Breeding Api Client</title>
-        <script src="js/variables.js"></script>
-		<script src="js/extern_library/jquery.js"></script>
-		<script src="js/extern_library/jquery.modal.js" type="text/javascript" charset="utf-8"></script>
-		<link rel="stylesheet" href="css/jquery.modal.css" type="text/css" media="screen" />
-		<script type="text/javascript" src="js/utilities.js"></script>
-		<script type="text/javascript" src="js/classes/pager.js"></script>
-		<script src="js/main.js"></script>
-		<script src="js/calls.js"></script>
-        <script src="js/hmap.js"></script>
-		<script src="js/paginantion.js"></script>
-		<script src="js/getting_Information.js"></script>
-		<script src="js/view.js"></script>
-		<script src="js/export.js"></script>
-		<script src="js/extern_library/spin.min.js"></script>
-		<script src="js/extern_library/ladda.min.js"></script>
-		<script src="js/classes/urlWithAuth.js"></script>
-		<script src="js/extern_library/bootstrap.js"></script>
-		<script src="js/extern_library/bootstrap.bundle.js"></script>
-		<link rel="stylesheet" type="text/css" href="css/ladda-themeless.min.css">
-		<link rel="stylesheet" type="text/css" href="css/bootstrap.css">
-		<link rel="stylesheet" type="text/css" href="css/animate.css">
-		<link rel="stylesheet" type="text/css" href="css/style.css">
 	</head>
 	<body>
 	<div class=" container-fluid">
@@ -71,24 +49,25 @@
 							</div>-->
 							<div class="col-6 btn-group" role="group" aria-label="Basic example">
 								<button id="btnChangeName"type="button" class="btn btn-sm btn-secondary" onclick="animatForm();"> Use 2 Url</button>
-								<button type="button" class="btn btn-sm btn-secondary" data-toggle="modal" data-target=".bd-example-modal-lg">Use More Url</button>
+								<button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-lg">Large modal</button>
 							</div>
-							<div class="mx-auto modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+							<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
 								<div class="modal-dialog modal-lg">
-									<div class="modal-content">
-										<div class="container-fluid">
-											<div class="row lol" style="background-color: #efa2a9;">
-												<button id="addGrp" class="col-12 btn btn-primary" style="margin-bottom: 10px" onclick="addGrp(this)"> Add one Group</button>
-												<div class="row col-12 lol animated pulse" style="background-color: #fd7e14;">
-													<button class="col-5 btn btn-primary" onclick="addUrl(this);">Add one URL</button>
-													<button class="col-5 btn btn-danger" onclick="rmUrl(this);">Remove one URL</button>
-													<button type="button" class="col-2 close" aria-label="Close" onclick="rmThisGrp(this);">
+									<div style="border-radius: 20px" class="modal-content">
+										<div class="container-fluid" style="background-color: #daebf3;">
+											<div class="row lol" style="background-color: #daebf3;">
+												<button type="button" class="col-6 btn btn-light" style="margin-bottom: 10px" onclick="addGrp(this)"> Add one Group</button>
+												<button type="button" class="col-6 btn btn-dark" style="margin-bottom: 10px"  onclick="geneateGroupTab(this)"> Connect</button>
+												<div class="row col-12 lol animated pulse" style="background-color: #2980b9;">
+													<button type="button" class="space col-5 btn btn-light" onclick="addUrl(this);">Add one URL</button>
+													<button type="button" class="space col-5 btn btn-dark" onclick="rmUrl(this);">Remove one URL</button>
+													<button type="button" class="space col-2 btn btn-outline-danger close" aria-label="Close" onclick="rmThisGrp(this);">
 														<span aria-hidden="true">&times;</span>
 													</button>
 													<div class=" row space container-fluid animated pulse">
-														<input class="form-control  col-8" type="text" placeholder="Url">
-														<input class="form-control col-2" type="text" placeholder="UserName">
-														<input class="form-control col-2" type="text" placeholder="Password">
+														<input class="form-control col-8" type="text" value="http://localhost:8080/gigwa/rest/Rice-MSU7/brapi/v1" placeholder="Url">
+														<input class="form-control col-2" type="text" value="pierre" placeholder="UserName">
+														<input class="form-control col-2" type="text" value="test" placeholder="Password">
 													</div>
 												</div>
 											</div>
@@ -96,7 +75,6 @@
 									</div>
 								</div>
 							</div>
-
 						</div>
 					</div>
 				</form>	
@@ -201,6 +179,28 @@
 				</tfoot>
 			</table>
 		</div>
-		<script type="text/javascript">	init();	</script>
+		<link rel="stylesheet" type="text/css" href="css/ladda-themeless.min.css">
+		<link rel="stylesheet" type="text/css" href="css/animate.css">
+		<link rel="stylesheet" type="text/css" href="css/bootstrap.css">
+		<link rel="stylesheet" type="text/css" href="css/style.css">
+		<script src="js/extern_library/jquery.js"></script>
+		<script src="js/extern_library/spin.min.js"></script>
+		<script src="js/extern_library/ladda.min.js"></script>
+		<script src="js/extern_library/bootstrap.js"></script>
+		<script src="js/extern_library/bootstrap.bundle.js"></script>
+		<script src="js/classes/pager.js"></script>
+		<script src="js/classes/urlWithAuth.js"></script>
+		<script src="js/variables.js"></script>
+		<script src="js/utilities.js"></script>
+		<script src="js/calls.js"></script>
+		<script src="js/hmap.js"></script>
+		<script src="js/paginantion.js"></script>
+		<script src="js/getting_Information.js"></script>
+		<script src="js/view/view.js"></script>
+		<script src="js/view/tabView.js"></script>
+		<script src="js/view/grpWidgetView.js"></script>
+		<script src="js/export.js"></script>
+		<script src="js/main.js"></script>
+	    <script type="text/javascript">	init();	</script>
 	</body>
 </html>

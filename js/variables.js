@@ -9,7 +9,7 @@ const REQUIRED_CALLS = [URL_MAPS, URL_MARKERS, URL_STUDIES, URL_MARKER_PROFILES,
 const  ALL_CALLS = ['token', 'calls', 'markers', 'studies-search', 'maps', 'maps/{id}', 'maps/{id}/positions', 'markerprofiles', 'studies/{id}/germplasm', 'allelematrix-search', 'allelematrix-search/status', 'germplasm/{id}', 'germplasm-search'];
 let firtstInformation;
 let  selectedMap = "", calls = "", mostPresentType = "";
-let selectedMarkersProfils=[], selectedMarkers=[], hmapsType=undefined , hmapsLinkageGroup = [], response = [], cpyResp = [], url2Token = [], arrayOfMarkersType=[], groupTab = [], call2UrlTab = [], currentGroup = [];
+let selectedMarkersProfils=[], selectedMarkers=[], hmapsType=undefined , hmapsLinkageGroup = [], response = [], cpyResp = [], arrayOfMarkersType=[], groupTab = [], call2UrlTab = [];
 let clientPageSize=1000, startmentindex=0, sizeOfResquestedMatrix=0, totalPage =0, currentGroupId=0;
 let isEndPointInUrl=false, isMapIdInUrl=false, auth=true, exportIsAbort = false ,exportGermplasmsIsAbort = false ,is2EndPoint = false;
 
