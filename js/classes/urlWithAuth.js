@@ -41,8 +41,10 @@ class urlWithAuth{
             alert("No Username or Password for this url : " + this.url);
         }else{
             this.token= await getToken(this.userName, this.pswrd, this.url);
-            if(this.token===""){alert("Bad Username or password, You're are loged as public user to " + this.url +  ", so you only have acces to public data");}
-            else{alert("You're loged as private user to " + this.url);}
+            if(isEndPointInUrl){
+                if(this.token===""){alert("Bad Username or password, You're are loged as public user to " + this.url +  ", so you only have acces to public data");}
+                else{alert("You're loged as private user to " + this.url);}
+            }
         }
     }
 

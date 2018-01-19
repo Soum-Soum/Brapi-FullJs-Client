@@ -62,7 +62,17 @@ async function geneateGroupTab(caller) {
 		let urls = $(groups[i]).children();
 		for(let j=3; j<urls.length;j++){
 			if(undefined ===groupTab[i-2]){groupTab[i-2]=[];}
-			groupTab[i-2].push(await urlWithAuth.staticConstructor(urls[j].children[0].value,urls[j].children[1].value,urls[j].children[2].value));
+			let tempUrl = await urlWithAuth.staticConstructor(urls[j].children[0].value,urls[j].children[1].value,urls[j].children[2].value);
+			if(tempUrl.token!==undefined){
+                groupTab[i-2].push(tempUrl);
+				$(urls[j].children[3]).hide(100);
+                $(urls[j].children[4]).show(100);
+                $(urls[j].children[5]).hide(100);
+			}else{
+                $(urls[j].children[3]).hide(100);
+                $(urls[j].children[4]).hide(100);
+                $(urls[j].children[5]).show(100);
+			}
 		}
 	}
 	console.log(groupTab);
@@ -71,12 +81,15 @@ async function geneateGroupTab(caller) {
 async function login(){
 	console.log(groupTab);
 	if(groupTab.length===0){
-        let tempGroup =[];
         if(!isEndPointInUrl){
+            let tempGroup =[];
             tempGroup.push(await urlWithAuth.staticConstructor($("#urltoget").val(),$("#UserId").val(),$("#Password").val()));
-            if($('#urltoget2').val()!==""){tempGroup.push(await urlWithAuth.staticConstructor($("#urltoget2").val(),$("#UserId2").val(),$("#Password2").val()));}
             groupTab.push(tempGroup);
         }
+	}else{
+		if(isEndPointInUrl){
+            fillWidget(groupTab);
+		}
 	}
 	setMainFormVisible();
 	$('#toAnimate').addClass('animated fadeIn');

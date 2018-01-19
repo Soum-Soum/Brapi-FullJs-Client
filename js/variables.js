@@ -11,5 +11,5 @@ let firtstInformation;
 let  selectedMap = "", calls = "", mostPresentType = "";
 let selectedMarkersProfils=[], selectedMarkers=[], hmapsType=undefined , hmapsLinkageGroup = [], response = [], cpyResp = [], arrayOfMarkersType=[], groupTab = [], call2UrlTab = [];
 let clientPageSize=1000, startmentindex=0, sizeOfResquestedMatrix=0, totalPage =0, currentGroupId=0;
-let isEndPointInUrl=false, isMapIdInUrl=false, auth=true, exportIsAbort = false ,exportGermplasmsIsAbort = false ,is2EndPoint = false;
+let isEndPointInUrl=false, isMapIdInUrl=false, auth=true, exportIsAbort = false ,exportGermplasmsIsAbort = false;
 

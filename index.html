@@ -29,34 +29,25 @@
 								<div class="input-group">
 									<input type="text" value="" name="UserId" class="form-control" id="UserId" placeholder="User Name">
 									<input type="text" value="" name="Password" class="form-control" id="Password" placeholder="Password">
-                                    <input type="text" name="UserId" class="form-control" id="UserId2" placeholder="User Name">
-									<input type="text" name="Password" class="form-control" id="Password2" placeholder="Password">
 								</div>
 							</div>
 						</div>
 						<div class="row">
 							<div id="urlForm" class="input-group">
 								<input value="http://localhost:8080/gigwa/rest/Rice-MSU7/brapi/v1" type="text" name="URL" class="form-control" placeholder="Ex : http://_____/brapi/v1" id="urltoget" onchange="setEmptyTheFields();">
-								<input value="http://localhost:8080/gigwa/rest/Rice-MSU7/brapi/v1" type="text" name="URL" class="form-control" placeholder="Ex : http://_____/brapi/v1" id="urltoget2" onchange="setEmptyTheFields();">
 							</div>
 						</div>
 						<div class="row">
 							<div class=" col-6">
 								<button class="mx-auto btn btn-secondary btn-sm" id="Submit1" type="button" onclick="setEmptyTheFields();login();">Submit</button>
 							</div>
-							<!--<div class=" col-6">
-								<label id="labelUse2Url" class="form-check-label mx-auto" for="Use2Url">Use 2 Url <input type="checkbox" name="Use2Url" id="Use2Url" onchange="animatForm();"></label>
-							</div>-->
-							<div class="col-6 btn-group" role="group" aria-label="Basic example">
-								<button id="btnChangeName"type="button" class="btn btn-sm btn-secondary" onclick="animatForm();"> Use 2 Url</button>
-								<button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-lg">Large modal</button>
-							</div>
+							<button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target=".bd-example-modal-lg">Large modal</button>
 							<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
 								<div class="modal-dialog modal-lg">
 									<div style="border-radius: 20px" class="modal-content">
 										<div class="container-fluid" style="background-color: #daebf3;">
 											<div class="row lol" style="background-color: #daebf3;">
-												<button type="button" class="col-6 btn btn-light" style="margin-bottom: 10px" onclick="addGrp(this)"> Add one Group</button>
+												<button type="button" class="col-6 btn btn-light" style="margin-bottom: 10px" id="addGrpId" onclick="addGrp(this)"> Add one Group</button>
 												<button type="button" class="col-6 btn btn-dark" style="margin-bottom: 10px"  onclick="geneateGroupTab(this)"> Connect</button>
 												<div class="row col-12 lol animated pulse" style="background-color: #2980b9;">
 													<button type="button" class="space col-5 btn btn-light" onclick="addUrl(this);">Add one URL</button>
@@ -64,10 +55,17 @@
 													<button type="button" class="space col-2 btn btn-outline-danger close" aria-label="Close" onclick="rmThisGrp(this);">
 														<span aria-hidden="true">&times;</span>
 													</button>
-													<div class=" row space container-fluid animated pulse">
-														<input class="form-control col-8" type="text" value="http://localhost:8080/gigwa/rest/Rice-MSU7/brapi/v1" placeholder="Url">
+													<div class=" row  space container-fluid animated pulse ">
+														<input class="form-control col-7" type="text" value="http://localhost:8080/gigwa/rest/Rice-MSU7/brapi/v1" placeholder="Url">
 														<input class="form-control col-2" type="text" value="pierre" placeholder="UserName">
 														<input class="form-control col-2" type="text" value="test" placeholder="Password">
+														<div class="btn btn-secondary badgeToShow"></div>
+														<div class="btn btn-success badgeToHide">
+															<i class="fas fa-check"></i>
+														</div>
+														<div class="btn btn-danger badgeToHide">
+															<i class="fas fa-minus-circle"></i>
+														</div>
 													</div>
 												</div>
 											</div>
@@ -188,6 +186,7 @@
 		<script src="js/extern_library/ladda.min.js"></script>
 		<script src="js/extern_library/bootstrap.js"></script>
 		<script src="js/extern_library/bootstrap.bundle.js"></script>
+		<script src="js/extern_library/fontawesome-all.js"></script>
 		<script src="js/classes/pager.js"></script>
 		<script src="js/classes/urlWithAuth.js"></script>
 		<script src="js/variables.js"></script>
@@ -201,6 +200,6 @@
 		<script src="js/view/grpWidgetView.js"></script>
 		<script src="js/export.js"></script>
 		<script src="js/main.js"></script>
-	    <script type="text/javascript">	init();	</script>
+	    <script type="text/javascript">	$('.badgeToHide').hide(); init();	</script>
 	</body>
 </html>
