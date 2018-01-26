@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: view/view.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: view/view.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * insert matrix in result table
+ * @function
+ * @param {Array} firstinformations - array containing the maps and studies that were found
+ */
+function setup_select_tag(firstinformations){
+	let htmlString='&lt;option value="">---Select one---&lt;/option>';
+	if($_GET("mapDbId")===null){
+        for(let key in firstinformations.studies){
+            htmlString += '&lt;option id="'+key+'" value="' + firstinformations.maps[key].mapDbId + '">' + firstinformations.maps[key].name + '&lt;/option>\n';
+        }
+	}else{
+        htmlString = '&lt;option id="'+0+'" value="' + firstinformations.maps[0] + '">' + firstinformations.maps[0] + '&lt;/option>\n';
+	}
+    $('select#selectionMap').html(htmlString);
+    selectStudies();
+}
+
+/**
+ * Set htmp of studies widget
+ * @function
+ */
+function selectStudies(){
+    let selectedMapId = currentGroupId =$('#selectionMap').find('option:selected').attr('id');
+    $('select#selectionStudies').html('');
+    let htmlString='&lt;option value="">---Select one---&lt;/option>';
+    for(let key in firtstInformation.studies){
+        if(selectedMapId === key){
+            htmlString += '&lt;option id="'+key+'" value="' + firtstInformation.studies[key].studyDbId + '">' + firtstInformation.studies[key].name + '&lt;/option>\n';
+        }
+    }
+    $('select#selectionStudies').html(htmlString);
+}
+
+/**
+ * Set empty all fields
+ * @function
+ */
+function setEmptyTheFields(){
+	$("#MarkersProfils").html("");
+	$("#typeMarker").html("");
+	$("#chromosome").html("");
+	$("#Markers").html("");
+	$('#Germplasms').html("");
+	$('#labelGermplasms').hide();
+    $('#markerProfileLabel').hide();
+    $('#typeLabel').hide();
+    $('#chromosomeLabel').hide();
+    $('#markersLabel').hide();
+    $('#topMarkerDiv').hide();
+    $('#topTypeDiv').hide();
+    enmptResultTab();
+}
+
+/**
+ * Set Empty Marker field
+ * @function
+ */
+function setEmptyMarkerSelect() {
+	$('#Markers').html("");
+}
+
+/**
+ * Set up html of Germplasms widget
+ * @function
+ * @param {Array} response - array of marker profile
+ */
+function setUpGermplasms(response){
+	let htmlString ="";
+	Object.keys(response).forEach(function(element){
+        let valueString = "";
+        for (let i = 0; i &lt; response[element].length; i++) {
+			valueString+=response[element][i].markerProfileDbId + ",";
+		}
+		htmlString +='&lt;option selected value="'+valueString+'">'+element+'&lt;/option>\n';
+	});
+	$('select#Germplasms').html(htmlString);
+	updateSelection('labelGermplasms','Germplasms');
+}
+
+/**
+ * Set up html of Markers Profils widget
+ * @function
+ */
+function setUpMarkerProfils(){
+    let selectedGermplasms = $("select#Germplasms option:selected").map(function () {
+        return $(this).val().split(",");
+    }).get();
+    selectedGermplasms=removeAll(selectedGermplasms,"");
+	let htmlString="";
+	selectedGermplasms.forEach(function(element){
+		htmlString +='&lt;option selected value="'+element+'">'+element+'&lt;/option>\n';
+	});
+	$('#MarkersProfils').html(htmlString);
+    updateSelection('markerProfileLabel','MarkersProfils');
+	if ($('#MarkersProfils>option').length===$('#Germplasms>option:selected').length){
+		$('#MarkersProfils').attr("disabled", true);
+	}else{
+		$('#MarkersProfils').attr("disabled", false);
+	}
+}
+
+/**
+ * Set up Html of LinkageGroup and MarkersType widget
+ * @function
+ * @param {Array} arrayOfLinkageGroup - array Of LinkageGroup
+ * @param {Array} arrayOfMarkersType - array Of MarkersType
+ */
+function setUpLinkageGroupAndMarkersType(arrayOfLinkageGroup,arrayOfMarkersType){
+	arrayOfLinkageGroup.sort(sortAlphaNum);
+    let htmlString="";
+    arrayOfLinkageGroup.forEach(function(element){
+		htmlString += '&lt;option value="' + element+ '">' + element+ '&lt;/option>';
+    });
+    $('select#chromosome').html(htmlString);
+    updateSelection('chromosomeLabel','chromosome');
+    htmlString="";
+    arrayOfMarkersType.forEach(function(element){
+		htmlString += '&lt;option selected value="' + element+ '">' + element+ '&lt;/option>';
+    });
+    $('select#typeMarker').html(htmlString);
+}
+
+/**
+ * Set up Html of Marker widget
+ * @function
+ * @param {Array} arrayMarkersIds - array of MarkersIds
+ */
+function setupMarkersId(arrayMarkersIds){
+	if (arrayMarkersIds.length&lt;=10000) {
+		$('#Markers').show();
+		$('#numberOfMarkers').hide();
+		$('#labelToHide').show();
+        $('#markersLabel').show();
+        $('#topMarkerDiv').hide();
+		let htmlString ="";
+		arrayMarkersIds.forEach(function(element){
+			htmlString +='&lt;option selected value="'+element+'">'+element+'&lt;/option>\n';
+		});
+		$('#Markers').html(htmlString);
+        updateSelection('markersLabel','Markers');
+	}else{
+		$('#Markers').html("");
+		$('#markersLabel').hide();
+		$('#numberOfMarkers').html(arrayMarkersIds.length);
+		$('#numberOfMarkers').show();
+		$('#topMarkerDiv').show();
+	}
+}
+
+/**
+ * update the label of the current select
+ * @function
+ * @param {Array} idLabel - selected label
+ * @param {Array} idSelect - selected select
+ */
+function updateSelection(idLabel, idSelect){
+	let nbSelectionOption = $('#'+idSelect+" option:selected").map(function(){return $(this).val().split(",");}).get();
+	nbSelectionOption = removeAll(nbSelectionOption, "");
+	nbSelectionOption=nbSelectionOption.length;
+	let nbOption = $('#'+idSelect+" option").map(function(){return $(this).val().split(",");}).get();
+	nbOption = removeAll(nbOption,"");
+	nbOption=nbOption.length;
+	$('#'+idLabel).text(nbSelectionOption + ' / ' + nbOption);
+    $('#'+idLabel).show();
+}
+
+/**
+ * Handle Errors
+ * @function
+ * @param {Error} err - current error
+ */
+async function handleErrors(err) {
+	if (typeof err === "string"){
+		$('#ErrorMessage').show();
+	    $('#ErrorMessage').text(err);
+	    await sleep(3000);
+	    $('#ErrorMessage').hide();
+	}else{
+		$('#ErrorMessage').show();
+	    $('#ErrorMessage').text(err.message);
+	    await sleep(3000);
+	    $('#ErrorMessage').hide();
+	}
+}
+
+/**
+ * Set html object disabled or undisabled
+ * @function
+ * @param {Boolean} bool - true or false
+ */
+function setDisabled(bool){
+    $('#selectionMap').prop('disabled', bool);
+    $('#selectionStudies').prop('disabled', bool);
+    $('#Search').prop('disabled', bool);
+    $('#Export').prop('disabled', bool);
+    $('#ExportGermplasmsTsv').prop('disabled', bool);
+    $('#ExportGermplasmsDetails').prop('disabled', bool);
+}
+
+/**
+ * Animate html page
+ * @function
+ */
+function animatForm(){
+	if(!$('#UserId2').is(':visible')){
+		$('#btnChangeName').text('Use one url');
+        $('#UserId2').show();
+        $('#Password2').show();
+        $('#urltoget2').show();
+        $('#UserId2').text('');
+        $('#Password2').text('');
+        $('#urltoget2').text('');
+        $('#UserId2').addClass('animated bounceInRight');
+        $('#Password2').addClass('animated bounceInRight');
+        $('#urltoget2').addClass('animated bounceInRight');
+	}else{
+        $('#btnChangeName').text('Use tow url');
+        $('#UserId2').hide();
+        $('#Password2').hide();
+        $('#urltoget2').hide();
+        $('#UserId2').removeClass('animated bounceInRight');
+        $('#Password2').removeClass('animated bounceInRight');
+        $('#urltoget2').removeClass('animated bounceInRight');
+	}
+}
+
+function setMainFormVisible(){
+    $('#mainForm').show();
+	if($('#Use2Url').is(':checked')){
+		$('#ExportGermplasmsDetails').attr("disabled", true);
+	}else{
+        $('#ExportGermplasmsDetails').attr("disabled", false);
+	}
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="PaginationManager.html">PaginationManager</a></li><li><a href="urlWithAuth.html">urlWithAuth</a></li></ul><h3>Global</h3><ul><li><a href="global.html#$_GET">$_GET</a></li><li><a href="global.html#abortExport">abortExport</a></li><li><a href="global.html#abortGermplasmsExport">abortGermplasmsExport</a></li><li><a href="global.html#addGrp">addGrp</a></li><li><a href="global.html#addGrp2">addGrp2</a></li><li><a href="global.html#addUrl">addUrl</a></li><li><a href="global.html#addUrl2">addUrl2</a></li><li><a href="global.html#allelematrix">allelematrix</a></li><li><a href="global.html#animatForm">animatForm</a></li><li><a href="global.html#array_big_intersect">array_big_intersect</a></li><li><a href="global.html#bindCall2Url">bindCall2Url</a></li><li><a href="global.html#buildTsvString">buildTsvString</a></li><li><a href="global.html#callsAreInArray">callsAreInArray</a></li><li><a href="global.html#cleanTab">cleanTab</a></li><li><a href="global.html#enmptResultTab">enmptResultTab</a></li><li><a href="global.html#ExportDetailsGermplasms">ExportDetailsGermplasms</a></li><li><a href="global.html#exportMatrix">exportMatrix</a></li><li><a href="global.html#fill_result_table">fill_result_table</a></li><li><a href="global.html#fillWidget">fillWidget</a></li><li><a href="global.html#Germplasms">Germplasms</a></li><li><a href="global.html#getCalls">getCalls</a></li><li><a href="global.html#getFieldFormJson">getFieldFormJson</a></li><li><a href="global.html#getGermplasmsDetails">getGermplasmsDetails</a></li><li><a href="global.html#getMapDetails">getMapDetails</a></li><li><a href="global.html#getmarkerProfileDbId">getmarkerProfileDbId</a></li><li><a href="global.html#getMarkerProfileHmap">getMarkerProfileHmap</a></li><li><a href="global.html#getMarkers">getMarkers</a></li><li><a href="global.html#getMarkersPosition">getMarkersPosition</a></li><li><a href="global.html#getMatrix">getMatrix</a></li><li><a href="global.html#getToken">getToken</a></li><li><a href="global.html#getTypeList">getTypeList</a></li><li><a href="global.html#handleErrors">handleErrors</a></li><li><a href="global.html#insetMatrixInResultTable">insetMatrixInResultTable</a></li><li><a href="global.html#isInArray">isInArray</a></li><li><a href="global.html#nextPage">nextPage</a></li><li><a href="global.html#prevPage">prevPage</a></li><li><a href="global.html#readMaps">readMaps</a></li><li><a href="global.html#readStudyList">readStudyList</a></li><li><a href="global.html#removeAll">removeAll</a></li><li><a href="global.html#requCallareImplement">requCallareImplement</a></li><li><a href="global.html#returnInit">returnInit</a></li><li><a href="global.html#reversHmap">reversHmap</a></li><li><a href="global.html#rmThisGrp">rmThisGrp</a></li><li><a href="global.html#rmUrl">rmUrl</a></li><li><a href="global.html#selectStudies">selectStudies</a></li><li><a href="global.html#setArgumentArray">setArgumentArray</a></li><li><a href="global.html#setCustomIndex">setCustomIndex</a></li><li><a href="global.html#setCustomPageSize">setCustomPageSize</a></li><li><a href="global.html#setDisabled">setDisabled</a></li><li><a href="global.html#setEmptyMarkerSelect">setEmptyMarkerSelect</a></li><li><a href="global.html#setEmptyTheFields">setEmptyTheFields</a></li><li><a href="global.html#setHmapLinkageGroup">setHmapLinkageGroup</a></li><li><a href="global.html#setHmapType">setHmapType</a></li><li><a href="global.html#setup_select_tag">setup_select_tag</a></li><li><a href="global.html#setUpGermplasms">setUpGermplasms</a></li><li><a href="global.html#setUpLinkageGroupAndMarkersType">setUpLinkageGroupAndMarkersType</a></li><li><a href="global.html#setUpMarkerProfils">setUpMarkerProfils</a></li><li><a href="global.html#setupMarkersId">setupMarkersId</a></li><li><a href="global.html#sleep">sleep</a></li><li><a href="global.html#updateSelection">updateSelection</a></li><li><a href="global.html#urlBrapiEndPointIsOk">urlBrapiEndPointIsOk</a></li><li><a href="global.html#urlMapIdIsOk">urlMapIdIsOk</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Thu Jan 25 2018 10:51:47 GMT+0100 (CET)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

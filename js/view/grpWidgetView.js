@@ -1,3 +1,8 @@
+/**
+ * Add another url to caller's Group
+ * @function
+ * @param {String} caller - The Caller of the function
+ */
 function  addUrl(caller){
     $('.badgeToShow').show();
     $(caller).parent().append('<div class=" row  space container-fluid animated pulse ">\n' +
@@ -15,6 +20,12 @@ function  addUrl(caller){
     $('.badgeToHide').hide();
 }
 
+/**
+ * Add another url with preset value to caller's Group
+ * @function
+ * @param {String} caller - The Caller of the function
+ * @param {Urlwithauth} caller - The urlwithauth used for get the preset value
+ */
 function  addUrl2(caller, urlwithauth){
     $('.badgeToShow').show();
     $(caller).parent().append('<div class=" row  space container-fluid animated pulse ">\n' +
@@ -32,6 +43,12 @@ function  addUrl2(caller, urlwithauth){
     $('.badgeToHide').hide();
 }
 
+/**
+ * Remove last url of caller's Group
+ * @async
+ * @function
+ * @param {String} caller - The Caller of the function
+ */
 async function  rmUrl(caller){
     $('.badgeToHide').hide();
     $('.badgeToShow').show();
@@ -45,6 +62,12 @@ async function  rmUrl(caller){
     }
 
 }
+
+/**
+ * Add another url group
+ * @function
+ * @param {String} caller - The Caller of the function
+ */
 function addGrp(caller){
     $('.badgeToShow').show();
     $(caller).parent().append(
@@ -70,6 +93,11 @@ function addGrp(caller){
     $('.badgeToHide').hide();
 }
 
+/**
+ * Add another url to caller's Group without any url inside
+ * @function
+ * @param {String} caller - The Caller of the function
+ */
 function  addGrp2(caller) {
     $(caller).parent().append('<div class="row col-12 lol animated pulse" style="background-color: #2980b9;">\n' +
                 '<button type="button" class="space col-5 btn btn-light" onclick="addUrl(this);">Add one URL</button>\n' +
@@ -81,6 +109,12 @@ function  addGrp2(caller) {
         '</div>');
 }
 
+/**
+ * Remove the url group of the caller
+ * @async
+ * @function
+ * @param {String} caller - The Caller of the function
+ */
 async function rmThisGrp (caller) {
     $(caller).parent().addClass('fadeOut');
     await sleep(400).then(function () {
@@ -88,6 +122,11 @@ async function rmThisGrp (caller) {
     });
 }
 
+/**
+ * Fill the widget with the group tab generated from the client url
+ * @function
+ * @param {Array} array - the current GroupTab
+ */
 function  fillWidget(array) {
     let caller = $('#addGrpId');
     for(let i=0; i<array.length-1; i++){

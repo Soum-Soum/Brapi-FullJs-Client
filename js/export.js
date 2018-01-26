@@ -1,3 +1,8 @@
+/**
+ * Launch export of allelematrix
+ * @function
+ * @async
+ */
 async function exportMatrix(){
     $('#AbortExport').show();
     exportIsAbort=false;
@@ -15,7 +20,11 @@ async function exportMatrix(){
     argumentsArray = setArgumentArray('allelematrix-search/status', argumentsArray);
     await getExportStatus(argumentsArray);
 }
-
+/**
+ * Launch export of allelematrix
+ * @function
+ * @async
+ */
 async function ExportDetailsGermplasms(){
     let jsonHmap = [],  argumentsArray;
     let selectedGermplasms = $("#Germplasms option:selected").map(function(){return $(this).text().split(",");}).get();
@@ -65,6 +74,11 @@ async function ExportDetailsGermplasms(){
     l.stop();
 }
 
+/**
+ * Generate field Tab from Json-Hmap
+ * @function
+ * @param {Array} HMap - Json-Hmap
+ */
 function getFieldFormJson(HMap){
     let fieldTab = [];
     Object.keys(HMap).forEach(function(element){
@@ -86,7 +100,14 @@ function getFieldFormJson(HMap){
     return fieldTab;
 }
 
-function buildTsvString(jsonHamp, selectedGermplasms, fieldTab){
+/**
+ * Generate Tsv String
+ * @function
+ * @param {Array} HMap - Json-Hmap
+ * @param {Array} selectedGermplasms - The selected Germplasms
+ * @param {Array} fieldTab - Fields of the futur file
+ */
+function buildTsvString(jsonHmap, selectedGermplasms, fieldTab){
     let tsvString ='';
     let tempstring = 'germplasmDbId \tmarkerProfileDbId \t';
     Object.keys(fieldTab).forEach(function (element){
@@ -107,9 +128,9 @@ function buildTsvString(jsonHamp, selectedGermplasms, fieldTab){
         tsvString+='\t';
         Object.keys(fieldTab).forEach(function (element2){
             if(fieldTab[element2]===true){
-                if(jsonHamp[element]!== null && jsonHamp[element]!==undefined){
-                    if(jsonHamp[element][element2]!==null && jsonHamp[element][element2]!== undefined){
-                        tsvString+= jsonHamp[element][element2] + '\t'
+                if(jsonHmap[element]!== null && jsonHmap[element]!==undefined){
+                    if(jsonHmap[element][element2]!==null && jsonHmap[element][element2]!== undefined){
+                        tsvString+= jsonHmap[element][element2] + '\t'
                     }else{
                         tsvString+='\t';
                     }
@@ -122,6 +143,14 @@ function buildTsvString(jsonHamp, selectedGermplasms, fieldTab){
     return tsvString;
 }
 
+
+/**
+ * Generate Tsv String
+ * @exports Germplasms details
+ * @function
+ * @param {Strint} filename - Name of the futur file
+ * @param {String} tsvData- The string to encoded in the tsv file
+ */
 function download(filename, tsvData) {
     let element = document.createElement('a');
     element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(tsvData));

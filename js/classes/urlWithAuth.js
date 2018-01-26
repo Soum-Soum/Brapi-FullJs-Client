@@ -1,8 +1,19 @@
+/**
+ * urlWithAuth's class
+ * @class
+ */
 class urlWithAuth{
     constructor(){
 
     }
-
+    /**
+     * constructor 2
+     * @async
+     * @static
+     * @function
+     * @generator
+     * @param {String} url2Pars - Url to pars for create object
+     */
     static async staticConstructor2(url2Pars){
         let tempUrl = new urlWithAuth();
         if(url2Pars!==""){
@@ -22,6 +33,16 @@ class urlWithAuth{
         return tempUrl;
     }
 
+    /**
+     * constructor
+     * @async
+     * @static
+     * @function
+     * @generator
+     * @param {String} url - the brapiendpoint
+     * @param {String} userName - the user Name
+     * @param {String} pswrs - the password
+     */
     static async staticConstructor(url, userName, pswrs){
         let tempUrl = new urlWithAuth();
         if(await urlBrapiEndPointIsOk(url)){
@@ -35,19 +56,25 @@ class urlWithAuth{
         return tempUrl;
     }
 
+    /**
+     * Conect the current UrlWithAuth
+     * @async
+     * @function
+     */
     async connect(){
         this.token = "";
         if(this.pswrd === "" || this.userName === ""){
-            alert("No Username or Password for this url : " + this.url);
+            //alert("No Username or Password for this url : " + this.url);
         }else{
             this.token= await getToken(this.userName, this.pswrd, this.url);
-            if(isEndPointInUrl){
-                if(this.token===""){alert("Bad Username or password, You're are loged as public user to " + this.url +  ", so you only have acces to public data");}
-                else{alert("You're loged as private user to " + this.url);}
-            }
         }
     }
 
+    /**
+     * allocate call to the current UrlWithAuth
+     * @async
+     * @function
+     */
     async allocateCall(){
         this.callsImplemented=[];
         let tempcalls = await getCalls(this);
@@ -58,6 +85,10 @@ class urlWithAuth{
         }
     }
 
+    /**
+     * print the current UrlWithAuth
+     * @function
+     */
     printUrl(){
         console.log(this.url);
         console.log(this.userName);

@@ -1,4 +1,14 @@
+/**
+ * urlWithAuth's class
+ * @class
+ */
 class PaginationManager{
+    /**
+     * pager's constructor
+     * @function
+     * @generator
+     * @param {Integer} evolutionOfPagination - the base evolution Of Pagination index
+     */
     constructor(evolutionOfPagination){
 		this.evolutionOfPagination=evolutionOfPagination;
 	}
@@ -11,6 +21,13 @@ class PaginationManager{
 		this.evolutionOfPagination=newValue;
 	}
 
+    /**
+     * return the resp array
+     * @async
+     * @function
+     * @param {Function} function_to_launch - function to launch
+	 * @param {Array} argumentsArray - arguments Array
+     */
 	async pager(function_to_launch, argumentsArray){
 		try{
 			let arrayOfResp = [];
@@ -39,6 +56,13 @@ class PaginationManager{
 		}
 	}
 
+    /**
+     * return the first page
+     * @async
+     * @function
+     * @param {Function} function_to_launch - function to launch
+     * @param {Array} argumentsArray - arguments Array
+     */
 	async getFirstPage(function_to_launch, argumentsArray){
         try{
             argumentsArray.askedPage=0;
@@ -50,6 +74,14 @@ class PaginationManager{
 
 	}
 
+    /**
+     * return true if the type liste is a complete list
+     * @async
+     * @function
+     * @param {Function} function_to_launch - function to launch
+     * @param {Array} argumentsArray - arguments Array
+	 * @param {Array} arrayOfMarkersType - array Of MarkersType
+     */
 	async isCompleteTypeList(function_to_launch, argumentsArray,arrayOfMarkersType){
 		let tantamount= 0, count = 0, currentNumber = 0 , max = 0, resp=null;
         try{
@@ -81,6 +113,10 @@ class PaginationManager{
 		}
 	}
 
+    /**
+     * update Evolution of pagination
+     * @function
+     */
 	updateEvolution(){
 		$('.Evolution').show();
 		if (this.getEvolutionOfPagination()===100) {$('.Evolution').hide();}

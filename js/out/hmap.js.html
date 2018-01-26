@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: hmap.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: hmap.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * Generate germplasmDbId to germplasm Hmap
+ * @function
+ * @param {Array} arrayGermplasms - Array of germplasm
+ */
+function getMarkerProfileHmap(arrayGermplasms){
+    let hmap=[], alreadyTreated = [];
+    for (let i = 0; i &lt; arrayGermplasms.length; i++) {
+        for (let j = 0; j &lt; arrayGermplasms[i].length; j++) {
+            if(!isInArray(alreadyTreated, arrayGermplasms[i][j].germplasmDbId)){
+                alreadyTreated.push(arrayGermplasms[i][j].germplasmDbId);
+                hmap[arrayGermplasms[i][j].germplasmDbId]=[];
+                hmap[arrayGermplasms[i][j].germplasmDbId].push(arrayGermplasms[i][j]);
+            }else{
+                hmap[arrayGermplasms[i][j].germplasmDbId].push(arrayGermplasms[i][j]);
+            }
+        }
+    }
+    return hmap;
+}
+
+
+/**
+ * Revers any hmap;
+ * @function
+ * @param {Array} hMap- The current Hmap.
+ */
+function reversHmap(hMap){
+    let newHMap = [];
+    Object.keys(hMap).forEach(function(element){
+        for(let i=0; i&lt;hMap[element].length;i++){
+            newHMap[hMap[element][i].markerProfileDbId]=element;
+        }
+    });
+    return newHMap;
+}
+
+/**
+ * Generate call to url hmap
+ * @function
+ * @param {Array} resp - result of getCall function
+ * @param {Array} calls - Url tab
+ */
+function bindCall2Url(resp, calls) {
+    console.log(resp);
+    for(let i=0; i&lt;resp.length; i++){
+        let hmapCall2Url=[];
+        for(let j=0; j&lt;resp[i].length;j++) {
+            /*for(let k=0; k&lt;calls.length; k++){
+                if (isInArray(resp[i][j].callsImplemented, calls[k])) {
+                    hmapCall2Url[calls[k]] = resp[i][j].url + ';' + resp[i][j].token;
+                }
+            }*/
+            calls.forEach(function (element) {
+                if (isInArray(resp[i][j].callsImplemented, element)) {
+                    hmapCall2Url[element] = resp[i][j].url + ';' + resp[i][j].token;
+                }
+            });
+        }
+        call2UrlTab.push(hmapCall2Url);
+    }
+}
+
+/**
+ * Generate LinkageGroup to Marker Hmap
+ * @function
+ * @param {Array} arrayOfLinkageGroup - All LinkageGroup
+ * @param {Array} arrayMarkers - All Markers
+ */
+function setHmapLinkageGroup(arrayOfLinkageGroup, arrayMarkers){
+    hmapsLinkageGroup=[];
+    for(let i =0; i&lt;arrayOfLinkageGroup.length; i++){
+        hmapsLinkageGroup[arrayOfLinkageGroup[i]]=[];
+    }
+    for (let i = 0; i &lt; arrayMarkers.length; i++) {
+        for (let j = 0; j &lt; arrayMarkers[i].length; j++) {
+            hmapsLinkageGroup[arrayMarkers[i][j].linkageGroup].push(arrayMarkers[i][j].markerDbId);
+        }
+    }
+}
+
+/**
+ * Generate Type to Marker Hmap
+ * @function
+ * @param {Array} arrayOfMarkersType - All Marker Type
+ * @param {Array} arrayMarkers - All Markers
+ */
+function setHmapType(arrayOfMarkersType,arrayMarkers){
+    hmapsType = [];
+    for(let i =0; i&lt;arrayOfMarkersType.length; i++){
+        hmapsType[arrayOfMarkersType[i]]=[];
+    }
+    for (let i = 0; i &lt; arrayMarkers.length; i++) {
+        for (let j = 0; j &lt; arrayMarkers[i].length; j++) {
+            for (let k = 0; k &lt; arrayMarkers[i][j].length; k++) {
+                hmapsType[arrayMarkers[i][j][k].type].push(arrayMarkers[i][j][k].markerDbId);
+            }
+        }
+    }
+    console.log(hmapsType);
+    return hmapsType;
+}</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="PaginationManager.html">PaginationManager</a></li><li><a href="urlWithAuth.html">urlWithAuth</a></li></ul><h3>Global</h3><ul><li><a href="global.html#$_GET">$_GET</a></li><li><a href="global.html#abortExport">abortExport</a></li><li><a href="global.html#abortGermplasmsExport">abortGermplasmsExport</a></li><li><a href="global.html#addGrp">addGrp</a></li><li><a href="global.html#addGrp2">addGrp2</a></li><li><a href="global.html#addUrl">addUrl</a></li><li><a href="global.html#addUrl2">addUrl2</a></li><li><a href="global.html#allelematrix">allelematrix</a></li><li><a href="global.html#animatForm">animatForm</a></li><li><a href="global.html#array_big_intersect">array_big_intersect</a></li><li><a href="global.html#bindCall2Url">bindCall2Url</a></li><li><a href="global.html#buildTsvString">buildTsvString</a></li><li><a href="global.html#callsAreInArray">callsAreInArray</a></li><li><a href="global.html#cleanTab">cleanTab</a></li><li><a href="global.html#enmptResultTab">enmptResultTab</a></li><li><a href="global.html#ExportDetailsGermplasms">ExportDetailsGermplasms</a></li><li><a href="global.html#exportMatrix">exportMatrix</a></li><li><a href="global.html#fill_result_table">fill_result_table</a></li><li><a href="global.html#fillWidget">fillWidget</a></li><li><a href="global.html#Germplasms">Germplasms</a></li><li><a href="global.html#getCalls">getCalls</a></li><li><a href="global.html#getFieldFormJson">getFieldFormJson</a></li><li><a href="global.html#getGermplasmsDetails">getGermplasmsDetails</a></li><li><a href="global.html#getMapDetails">getMapDetails</a></li><li><a href="global.html#getmarkerProfileDbId">getmarkerProfileDbId</a></li><li><a href="global.html#getMarkerProfileHmap">getMarkerProfileHmap</a></li><li><a href="global.html#getMarkers">getMarkers</a></li><li><a href="global.html#getMarkersPosition">getMarkersPosition</a></li><li><a href="global.html#getMatrix">getMatrix</a></li><li><a href="global.html#getToken">getToken</a></li><li><a href="global.html#getTypeList">getTypeList</a></li><li><a href="global.html#handleErrors">handleErrors</a></li><li><a href="global.html#insetMatrixInResultTable">insetMatrixInResultTable</a></li><li><a href="global.html#isInArray">isInArray</a></li><li><a href="global.html#nextPage">nextPage</a></li><li><a href="global.html#prevPage">prevPage</a></li><li><a href="global.html#readMaps">readMaps</a></li><li><a href="global.html#readStudyList">readStudyList</a></li><li><a href="global.html#removeAll">removeAll</a></li><li><a href="global.html#requCallareImplement">requCallareImplement</a></li><li><a href="global.html#returnInit">returnInit</a></li><li><a href="global.html#reversHmap">reversHmap</a></li><li><a href="global.html#rmThisGrp">rmThisGrp</a></li><li><a href="global.html#rmUrl">rmUrl</a></li><li><a href="global.html#selectStudies">selectStudies</a></li><li><a href="global.html#setArgumentArray">setArgumentArray</a></li><li><a href="global.html#setCustomIndex">setCustomIndex</a></li><li><a href="global.html#setCustomPageSize">setCustomPageSize</a></li><li><a href="global.html#setDisabled">setDisabled</a></li><li><a href="global.html#setEmptyMarkerSelect">setEmptyMarkerSelect</a></li><li><a href="global.html#setEmptyTheFields">setEmptyTheFields</a></li><li><a href="global.html#setHmapLinkageGroup">setHmapLinkageGroup</a></li><li><a href="global.html#setHmapType">setHmapType</a></li><li><a href="global.html#setup_select_tag">setup_select_tag</a></li><li><a href="global.html#setUpGermplasms">setUpGermplasms</a></li><li><a href="global.html#setUpLinkageGroupAndMarkersType">setUpLinkageGroupAndMarkersType</a></li><li><a href="global.html#setUpMarkerProfils">setUpMarkerProfils</a></li><li><a href="global.html#setupMarkersId">setupMarkersId</a></li><li><a href="global.html#sleep">sleep</a></li><li><a href="global.html#updateSelection">updateSelection</a></li><li><a href="global.html#urlBrapiEndPointIsOk">urlBrapiEndPointIsOk</a></li><li><a href="global.html#urlMapIdIsOk">urlMapIdIsOk</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Thu Jan 25 2018 10:51:47 GMT+0100 (CET)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

@@ -1,6 +1,6 @@
 /**
  * Return true if value is present in the table, wrong if not
- *
+ * @function
  * @param {array} array - The array you want to scan.
  * @param {string} value - The value you search .
  */
@@ -15,7 +15,7 @@ function isInArray(array, value){
 
 /**
  * Stop the program for a given period of time
- *
+ * @function
  * @param {int} ms - The number of ms you want to wait befor the resolution of the promise .
  */
 function sleep(ms) {
@@ -24,7 +24,7 @@ function sleep(ms) {
 
 /**
  * Returns the standard header
- *
+ * @function
  * @param {strint} token - A token.
  */
 function returnInit(token){
@@ -40,7 +40,7 @@ function returnInit(token){
 
 /**
  * Allows you to get information from the url of the page
- *
+ * @function
  * @param {string} param - The tag you want to check.
  */
 function $_GET(param) {
@@ -59,7 +59,7 @@ function $_GET(param) {
 
 /**
  * Remove all occurrence of a value from an array
- *
+ * @function
  * @param {array} array - The array you want to scan.
  * @param {string} value - The value you want to remove .
  */
@@ -89,7 +89,7 @@ function sortAlphaNum(a,b) {
 
 /**
  * Set up the argumentArray for the call you want to call
- *
+ * @function
  * @param {string} callName - The call you want to call
  * @param {Array} argumentsArray - Array containing the parameters required by the function
  */
@@ -114,7 +114,7 @@ function setArgumentArray(callName, argumentsArray){
 
 /**
  * Abort the export of datamatrix
- *
+ * @function
  */
 function abortExport(){
     exportIsAbort = true;
@@ -122,7 +122,7 @@ function abortExport(){
 
 /**
  * Abort the export of Germplasms Details tsv
- *
+ * @function
  */
 function abortGermplasmsExport() {
     exportGermplasmsIsAbort = true;
@@ -130,7 +130,7 @@ function abortGermplasmsExport() {
 
 /**
  * Get type list from a marker tab
- *
+ * @function
  * @param {array} arrayMarker - Marker table
  */
 function getTypeList(arrayMarker){
@@ -149,7 +149,7 @@ function getTypeList(arrayMarker){
 
 /**
  * Return intersection of 2 array
- *
+ * @function
  */
 function array_big_intersect () {
     let args = Array.prototype.slice.call(arguments), aLower = [], aStack = [],

@@ -1,3 +1,8 @@
+/**
+ * insert matrix in result table
+ * @function
+ * @param {Array} firstinformations - array containing the maps and studies that were found
+ */
 function setup_select_tag(firstinformations){
 	let htmlString='<option value="">---Select one---</option>';
 	if($_GET("mapDbId")===null){
@@ -11,6 +16,10 @@ function setup_select_tag(firstinformations){
     selectStudies();
 }
 
+/**
+ * Set htmp of studies widget
+ * @function
+ */
 function selectStudies(){
     let selectedMapId = currentGroupId =$('#selectionMap').find('option:selected').attr('id');
     $('select#selectionStudies').html('');
@@ -23,6 +32,10 @@ function selectStudies(){
     $('select#selectionStudies').html(htmlString);
 }
 
+/**
+ * Set empty all fields
+ * @function
+ */
 function setEmptyTheFields(){
 	$("#MarkersProfils").html("");
 	$("#typeMarker").html("");
@@ -39,10 +52,19 @@ function setEmptyTheFields(){
     enmptResultTab();
 }
 
+/**
+ * Set Empty Marker field
+ * @function
+ */
 function setEmptyMarkerSelect() {
 	$('#Markers').html("");
 }
 
+/**
+ * Set up html of Germplasms widget
+ * @function
+ * @param {Array} response - array of marker profile
+ */
 function setUpGermplasms(response){
 	let htmlString ="";
 	Object.keys(response).forEach(function(element){
@@ -56,6 +78,10 @@ function setUpGermplasms(response){
 	updateSelection('labelGermplasms','Germplasms');
 }
 
+/**
+ * Set up html of Markers Profils widget
+ * @function
+ */
 function setUpMarkerProfils(){
     let selectedGermplasms = $("select#Germplasms option:selected").map(function () {
         return $(this).val().split(",");
@@ -74,6 +100,12 @@ function setUpMarkerProfils(){
 	}
 }
 
+/**
+ * Set up Html of LinkageGroup and MarkersType widget
+ * @function
+ * @param {Array} arrayOfLinkageGroup - array Of LinkageGroup
+ * @param {Array} arrayOfMarkersType - array Of MarkersType
+ */
 function setUpLinkageGroupAndMarkersType(arrayOfLinkageGroup,arrayOfMarkersType){
 	arrayOfLinkageGroup.sort(sortAlphaNum);
     let htmlString="";
@@ -89,6 +121,11 @@ function setUpLinkageGroupAndMarkersType(arrayOfLinkageGroup,arrayOfMarkersType)
     $('select#typeMarker').html(htmlString);
 }
 
+/**
+ * Set up Html of Marker widget
+ * @function
+ * @param {Array} arrayMarkersIds - array of MarkersIds
+ */
 function setupMarkersId(arrayMarkersIds){
 	if (arrayMarkersIds.length<=10000) {
 		$('#Markers').show();
@@ -111,6 +148,12 @@ function setupMarkersId(arrayMarkersIds){
 	}
 }
 
+/**
+ * update the label of the current select
+ * @function
+ * @param {Array} idLabel - selected label
+ * @param {Array} idSelect - selected select
+ */
 function updateSelection(idLabel, idSelect){
 	let nbSelectionOption = $('#'+idSelect+" option:selected").map(function(){return $(this).val().split(",");}).get();
 	nbSelectionOption = removeAll(nbSelectionOption, "");
@@ -122,7 +165,11 @@ function updateSelection(idLabel, idSelect){
     $('#'+idLabel).show();
 }
 
-
+/**
+ * Handle Errors
+ * @function
+ * @param {Error} err - current error
+ */
 async function handleErrors(err) {
 	if (typeof err === "string"){
 		$('#ErrorMessage').show();
@@ -137,6 +184,11 @@ async function handleErrors(err) {
 	}
 }
 
+/**
+ * Set html object disabled or undisabled
+ * @function
+ * @param {Boolean} bool - true or false
+ */
 function setDisabled(bool){
     $('#selectionMap').prop('disabled', bool);
     $('#selectionStudies').prop('disabled', bool);
@@ -146,6 +198,10 @@ function setDisabled(bool){
     $('#ExportGermplasmsDetails').prop('disabled', bool);
 }
 
+/**
+ * Animate html page
+ * @function
+ */
 function animatForm(){
 	if(!$('#UserId2').is(':visible')){
 		$('#btnChangeName').text('Use one url');

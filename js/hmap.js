@@ -1,19 +1,30 @@
-function getMarkerProfileHmap(arrayGermplasmsIDs){
+/**
+ * Generate germplasmDbId to germplasm Hmap
+ * @function
+ * @param {Array} arrayGermplasms - Array of germplasm
+ */
+function getMarkerProfileHmap(arrayGermplasms){
     let hmap=[], alreadyTreated = [];
-    for (let i = 0; i < arrayGermplasmsIDs.length; i++) {
-        for (let j = 0; j < arrayGermplasmsIDs[i].length; j++) {
-            if(!isInArray(alreadyTreated, arrayGermplasmsIDs[i][j].germplasmDbId)){
-                alreadyTreated.push(arrayGermplasmsIDs[i][j].germplasmDbId);
-                hmap[arrayGermplasmsIDs[i][j].germplasmDbId]=[];
-                hmap[arrayGermplasmsIDs[i][j].germplasmDbId].push(arrayGermplasmsIDs[i][j]);
+    for (let i = 0; i < arrayGermplasms.length; i++) {
+        for (let j = 0; j < arrayGermplasms[i].length; j++) {
+            if(!isInArray(alreadyTreated, arrayGermplasms[i][j].germplasmDbId)){
+                alreadyTreated.push(arrayGermplasms[i][j].germplasmDbId);
+                hmap[arrayGermplasms[i][j].germplasmDbId]=[];
+                hmap[arrayGermplasms[i][j].germplasmDbId].push(arrayGermplasms[i][j]);
             }else{
-                hmap[arrayGermplasmsIDs[i][j].germplasmDbId].push(arrayGermplasmsIDs[i][j]);
+                hmap[arrayGermplasms[i][j].germplasmDbId].push(arrayGermplasms[i][j]);
             }
         }
     }
     return hmap;
 }
 
+
+/**
+ * Revers any hmap;
+ * @function
+ * @param {Array} hMap- The current Hmap.
+ */
 function reversHmap(hMap){
     let newHMap = [];
     Object.keys(hMap).forEach(function(element){
@@ -24,6 +35,12 @@ function reversHmap(hMap){
     return newHMap;
 }
 
+/**
+ * Generate call to url hmap
+ * @function
+ * @param {Array} resp - result of getCall function
+ * @param {Array} calls - Url tab
+ */
 function bindCall2Url(resp, calls) {
     console.log(resp);
     for(let i=0; i<resp.length; i++){
@@ -44,6 +61,12 @@ function bindCall2Url(resp, calls) {
     }
 }
 
+/**
+ * Generate LinkageGroup to Marker Hmap
+ * @function
+ * @param {Array} arrayOfLinkageGroup - All LinkageGroup
+ * @param {Array} arrayMarkers - All Markers
+ */
 function setHmapLinkageGroup(arrayOfLinkageGroup, arrayMarkers){
     hmapsLinkageGroup=[];
     for(let i =0; i<arrayOfLinkageGroup.length; i++){
@@ -56,6 +79,12 @@ function setHmapLinkageGroup(arrayOfLinkageGroup, arrayMarkers){
     }
 }
 
+/**
+ * Generate Type to Marker Hmap
+ * @function
+ * @param {Array} arrayOfMarkersType - All Marker Type
+ * @param {Array} arrayMarkers - All Markers
+ */
 function setHmapType(arrayOfMarkersType,arrayMarkers){
     hmapsType = [];
     for(let i =0; i<arrayOfMarkersType.length; i++){

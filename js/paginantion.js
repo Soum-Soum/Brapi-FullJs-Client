@@ -1,3 +1,7 @@
+/**
+ * Advance one page in the matrix
+ * @function
+ */
 function nextPage(){
     if (startmentindex+=clientPageSize<sizeOfResquestedMatrix){
         startmentindex += clientPageSize;
@@ -8,6 +12,10 @@ function nextPage(){
     }
 }
 
+/**
+ * Moves one page backwards in the matrix
+ * @function
+ */
 function prevPage(){
     if(startmentindex-clientPageSize>=0){
         startmentindex -= clientPageSize;
@@ -18,6 +26,10 @@ function prevPage(){
     }
 }
 
+/**
+ * Set the page size too another value
+ * @function
+ */
 function setCustomPageSize(){
     if (parseInt($('#customPageSize').val())<5000){
         clientPageSize=parseInt($('#customPageSize').val())
@@ -27,6 +39,10 @@ function setCustomPageSize(){
     }
 }
 
+/**
+ * Set the index too another value
+ * @function
+ */
 function setCustomIndex(){
     startmentindex = parseInt($('#customIndex').val()-1)*clientPageSize;
     if(startmentindex>=0 && startmentindex<=totalPage*clientPageSize){

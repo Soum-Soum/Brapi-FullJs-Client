@@ -1,4 +1,32 @@
-/**
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: getting_Information.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: getting_Information.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
  * Get a Token.
  * @async
  * @function
@@ -12,7 +40,7 @@ async function getToken(stringUserName, stringPassword, urlEndPoint){
 	body = JSON.stringify(body);
 	try {
     	let resp = await fetch(myURL,{method: "POST",body: body, headers: {'Content-Type': 'application/json'}});
-    	if (resp.status>199 && resp.status<300){
+    	if (resp.status>199 &amp;&amp; resp.status&lt;300){
 		tokenString = await resp.json();
 		return tokenString.access_token;
 		}else{return tokenString;}
@@ -150,11 +178,11 @@ async function getmarkerProfileDbId(argumentsArray){
  */
 async function getMarkers(argumentsArray){
     let myURL = argumentsArray.askedPage===undefined ? argumentsArray.urlEndPoint + "/" + URL_MARKERS : argumentsArray.urlEndPoint + "/" + URL_MARKERS +"?page="+argumentsArray.askedPage ;
-    if(argumentsArray.askedType !== undefined && argumentsArray.askedType !== null){
-		myURL += '&type=' + argumentsArray.askedType;
+    if(argumentsArray.askedType !== undefined &amp;&amp; argumentsArray.askedType !== null){
+		myURL += '&amp;type=' + argumentsArray.askedType;
 	}
-	if(argumentsArray.pageSize !== undefined && argumentsArray.pageSize !== null){
-        myURL += '&pageSize=' + argumentsArray.pageSize;
+	if(argumentsArray.pageSize !== undefined &amp;&amp; argumentsArray.pageSize !== null){
+        myURL += '&amp;pageSize=' + argumentsArray.pageSize;
     }
 
     let myInit = returnInit(argumentsArray.token);
@@ -196,7 +224,7 @@ async function getMapDetails(argumentsArray){
  */
 async function getMarkersPosition(argumentsArray){
     let myURL = argumentsArray.askedPage===undefined ? argumentsArray.urlEndPoint+"/"+URL_MAPS+"/"+argumentsArray.selectedMap+"/positions" : argumentsArray.urlEndPoint+"/"+URL_MAPS+"/"+argumentsArray.selectedMap+"/positions?page="+argumentsArray.askedPage;
-    if(argumentsArray.selectedLKG!==undefined){myURL = myURL + '&linkageGroupId=' + argumentsArray.selectedLKG;}
+    if(argumentsArray.selectedLKG!==undefined){myURL = myURL + '&amp;linkageGroupId=' + argumentsArray.selectedLKG;}
     let myInit = returnInit(argumentsArray.token);
 	console.log(myURL);
 	try {
@@ -217,18 +245,18 @@ async function getMarkersPosition(argumentsArray){
  */
 async function getMatrix(argumentsArray){
     try {
-		let myURL = argumentsArray.askedPage===undefined ? argumentsArray.urlEndPoint + "/" +URL_ALLELE_MATRIX : argumentsArray.urlEndPoint + "/" +URL_ALLELE_MATRIX+ "?pageSize="+argumentsArray.clientPageSize+"&page="+argumentsArray.askedPage;
+		let myURL = argumentsArray.askedPage===undefined ? argumentsArray.urlEndPoint + "/" +URL_ALLELE_MATRIX : argumentsArray.urlEndPoint + "/" +URL_ALLELE_MATRIX+ "?pageSize="+argumentsArray.clientPageSize+"&amp;page="+argumentsArray.askedPage;
 		let matrixString = "";
 		argumentsArray.sendedMarkersProlis = removeAll(argumentsArray.sendedMarkersProlis, undefined);
-		for(i=0;i<argumentsArray.sendedMarkersProlis.length; i++){
-			matrixString+= 'markerprofileDbId=' + argumentsArray.sendedMarkersProlis[i] + '&';
+		for(i=0;i&lt;argumentsArray.sendedMarkersProlis.length; i++){
+			matrixString+= 'markerprofileDbId=' + argumentsArray.sendedMarkersProlis[i] + '&amp;';
 		}
 		argumentsArray.sendedMarkers = removeAll(argumentsArray.sendedMarkers, undefined);
-		for(i=0;i<argumentsArray.sendedMarkers.length; i++){
-			matrixString+= (i===0 ? '' : '&') + 'markerDbId=' +argumentsArray.sendedMarkers[i];
+		for(i=0;i&lt;argumentsArray.sendedMarkers.length; i++){
+			matrixString+= (i===0 ? '' : '&amp;') + 'markerDbId=' +argumentsArray.sendedMarkers[i];
 		}
-		matrixString+='&unknownString=';
-		if(argumentsArray.isAnExport === true){matrixString += "&format=tsv";}
+		matrixString+='&amp;unknownString=';
+		if(argumentsArray.isAnExport === true){matrixString += "&amp;format=tsv";}
 		let myHeaders = new Headers();
 		if(argumentsArray.token!=='""'){
 			myHeaders = {'Authorization': 'Bearer '+argumentsArray.token,
@@ -267,7 +295,7 @@ async function getExportStatus(argumentsArray){
 		console.log(resp);
 		console.log(argumentsArray.asynchid);
 		console.log(myURL);
-		while(resp.metadata.status[0].message==="INPROCESS" && exportIsAbort===false){
+		while(resp.metadata.status[0].message==="INPROCESS" &amp;&amp; exportIsAbort===false){
 			console.log(myURL);
 			console.log(resp.metadata.status[0].message);
 			resp = await fetch(myURL, myInit);
@@ -277,7 +305,7 @@ async function getExportStatus(argumentsArray){
 			console.log(resp.metadata.pagination.currentPage/100);
 			await sleep(1500);
 		}
-		if(exportIsAbort===false && resp.metadata.status[0].message!=="FAILED"){
+		if(exportIsAbort===false &amp;&amp; resp.metadata.status[0].message!=="FAILED"){
             console.log(resp);
             l.setProgress(1);
             window.location = resp.metadata.datafiles[0];
@@ -318,3 +346,26 @@ async function getGermplasmsDetails(argumentsArray){
 	}
 
 }
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="PaginationManager.html">PaginationManager</a></li><li><a href="urlWithAuth.html">urlWithAuth</a></li></ul><h3>Global</h3><ul><li><a href="global.html#$_GET">$_GET</a></li><li><a href="global.html#abortExport">abortExport</a></li><li><a href="global.html#abortGermplasmsExport">abortGermplasmsExport</a></li><li><a href="global.html#addGrp">addGrp</a></li><li><a href="global.html#addGrp2">addGrp2</a></li><li><a href="global.html#addUrl">addUrl</a></li><li><a href="global.html#addUrl2">addUrl2</a></li><li><a href="global.html#allelematrix">allelematrix</a></li><li><a href="global.html#animatForm">animatForm</a></li><li><a href="global.html#array_big_intersect">array_big_intersect</a></li><li><a href="global.html#bindCall2Url">bindCall2Url</a></li><li><a href="global.html#buildTsvString">buildTsvString</a></li><li><a href="global.html#callsAreInArray">callsAreInArray</a></li><li><a href="global.html#cleanTab">cleanTab</a></li><li><a href="global.html#enmptResultTab">enmptResultTab</a></li><li><a href="global.html#ExportDetailsGermplasms">ExportDetailsGermplasms</a></li><li><a href="global.html#exportMatrix">exportMatrix</a></li><li><a href="global.html#fill_result_table">fill_result_table</a></li><li><a href="global.html#fillWidget">fillWidget</a></li><li><a href="global.html#Germplasms">Germplasms</a></li><li><a href="global.html#getCalls">getCalls</a></li><li><a href="global.html#getFieldFormJson">getFieldFormJson</a></li><li><a href="global.html#getGermplasmsDetails">getGermplasmsDetails</a></li><li><a href="global.html#getMapDetails">getMapDetails</a></li><li><a href="global.html#getmarkerProfileDbId">getmarkerProfileDbId</a></li><li><a href="global.html#getMarkerProfileHmap">getMarkerProfileHmap</a></li><li><a href="global.html#getMarkers">getMarkers</a></li><li><a href="global.html#getMarkersPosition">getMarkersPosition</a></li><li><a href="global.html#getMatrix">getMatrix</a></li><li><a href="global.html#getToken">getToken</a></li><li><a href="global.html#getTypeList">getTypeList</a></li><li><a href="global.html#handleErrors">handleErrors</a></li><li><a href="global.html#insetMatrixInResultTable">insetMatrixInResultTable</a></li><li><a href="global.html#isInArray">isInArray</a></li><li><a href="global.html#nextPage">nextPage</a></li><li><a href="global.html#prevPage">prevPage</a></li><li><a href="global.html#readMaps">readMaps</a></li><li><a href="global.html#readStudyList">readStudyList</a></li><li><a href="global.html#removeAll">removeAll</a></li><li><a href="global.html#requCallareImplement">requCallareImplement</a></li><li><a href="global.html#returnInit">returnInit</a></li><li><a href="global.html#reversHmap">reversHmap</a></li><li><a href="global.html#rmThisGrp">rmThisGrp</a></li><li><a href="global.html#rmUrl">rmUrl</a></li><li><a href="global.html#selectStudies">selectStudies</a></li><li><a href="global.html#setArgumentArray">setArgumentArray</a></li><li><a href="global.html#setCustomIndex">setCustomIndex</a></li><li><a href="global.html#setCustomPageSize">setCustomPageSize</a></li><li><a href="global.html#setDisabled">setDisabled</a></li><li><a href="global.html#setEmptyMarkerSelect">setEmptyMarkerSelect</a></li><li><a href="global.html#setEmptyTheFields">setEmptyTheFields</a></li><li><a href="global.html#setHmapLinkageGroup">setHmapLinkageGroup</a></li><li><a href="global.html#setHmapType">setHmapType</a></li><li><a href="global.html#setup_select_tag">setup_select_tag</a></li><li><a href="global.html#setUpGermplasms">setUpGermplasms</a></li><li><a href="global.html#setUpLinkageGroupAndMarkersType">setUpLinkageGroupAndMarkersType</a></li><li><a href="global.html#setUpMarkerProfils">setUpMarkerProfils</a></li><li><a href="global.html#setupMarkersId">setupMarkersId</a></li><li><a href="global.html#sleep">sleep</a></li><li><a href="global.html#updateSelection">updateSelection</a></li><li><a href="global.html#urlBrapiEndPointIsOk">urlBrapiEndPointIsOk</a></li><li><a href="global.html#urlMapIdIsOk">urlMapIdIsOk</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Thu Jan 25 2018 10:51:47 GMT+0100 (CET)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

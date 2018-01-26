@@ -1,3 +1,8 @@
+/**
+ * Removes url group that do not implement the required calls
+ * @function
+ * @async
+ */
 async function requCallareImplement() {
     try{
         for(let i=0; i<groupTab.length; i++){
@@ -23,6 +28,12 @@ async function requCallareImplement() {
     }
 }
 
+/**
+ * True if requ calls are in the resp array
+ * @function
+ * @param {array} resp - reponse of GetCall function
+ * @param {array} requCall - Array of requ call
+ */
 function callsAreInArray(resp, requCall){
     try {
         let foundCalls = [];

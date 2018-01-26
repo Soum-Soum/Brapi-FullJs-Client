@@ -1,3 +1,10 @@
+/**
+ * fill result table
+ * @function
+ * @param {Array} sendedMarkers - Matrix marker list
+ * @param {Array} sendedMarkersProlis - Matrix marker-profil list
+ * @param {Array} response - The response to getMatrix function
+ */
 function fill_result_table(sendedMarkers,sendedMarkersProlis,response) {
     $('table').show();
     let htmlString="";
@@ -11,6 +18,12 @@ function fill_result_table(sendedMarkers,sendedMarkersProlis,response) {
     $("#resulttable").find("> tbody").html(htmlString);
 }
 
+/**
+ * Remove missing data from result tab
+ * @function
+ * @param {Array} sendedMarkers - Matrix marker list
+ * @param {Array} sendedMarkersProlis - Matrix marker-profil list
+ */
 function cleanTab(sendedMarkers,sendedMarkersProlis){
     for(let i=0;i<sendedMarkersProlis.length;i++){
         for(let j=0;j<sendedMarkers.length;j++){
@@ -23,6 +36,13 @@ function cleanTab(sendedMarkers,sendedMarkersProlis){
     }
 }
 
+/**
+ * insert matrix in result table
+ * @function
+ * @param {Array} sendedMarkers - Matrix marker list
+ * @param {Array} sendedMarkersProlis - Matrix marker-profil list
+ * @param {Array} response - The response to getMatrix function
+ */
 function insetMatrixInResultTable(matrix){
     for(let i=0; i<matrix.length;i++){
         matrix[i].forEach(function (element) {
@@ -32,6 +52,10 @@ function insetMatrixInResultTable(matrix){
     }
 }
 
+/**
+ * Set result table empty
+ * @function
+ */
 function  enmptResultTab(){
     $('tbody').html('');
 }

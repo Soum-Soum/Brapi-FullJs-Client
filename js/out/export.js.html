@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: export.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: export.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * Launch export of allelematrix
+ * @function
+ * @async
+ */
+async function exportMatrix(){
+    $('#AbortExport').show();
+    exportIsAbort=false;
+    let sendedMarkersProlis = $("#MarkersProfils option:selected").map(function(){return $(this).val().split(",");}).get();
+    sendedMarkersProlis = removeAll(sendedMarkersProlis, "");
+    let sendedMarkers = selectedMarkers;
+    console.log(sendedMarkers);
+    let isAnExport= true, askedPage = undefined;
+    let argumentsArray = {sendedMarkers, sendedMarkersProlis, clientPageSize, isAnExport, askedPage};
+    argumentsArray = setArgumentArray("allelematrix-search",argumentsArray);
+    let link = await getMatrix(argumentsArray);
+    console.log(link);
+    argumentsArray.asynchid = link.metadata.status[0].message;
+    console.log(argumentsArray.asynchid);
+    argumentsArray = setArgumentArray('allelematrix-search/status', argumentsArray);
+    await getExportStatus(argumentsArray);
+}
+/**
+ * Launch export of allelematrix
+ * @function
+ * @async
+ */
+async function ExportDetailsGermplasms(){
+    let jsonHmap = [],  argumentsArray;
+    let selectedGermplasms = $("#Germplasms option:selected").map(function(){return $(this).text().split(",");}).get();
+    let l = Ladda.create( document.querySelector( '#ExportGermplasmsDetails'));
+    let step = (1/(selectedGermplasms.length/100)), avancement = 0;
+    argumentsArray = setArgumentArray("germplasm-search");
+    exportGermplasmsIsAbort=false;
+    $('#AbortExportGermplasmsDetails').show();
+    l.start();
+    l.setProgress( avancement );
+    selectedGermplasms = removeAll(selectedGermplasms, "");
+    console.log(selectedGermplasms);
+    if(argumentsArray.urlEndPoint!=='' &amp;&amp; argumentsArray.urlEndPoint!==undefined &amp;&amp; argumentsArray.urlEndPoint!==null){
+        for(let i=0; i&lt;selectedGermplasms.length; i){
+            if(exportGermplasmsIsAbort===false){
+                let j;
+                let germplasmIdArray=[];
+                for(j=i; j&lt;i+100; j++){
+                    germplasmIdArray.push(selectedGermplasms[j]);
+                }
+                i=j;
+                argumentsArray.germplasmIdArray = germplasmIdArray;
+                let resp = await getGermplasmsDetails(argumentsArray);
+                console.log(resp);
+                avancement += step;
+                l.setProgress(avancement);
+                console.log(step);
+                console.log(avancement);
+                for(let j=0; j&lt;resp.result.data.length; j++){
+                    jsonHmap[resp.result.data[j].germplasmDbId]=resp.result.data[j];
+                }
+            }else{
+                l.setProgress(1);
+                l.stop();
+                $('#AbortExportGermplasmsDetails').hide();
+                return;
+            }
+        }
+    }
+    l.setProgress(1);
+    console.log(jsonHmap);
+    let fieldTab = getFieldFormJson(jsonHmap);
+    console.log(fieldTab);
+    let tsvString = buildTsvString(jsonHmap, selectedGermplasms, fieldTab);
+    download($('#selectionMap').find('option:selected').val()+'.tsv',tsvString);
+    $('#AbortExportGermplasmsDetails').hide();
+    l.stop();
+}
+
+/**
+ * Generate field Tab from Json-Hmap
+ * @function
+ * @param {Array} HMap - Json-Hmap
+ */
+function getFieldFormJson(HMap){
+    let fieldTab = [];
+    Object.keys(HMap).forEach(function(element){
+        for(let key in HMap[element]){
+            if(!isInArray(fieldTab,key) &amp;&amp; key !== 'germplasmDbId'){
+                if(HMap[element][key]!==null &amp;&amp; HMap[element][key]!==undefined &amp;&amp; HMap[element][key]!==''){
+                    fieldTab[key]=true;
+                }else{
+                    fieldTab[key]=false;
+                }
+            }else{
+                if(fieldTab[key]===false &amp;&amp; (HMap[element][key]!==null &amp;&amp; HMap[element][key]!==undefined &amp;&amp; HMap[element][key]!=='')){
+                    fieldTab[key]=true;
+                }
+            }
+        }
+    });
+    console.log(fieldTab);
+    return fieldTab;
+}
+
+/**
+ * Generate Tsv String
+ * @function
+ * @param {Array} HMap - Json-Hmap
+ * @param {Array} selectedGermplasms - The selected Germplasms
+ * @param {Array} fieldTab - Fields of the futur file
+ */
+function buildTsvString(jsonHmap, selectedGermplasms, fieldTab){
+    let tsvString ='';
+    let tempstring = 'germplasmDbId \tmarkerProfileDbId \t';
+    Object.keys(fieldTab).forEach(function (element){
+       if(fieldTab[element]===true){
+           tempstring += element + '\t';
+       }
+    });
+    tempstring+='\n';
+    selectedGermplasms.forEach(function (element){
+        tsvString+=cpyResp[element][0].germplasmDbId + "\t";
+        if(cpyResp[element].length===1){
+            tsvString+=cpyResp[element][0].markerProfileDbId;
+        }else{
+            cpyResp[element].forEach(function(element2){
+                tsvString+=element2.markerProfileDbId + ' ; ';
+            });
+        }
+        tsvString+='\t';
+        Object.keys(fieldTab).forEach(function (element2){
+            if(fieldTab[element2]===true){
+                if(jsonHmap[element]!== null &amp;&amp; jsonHmap[element]!==undefined){
+                    if(jsonHmap[element][element2]!==null &amp;&amp; jsonHmap[element][element2]!== undefined){
+                        tsvString+= jsonHmap[element][element2] + '\t'
+                    }else{
+                        tsvString+='\t';
+                    }
+                }
+            }
+        });
+        tsvString+='\n';
+    });
+    tsvString = tempstring + tsvString;
+    return tsvString;
+}
+
+
+/**
+ * Generate Tsv String
+ * @exports Germplasms details
+ * @function
+ * @param {Strint} filename - Name of the futur file
+ * @param {String} tsvData- The string to encoded in the tsv file
+ */
+function download(filename, tsvData) {
+    let element = document.createElement('a');
+    element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(tsvData));
+    element.setAttribute('download', filename);
+    element.style.display = 'none';
+    document.body.appendChild(element);
+    element.click();
+    document.body.removeChild(element);
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="PaginationManager.html">PaginationManager</a></li><li><a href="urlWithAuth.html">urlWithAuth</a></li></ul><h3>Global</h3><ul><li><a href="global.html#$_GET">$_GET</a></li><li><a href="global.html#abortExport">abortExport</a></li><li><a href="global.html#abortGermplasmsExport">abortGermplasmsExport</a></li><li><a href="global.html#addGrp">addGrp</a></li><li><a href="global.html#addGrp2">addGrp2</a></li><li><a href="global.html#addUrl">addUrl</a></li><li><a href="global.html#addUrl2">addUrl2</a></li><li><a href="global.html#allelematrix">allelematrix</a></li><li><a href="global.html#animatForm">animatForm</a></li><li><a href="global.html#array_big_intersect">array_big_intersect</a></li><li><a href="global.html#bindCall2Url">bindCall2Url</a></li><li><a href="global.html#buildTsvString">buildTsvString</a></li><li><a href="global.html#callsAreInArray">callsAreInArray</a></li><li><a href="global.html#cleanTab">cleanTab</a></li><li><a href="global.html#enmptResultTab">enmptResultTab</a></li><li><a href="global.html#ExportDetailsGermplasms">ExportDetailsGermplasms</a></li><li><a href="global.html#exportMatrix">exportMatrix</a></li><li><a href="global.html#fill_result_table">fill_result_table</a></li><li><a href="global.html#fillWidget">fillWidget</a></li><li><a href="global.html#Germplasms">Germplasms</a></li><li><a href="global.html#getCalls">getCalls</a></li><li><a href="global.html#getFieldFormJson">getFieldFormJson</a></li><li><a href="global.html#getGermplasmsDetails">getGermplasmsDetails</a></li><li><a href="global.html#getMapDetails">getMapDetails</a></li><li><a href="global.html#getmarkerProfileDbId">getmarkerProfileDbId</a></li><li><a href="global.html#getMarkerProfileHmap">getMarkerProfileHmap</a></li><li><a href="global.html#getMarkers">getMarkers</a></li><li><a href="global.html#getMarkersPosition">getMarkersPosition</a></li><li><a href="global.html#getMatrix">getMatrix</a></li><li><a href="global.html#getToken">getToken</a></li><li><a href="global.html#getTypeList">getTypeList</a></li><li><a href="global.html#handleErrors">handleErrors</a></li><li><a href="global.html#insetMatrixInResultTable">insetMatrixInResultTable</a></li><li><a href="global.html#isInArray">isInArray</a></li><li><a href="global.html#nextPage">nextPage</a></li><li><a href="global.html#prevPage">prevPage</a></li><li><a href="global.html#readMaps">readMaps</a></li><li><a href="global.html#readStudyList">readStudyList</a></li><li><a href="global.html#removeAll">removeAll</a></li><li><a href="global.html#requCallareImplement">requCallareImplement</a></li><li><a href="global.html#returnInit">returnInit</a></li><li><a href="global.html#reversHmap">reversHmap</a></li><li><a href="global.html#rmThisGrp">rmThisGrp</a></li><li><a href="global.html#rmUrl">rmUrl</a></li><li><a href="global.html#selectStudies">selectStudies</a></li><li><a href="global.html#setArgumentArray">setArgumentArray</a></li><li><a href="global.html#setCustomIndex">setCustomIndex</a></li><li><a href="global.html#setCustomPageSize">setCustomPageSize</a></li><li><a href="global.html#setDisabled">setDisabled</a></li><li><a href="global.html#setEmptyMarkerSelect">setEmptyMarkerSelect</a></li><li><a href="global.html#setEmptyTheFields">setEmptyTheFields</a></li><li><a href="global.html#setHmapLinkageGroup">setHmapLinkageGroup</a></li><li><a href="global.html#setHmapType">setHmapType</a></li><li><a href="global.html#setup_select_tag">setup_select_tag</a></li><li><a href="global.html#setUpGermplasms">setUpGermplasms</a></li><li><a href="global.html#setUpLinkageGroupAndMarkersType">setUpLinkageGroupAndMarkersType</a></li><li><a href="global.html#setUpMarkerProfils">setUpMarkerProfils</a></li><li><a href="global.html#setupMarkersId">setupMarkersId</a></li><li><a href="global.html#sleep">sleep</a></li><li><a href="global.html#updateSelection">updateSelection</a></li><li><a href="global.html#urlBrapiEndPointIsOk">urlBrapiEndPointIsOk</a></li><li><a href="global.html#urlMapIdIsOk">urlMapIdIsOk</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Thu Jan 25 2018 10:51:47 GMT+0100 (CET)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

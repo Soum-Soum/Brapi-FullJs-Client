@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: view/grpWidgetView.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: view/grpWidgetView.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * Add another url to caller's Group
+ * @function
+ * @param {String} caller - The Caller of the function
+ */
+function  addUrl(caller){
+    $('.badgeToShow').show();
+    $(caller).parent().append('&lt;div class=" row  space container-fluid animated pulse ">\n' +
+            '&lt;input class="form-control col-7" type="text" value="http://localhost:8080/gigwa/rest/Rice-MSU7/brapi/v1" placeholder="Url">\n' +
+            '&lt;input class="form-control col-2" type="text" value="pierre" placeholder="UserName">\n' +
+            '&lt;input class="form-control col-2" type="text" value="test" placeholder="Password">\n' +
+        '&lt;div class="btn btn-secondary badgeToShow">&lt;/div>\n' +
+            '&lt;div class="btn btn-success badgeToHide">\n' +
+                '&lt;i class="fas fa-check">&lt;/i>\n' +
+            '&lt;/div>\n' +
+            '&lt;div class="btn btn-danger badgeToHide">\n' +
+                '&lt;i class="fas fa-minus-circle">&lt;/i>\n' +
+            '&lt;/div>\n' +
+        '&lt;/div>');
+    $('.badgeToHide').hide();
+}
+
+/**
+ * Add another url with preset value to caller's Group
+ * @function
+ * @param {String} caller - The Caller of the function
+ * @param {Urlwithauth} caller - The urlwithauth used for get the preset value
+ */
+function  addUrl2(caller, urlwithauth){
+    $('.badgeToShow').show();
+    $(caller).parent().append('&lt;div class=" row  space container-fluid animated pulse ">\n' +
+            '&lt;input class="form-control col-7" type="text" value="'+urlwithauth.url+'" placeholder="Url">\n' +
+            '&lt;input class="form-control col-2" type="text" value="'+urlwithauth.userName+'" placeholder="UserName">\n' +
+            '&lt;input class="form-control col-2" type="text" value="'+urlwithauth.pswrd+'" placeholder="Password">\n' +
+        '&lt;div class="btn btn-secondary badgeToShow">&lt;/div>\n' +
+            '&lt;div hidden class="btn btn-success badgeToHide">\n' +
+                '&lt;i class="fas fa-check">&lt;/i>\n' +
+            '&lt;/div>\n' +
+            '&lt;div hidden class="btn btn-danger badgeToHide">\n' +
+                '&lt;i class="fas fa-minus-circle">&lt;/i>\n' +
+            '&lt;/div>\n' +
+        '&lt;/div>');
+    $('.badgeToHide').hide();
+}
+
+/**
+ * Remove last url of caller's Group
+ * @async
+ * @function
+ * @param {String} caller - The Caller of the function
+ */
+async function  rmUrl(caller){
+    $('.badgeToHide').hide();
+    $('.badgeToShow').show();
+    if($(caller).parent().children().length>4){
+        $(caller).parent().children().last().addClass('fadeOut');
+        sleep(300).then(function () {
+            $(caller).parent().children().last().remove();
+        });
+    }else{
+
+    }
+
+}
+
+/**
+ * Add another url group
+ * @function
+ * @param {String} caller - The Caller of the function
+ */
+function addGrp(caller){
+    $('.badgeToShow').show();
+    $(caller).parent().append(
+        '&lt;div class="row col-12 lol animated pulse" style="background-color: #2980b9;">\n' +
+            '&lt;button type="button" class="space col-5 btn btn-light" onclick="addUrl(this);">Add one URL&lt;/button>\n' +
+            '&lt;button type="button" class="space col-5 btn btn-dark" onclick="rmUrl(this);">Remove one URL&lt;/button>\n' +
+            '&lt;button type="button" class="space col-2 btn btn-outline-danger close" aria-label="Close" onclick="rmThisGrp(this);">\n' +
+                '&lt;span aria-hidden="true">&amp;times;&lt;/span>\n' +
+            '&lt;/button>\n' +
+            '&lt;div class=" row  space container-fluid animated pulse ">\n' +
+                '&lt;input class="form-control col-7" type="text" value="http://localhost:8080/gigwa/rest/Rice-MSU7/brapi/v1" placeholder="Url">\n' +
+                '&lt;input class="form-control col-2" type="text" value="pierre" placeholder="UserName">\n' +
+                '&lt;input class="form-control col-2" type="text" value="test" placeholder="Password">\n' +
+                '&lt;div class="btn btn-secondary badgeToShow">&lt;/div>\n' +
+                '&lt;div class="btn btn-success badgeToHide">\n' +
+                    '&lt;i class="fas fa-check">&lt;/i>\n' +
+                '&lt;/div>\n' +
+                '&lt;div class="btn btn-danger badgeToHide">\n' +
+                    '&lt;i class="fas fa-minus-circle">&lt;/i>\n' +
+                '&lt;/div>\n' +
+            '&lt;/div>\n' +
+        '&lt;/div>');
+    $('.badgeToHide').hide();
+}
+
+/**
+ * Add another url to caller's Group without any url inside
+ * @function
+ * @param {String} caller - The Caller of the function
+ */
+function  addGrp2(caller) {
+    $(caller).parent().append('&lt;div class="row col-12 lol animated pulse" style="background-color: #2980b9;">\n' +
+                '&lt;button type="button" class="space col-5 btn btn-light" onclick="addUrl(this);">Add one URL&lt;/button>\n' +
+                '&lt;button type="button" class="space col-5 btn btn-dark" onclick="rmUrl(this);">Remove one URL&lt;/button>\n' +
+                '&lt;button type="button" class="space col-2 btn btn-outline-danger close" aria-label="Close" onclick="rmThisGrp(this);">\n' +
+                '&lt;span aria-hidden="true">&amp;times;&lt;/span>\n' +
+                '&lt;/button>\n' +
+            '&lt;/div>\n' +
+        '&lt;/div>');
+}
+
+/**
+ * Remove the url group of the caller
+ * @async
+ * @function
+ * @param {String} caller - The Caller of the function
+ */
+async function rmThisGrp (caller) {
+    $(caller).parent().addClass('fadeOut');
+    await sleep(400).then(function () {
+        $(caller).parent().remove();
+    });
+}
+
+/**
+ * Fill the widget with the group tab generated from the client url
+ * @function
+ * @param {Array} array - the current GroupTab
+ */
+function  fillWidget(array) {
+    let caller = $('#addGrpId');
+    for(let i=0; i&lt;array.length-1; i++){
+        addGrp2($(caller));
+    }
+    let callerChildren = caller.parent().children();
+    console.log(callerChildren);
+    for(let i=0; i&lt;array.length; i++){
+        for(let j=0; j&lt;array[i].length;j++){
+            addUrl2($(callerChildren[i+2].children[1]),array[i][j]);
+        }
+    }
+}</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="PaginationManager.html">PaginationManager</a></li><li><a href="urlWithAuth.html">urlWithAuth</a></li></ul><h3>Global</h3><ul><li><a href="global.html#$_GET">$_GET</a></li><li><a href="global.html#abortExport">abortExport</a></li><li><a href="global.html#abortGermplasmsExport">abortGermplasmsExport</a></li><li><a href="global.html#addGrp">addGrp</a></li><li><a href="global.html#addGrp2">addGrp2</a></li><li><a href="global.html#addUrl">addUrl</a></li><li><a href="global.html#addUrl2">addUrl2</a></li><li><a href="global.html#allelematrix">allelematrix</a></li><li><a href="global.html#animatForm">animatForm</a></li><li><a href="global.html#array_big_intersect">array_big_intersect</a></li><li><a href="global.html#bindCall2Url">bindCall2Url</a></li><li><a href="global.html#buildTsvString">buildTsvString</a></li><li><a href="global.html#callsAreInArray">callsAreInArray</a></li><li><a href="global.html#cleanTab">cleanTab</a></li><li><a href="global.html#enmptResultTab">enmptResultTab</a></li><li><a href="global.html#ExportDetailsGermplasms">ExportDetailsGermplasms</a></li><li><a href="global.html#exportMatrix">exportMatrix</a></li><li><a href="global.html#fill_result_table">fill_result_table</a></li><li><a href="global.html#fillWidget">fillWidget</a></li><li><a href="global.html#Germplasms">Germplasms</a></li><li><a href="global.html#getCalls">getCalls</a></li><li><a href="global.html#getFieldFormJson">getFieldFormJson</a></li><li><a href="global.html#getGermplasmsDetails">getGermplasmsDetails</a></li><li><a href="global.html#getMapDetails">getMapDetails</a></li><li><a href="global.html#getmarkerProfileDbId">getmarkerProfileDbId</a></li><li><a href="global.html#getMarkerProfileHmap">getMarkerProfileHmap</a></li><li><a href="global.html#getMarkers">getMarkers</a></li><li><a href="global.html#getMarkersPosition">getMarkersPosition</a></li><li><a href="global.html#getMatrix">getMatrix</a></li><li><a href="global.html#getToken">getToken</a></li><li><a href="global.html#getTypeList">getTypeList</a></li><li><a href="global.html#handleErrors">handleErrors</a></li><li><a href="global.html#insetMatrixInResultTable">insetMatrixInResultTable</a></li><li><a href="global.html#isInArray">isInArray</a></li><li><a href="global.html#nextPage">nextPage</a></li><li><a href="global.html#prevPage">prevPage</a></li><li><a href="global.html#readMaps">readMaps</a></li><li><a href="global.html#readStudyList">readStudyList</a></li><li><a href="global.html#removeAll">removeAll</a></li><li><a href="global.html#requCallareImplement">requCallareImplement</a></li><li><a href="global.html#returnInit">returnInit</a></li><li><a href="global.html#reversHmap">reversHmap</a></li><li><a href="global.html#rmThisGrp">rmThisGrp</a></li><li><a href="global.html#rmUrl">rmUrl</a></li><li><a href="global.html#selectStudies">selectStudies</a></li><li><a href="global.html#setArgumentArray">setArgumentArray</a></li><li><a href="global.html#setCustomIndex">setCustomIndex</a></li><li><a href="global.html#setCustomPageSize">setCustomPageSize</a></li><li><a href="global.html#setDisabled">setDisabled</a></li><li><a href="global.html#setEmptyMarkerSelect">setEmptyMarkerSelect</a></li><li><a href="global.html#setEmptyTheFields">setEmptyTheFields</a></li><li><a href="global.html#setHmapLinkageGroup">setHmapLinkageGroup</a></li><li><a href="global.html#setHmapType">setHmapType</a></li><li><a href="global.html#setup_select_tag">setup_select_tag</a></li><li><a href="global.html#setUpGermplasms">setUpGermplasms</a></li><li><a href="global.html#setUpLinkageGroupAndMarkersType">setUpLinkageGroupAndMarkersType</a></li><li><a href="global.html#setUpMarkerProfils">setUpMarkerProfils</a></li><li><a href="global.html#setupMarkersId">setupMarkersId</a></li><li><a href="global.html#sleep">sleep</a></li><li><a href="global.html#updateSelection">updateSelection</a></li><li><a href="global.html#urlBrapiEndPointIsOk">urlBrapiEndPointIsOk</a></li><li><a href="global.html#urlMapIdIsOk">urlMapIdIsOk</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Thu Jan 25 2018 10:51:47 GMT+0100 (CET)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
