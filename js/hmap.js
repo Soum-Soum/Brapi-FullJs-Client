@@ -42,6 +42,7 @@ function reversHmap(hMap){
  * @param {Array} calls - Url tab
  */
 function bindCall2Url(resp, calls) {
+    call2UrlTab=[];
     console.log(resp);
     for(let i=0; i<resp.length; i++){
         let hmapCall2Url=[];

@@ -27,16 +27,18 @@ function  addUrl(caller){
  * @param {Urlwithauth} caller - The urlwithauth used for get the preset value
  */
 function  addUrl2(caller, urlwithauth){
+    if(urlwithauth.userName===undefined){urlwithauth.userName='';}
+    if(urlwithauth.pswrd===undefined){urlwithauth.pswrd='';}
     $('.badgeToShow').show();
     $(caller).parent().append('<div class=" row  space container-fluid animated pulse ">\n' +
             '<input class="form-control col-7" type="text" value="'+urlwithauth.url+'" placeholder="Url">\n' +
             '<input class="form-control col-2" type="text" value="'+urlwithauth.userName+'" placeholder="UserName">\n' +
             '<input class="form-control col-2" type="text" value="'+urlwithauth.pswrd+'" placeholder="Password">\n' +
         '<div class="btn btn-secondary badgeToShow"></div>\n' +
-            '<div hidden class="btn btn-success badgeToHide">\n' +
+            '<div class="btn btn-success badgeToHide">\n' +
                 '<i class="fas fa-check"></i>\n' +
             '</div>\n' +
-            '<div hidden class="btn btn-danger badgeToHide">\n' +
+            '<div class="btn btn-danger badgeToHide">\n' +
                 '<i class="fas fa-minus-circle"></i>\n' +
             '</div>\n' +
         '</div>');

@@ -57,6 +57,7 @@ async function setVisibleField() {
 }
 
 async function geneateGroupTab(caller) {
+	groupTab=[];
 	let groups = $(caller).parent().children();
 	for(let i=2; i<groups.length;i++){
 		let urls = $(groups[i]).children();
@@ -79,7 +80,6 @@ async function geneateGroupTab(caller) {
 }
 
 async function login(){
-	console.log(groupTab);
 	if(groupTab.length===0){
         if(!isEndPointInUrl){
             let tempGroup =[];
@@ -91,6 +91,7 @@ async function login(){
             fillWidget(groupTab);
 		}
 	}
+    console.log(groupTab);
 	setMainFormVisible();
 	$('#toAnimate').addClass('animated fadeIn');
 	startment();
@@ -107,9 +108,9 @@ async function startment() {
 
 async function getFirstInformation(){
     try{
+    	firstInformation=[];
         let argumentsArray =[];
         bindCall2Url(groupTab, ALL_CALLS);
-        console.log(call2UrlTab);
         if($_GET("mapDbId")!==null){
             $('#selectionMap').hide();
             $('#labelSelectionMap').hide();
@@ -128,7 +129,6 @@ async function getFirstInformation(){
                 firstInformation[i]={map : tempMap, studies : tempStudies};
             }
         }
-        console.log(firstInformation);
     }catch (err){
         handleErrors('Bad URL')
     }
@@ -145,6 +145,8 @@ async function launch_selection(){
 			selectedMap = $('#selectionMap').find('option:selected').val();
             currentGroupId =$('#selectionMap').find('option:selected').attr('id');
             console.log(selectedMap);
+		}else{
+			selectedMap=$_GET("mapDbId");
 		}
 		let arrayOfLinkageGroup=[],  arrayMarkers=[];
 		let selectedStudy = $('#selectionStudies').find('option:selected').val();

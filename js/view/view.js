@@ -4,16 +4,18 @@
  * @param {Array} firstinformations - array containing the maps and studies that were found
  */
 function setup_select_tag(){
-    let htmlString='<option value="">---Select one---</option>';
+    let htmlString='<option value="">---Select one---</option>\n';
     if($_GET("mapDbId")===null){
         for(let i=0; i<firstInformation.length; i++){
-        	console.log(firstInformation[i].map);
             htmlString += '<option id="'+i+'" value="' + firstInformation[i].map[0].mapDbId + '">' + firstInformation[i].map[0].name + '</option>\n';
 		}
     }else{
-        htmlString = '<option id="0" value="' + firstInformation[0].map[0].mapDbId + '">' + firstInformation[0].map[0].name + '</option>\n';
+    	isMapIdInUrl=true;
+    	htmlString = '<option id="0" value="' + firstInformation[0].map + '">' + firstInformation[0].map + '</option>\n';
     }
-    $('select#selectionMap').html(htmlString);
+    $('#selectionMap').html(htmlString);
+    console.log(htmlString);
+    selectStudies();
 }
 
 
@@ -23,7 +25,7 @@ function setup_select_tag(){
  */
 function selectStudies(){
 	setEmptyTheFields();
-    let selectedMapDbId = currentGroupId =$('#selectionMap').find('option:selected').val();
+    let selectedMapDbId =$('#selectionMap').find('option:selected').val();
     $('select#selectionStudies').html('');
     let htmlString='<option value="">---Select one---</option>';
     for(let i=0; i<firstInformation.length; i++){
@@ -32,8 +34,14 @@ function selectStudies(){
             	console.log(firstInformation[i].studies[j]);
                 htmlString += '<option id="'+i+'" value="' + firstInformation[i].studies[j].studyDbId + '">' + firstInformation[i].studies[j].name + '</option>\n';
             }
-        }
+        }else if(selectedMapDbId === firstInformation[i].map){
+            for(let j=0; j<firstInformation[i].studies.length; j++){
+                console.log(firstInformation[i].studies[j]);
+                htmlString += '<option id="'+i+'" value="' + firstInformation[i].studies[j].studyDbId + '">' + firstInformation[i].studies[j].name + '</option>\n';
+            }
+		}
     }
+    console.log(htmlString);
     $('select#selectionStudies').html(htmlString);
 }
 
