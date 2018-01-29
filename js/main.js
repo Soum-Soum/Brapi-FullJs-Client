@@ -100,43 +100,42 @@ async function login(){
 async function startment() {
 	let argumentsArray = groupTab;
 	if(await requCallareImplement(argumentsArray)){
-		firtstInformation = await getFirstInformation(argumentsArray);
-        setup_select_tag(firtstInformation);
+		await getFirstInformation(argumentsArray);
+        setup_select_tag(firstInformation);
 	}
 }
 
 async function getFirstInformation(){
     try{
-    	let arrayOfStudies = [];
-        let  arrayOfMaps = [];
         let argumentsArray =[];
-		bindCall2Url(groupTab, ALL_CALLS);
-		console.log(call2UrlTab);
-		if($_GET("mapDbId")!==null){
-			$('#selectionMap').hide();
-			$('#labelSelectionMap').hide();
+        bindCall2Url(groupTab, ALL_CALLS);
+        console.log(call2UrlTab);
+        if($_GET("mapDbId")!==null){
+            $('#selectionMap').hide();
+            $('#labelSelectionMap').hide();
             for(let i=0; i<groupTab.length;i++){
-            	console.log(call2UrlTab);
                 argumentsArray = {urlEndPoint : call2UrlTab[i]['studies-search'].split(';')[0], token : call2UrlTab[i]['studies-search'].split(';')[1]};
-				arrayOfStudies = arrayOfStudies.concat(await readStudyList(argumentsArray));
-				arrayOfMaps = arrayOfMaps.concat($_GET("mapDbId"));
+                let tempStudies = await readStudyList(argumentsArray);
+                let tempMap = $_GET("mapDbId");
+                firstInformation[i]={map : tempMap, studies : tempStudies};
             }
-		}else{
+        }else{
             for(let i=0; i<groupTab.length;i++){
                 argumentsArray = {urlEndPoint : call2UrlTab[i]['studies-search'].split(';')[0], token : call2UrlTab[i]['studies-search'].split(';')[1]};
-                arrayOfStudies = arrayOfStudies.concat(await readStudyList(argumentsArray));
+                let tempStudies = await readStudyList(argumentsArray);
                 argumentsArray = {urlEndPoint : call2UrlTab[i]['maps'].split(';')[0], token : call2UrlTab[i]['maps'].split(';')[1]};
-                arrayOfMaps = arrayOfMaps.concat(await readMaps(argumentsArray));
+                let tempMap = await readMaps(argumentsArray);
+                firstInformation[i]={map : tempMap, studies : tempStudies};
             }
-		}
-		console.log({maps : arrayOfMaps, studies : arrayOfStudies});
-		return {maps : arrayOfMaps, studies : arrayOfStudies};
+        }
+        console.log(firstInformation);
     }catch (err){
         handleErrors('Bad URL')
     }
 }
 
 async function launch_selection(){
+    setEmptyMarkerSelect();
     $('#topTypeDiv').hide();
     setDisabled(true);
 	if ($("#selectionStudies").find("option:selected").text()==="---Select one---") {

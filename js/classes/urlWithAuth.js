@@ -49,8 +49,8 @@ class urlWithAuth{
             tempUrl.url=url;
             tempUrl.pswrd=pswrs;
             tempUrl.userName=userName;
-            tempUrl.connect();
-            tempUrl.allocateCall();
+            await tempUrl.connect();
+            await tempUrl.allocateCall();
         }
         tempUrl.printUrl();
         return tempUrl;

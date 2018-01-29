@@ -3,30 +3,35 @@
  * @function
  * @param {Array} firstinformations - array containing the maps and studies that were found
  */
-function setup_select_tag(firstinformations){
-	let htmlString='<option value="">---Select one---</option>';
-	if($_GET("mapDbId")===null){
-        for(let key in firstinformations.studies){
-            htmlString += '<option id="'+key+'" value="' + firstinformations.maps[key].mapDbId + '">' + firstinformations.maps[key].name + '</option>\n';
-        }
-	}else{
-        htmlString = '<option id="'+0+'" value="' + firstinformations.maps[0] + '">' + firstinformations.maps[0] + '</option>\n';
-	}
+function setup_select_tag(){
+    let htmlString='<option value="">---Select one---</option>';
+    if($_GET("mapDbId")===null){
+        for(let i=0; i<firstInformation.length; i++){
+        	console.log(firstInformation[i].map);
+            htmlString += '<option id="'+i+'" value="' + firstInformation[i].map[0].mapDbId + '">' + firstInformation[i].map[0].name + '</option>\n';
+		}
+    }else{
+        htmlString = '<option id="0" value="' + firstInformation[0].map[0].mapDbId + '">' + firstInformation[0].map[0].name + '</option>\n';
+    }
     $('select#selectionMap').html(htmlString);
-    selectStudies();
 }
+
 
 /**
  * Set htmp of studies widget
  * @function
  */
 function selectStudies(){
-    let selectedMapId = currentGroupId =$('#selectionMap').find('option:selected').attr('id');
+	setEmptyTheFields();
+    let selectedMapDbId = currentGroupId =$('#selectionMap').find('option:selected').val();
     $('select#selectionStudies').html('');
     let htmlString='<option value="">---Select one---</option>';
-    for(let key in firtstInformation.studies){
-        if(selectedMapId === key){
-            htmlString += '<option id="'+key+'" value="' + firtstInformation.studies[key].studyDbId + '">' + firtstInformation.studies[key].name + '</option>\n';
+    for(let i=0; i<firstInformation.length; i++){
+        if(selectedMapDbId === firstInformation[i].map[0].mapDbId){
+            for(let j=0; j<firstInformation[i].studies.length; j++){
+            	console.log(firstInformation[i].studies[j]);
+                htmlString += '<option id="'+i+'" value="' + firstInformation[i].studies[j].studyDbId + '">' + firstInformation[i].studies[j].name + '</option>\n';
+            }
         }
     }
     $('select#selectionStudies').html(htmlString);

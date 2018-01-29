@@ -129,7 +129,7 @@ async function readStudyList(argumentsArray){
  * @param {array} argumentsArray - Array containing the parameters required by the function
  */
 async function getmarkerProfileDbId(argumentsArray){
-    let myURL = argumentsArray.askedPage===undefined ? argumentsArray.urlEndPoint + "/" + URL_MARKER_PROFILES : argumentsArray.urlEndPoint + "/" + URL_MARKER_PROFILES +"?page="+argumentsArray.askedPage ;
+    let myURL = argumentsArray.askedPage===undefined ? argumentsArray.urlEndPoint + "/" + URL_MARKER_PROFILES + "?studyDbId=" + argumentsArray.selectedStudy : argumentsArray.urlEndPoint + "/" + URL_MARKER_PROFILES +"?page="+argumentsArray.askedPage + "&studyDbId=" + argumentsArray.selectedStudy;
 	let myInit = returnInit(argumentsArray.token);
 	try {
 		let resp = await fetch(myURL, myInit);
