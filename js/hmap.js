@@ -101,3 +101,11 @@ function setHmapType(arrayOfMarkersType,arrayMarkers){
     console.log(hmapsType);
     return hmapsType;
 }
+
+function setLocalStorage(arrayMarkers) {
+    for(let j=0; j<arrayMarkers.length;j++){
+        for(let i=0; i<arrayMarkers[j].length; i++){
+            markerDetailsHmap[arrayMarkers[j][i].markerDbId] = arrayMarkers[j][i].linkageGroup + ':' + arrayMarkers[j][i].location;
+        }
+    }
+}

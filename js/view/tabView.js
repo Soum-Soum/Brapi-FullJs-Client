@@ -12,7 +12,7 @@ function fill_result_table(sendedMarkers,sendedMarkersProlis,response) {
     console.log(sendedMarkersProlis);
     for(let i=0;i<sendedMarkersProlis.length;i++){
         for(let j=0;j<sendedMarkers.length;j++){
-            htmlString += '<tr><td>'+sendedMarkers[j]+'</td><td>'+response[sendedMarkersProlis[i]]+'</td><td>'+sendedMarkersProlis[i]+'</td><td id="'+(sendedMarkers[j]+sendedMarkersProlis[i]).hashCode()+'"></td></tr>';
+            htmlString += '<tr><td>'+sendedMarkers[j]+'</td><td>'+markerDetailsHmap[sendedMarkers[j]]+'</td><td>'+response[sendedMarkersProlis[i]]+'</td><td>'+sendedMarkersProlis[i]+'</td><td id="'+(sendedMarkers[j]+sendedMarkersProlis[i]).hashCode()+'"></td></tr>';
         }
     }
     $("#resulttable").find("> tbody").html(htmlString);

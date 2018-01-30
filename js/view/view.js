@@ -41,8 +41,11 @@ function selectStudies(){
             }
 		}
     }
-    console.log(htmlString);
-    $('select#selectionStudies').html(htmlString);
+    $('#selectionStudies').html(htmlString);
+    if($("#selectionStudies option").length===2){
+        $($('#selectionStudies option')[1]).prop('selected', true);
+        launch_selection();
+    }
 }
 
 /**
@@ -71,6 +74,7 @@ function setEmptyTheFields(){
  */
 function setEmptyMarkerSelect() {
 	$('#Markers').html("");
+    $('#markersLabel').hide();
 }
 
 /**
@@ -175,7 +179,12 @@ function updateSelection(idLabel, idSelect){
 	nbOption = removeAll(nbOption,"");
 	nbOption=nbOption.length;
 	$('#'+idLabel).text(nbSelectionOption + ' / ' + nbOption);
-    $('#'+idLabel).show();
+	if(nbSelectionOption === 0){
+        $('#'+idLabel).hide();
+    }else{
+        $('#'+idLabel).show();
+    }
+
 }
 
 /**

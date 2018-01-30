@@ -69,7 +69,7 @@ async function ExportDetailsGermplasms(){
     let fieldTab = getFieldFormJson(jsonHmap);
     console.log(fieldTab);
     let tsvString = buildTsvString(jsonHmap, selectedGermplasms, fieldTab);
-    download($('#selectionMap').find('option:selected').val()+'.tsv',tsvString);
+    download($('#selectionMap').find('option:selected').val()+'_germplasms.tsv',tsvString);
     $('#AbortExportGermplasmsDetails').hide();
     l.stop();
 }
@@ -159,4 +159,17 @@ function download(filename, tsvData) {
     document.body.appendChild(element);
     element.click();
     document.body.removeChild(element);
+}
+
+async function exportMarkerDetails() {
+    if($('#Markers').html()!==""){
+        selectedMarkers = $('#Markers').find('option:selected').map(function(){return $(this).val();}).get();
+    }
+    console.log(selectedMarkers);
+    let tsvString = new StringBuffer();
+    tsvString.append('MarkerDbId\tLinkage Group\tLocation\n');
+    for(let i=0; i<selectedMarkers.length; i++){
+        tsvString.append(selectedMarkers[i] + '\t' + markerDetailsHmap[selectedMarkers[i]].split(':')[0] + '\t' + markerDetailsHmap[selectedMarkers[i]].split(':')[1] + '\n');
+    }
+    download($('#selectionMap').find('option:selected').val()+'_marker.tsv',tsvString.toString());
 }

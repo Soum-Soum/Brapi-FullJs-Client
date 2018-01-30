@@ -41,7 +41,7 @@
 							<div class=" col-6">
 								<button class="mx-auto btn btn-secondary btn-sm" id="Submit1" type="button" onclick="setEmptyTheFields();login();">Submit</button>
 							</div>
-							<button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target=".bd-example-modal-lg">Use more urls</button>
+							<button type="button" id="groupManager" class="btn btn-sm btn-primary" data-toggle="modal" data-target=".bd-example-modal-lg">Use more urls</button>
 							<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
 								<div class="modal-dialog modal-lg">
 									<div style="border-radius: 20px" class="modal-content">
@@ -129,9 +129,10 @@
 				</div>
 				<div class="row">
 					<div class="col-md-12" style="text-align: center;">
-						<input disabled type="button" id="Search" value="Search" class="btn btn-primary btn-sm" onclick="getRequestParameter();">
-						<button disabled type="button" id="Export" class="btn btn-primary btn-sm ladda-button" data-style="expand-right" onclick="exportMatrix();">Export genotypes</button>
-						<button disabled type="button" id="ExportGermplasmsDetails" class="btn btn-primary btn-sm ladda-button" data-style="expand-right" onclick="ExportDetailsGermplasms();"> Export Germplasms Details</button>
+						<input disabled type="button" id="Search" value="Search" class="btn btn-primary" onclick="getRequestParameter();">
+						<button disabled type="button" id="Export" class="btn btn-primary ladda-button" data-style="expand-right" onclick="exportMatrix();">Export genotypes</button>
+						<button disabled type="button" id="ExportGermplasmsDetails" class="btn btn-primary ladda-button" data-style="expand-right" onclick="ExportDetailsGermplasms();"> Export Germplasms Details</button>
+						<button  type="button" id="ExportMarkerDetails" class="btn btn-primary ladda-button" data-style="expand-right" onclick="exportMarkerDetails();"> Export Marker Details</button>
 					</div>
 				</div>
 				<div class="row">
@@ -152,7 +153,7 @@
 			<label class="badge badge-success" for="customPageSize">Genotypes per page : </label>
 			<input type="text" id="customPageSize" size="5" value="1000" onchange="setCustomPageSize();launchMatrixRequest(startmentindex);">
 			<label class="badge badge-success" for="missingData">Show missing data</label>
-
+			<input type="checkbox" onchange="getRequestParameter();">
 			<br>
 		</form>
 		<div class="container">
@@ -160,6 +161,7 @@
 				<thead>
 					<tr>
 						<th scope="col">Marker</th>
+						<th scope="col">Position</th>
 						<th scope="col">Germplasm</th>
 						<th scope="col">Sample</th>
 						<th scope="col">Genotype</th>
@@ -170,6 +172,7 @@
 				<tfoot>
 					<tr>
 						<th scope="col">Markers</th>
+						<th scope="col">Position</th>
 						<th scope="col">Germplasm</th>
 						<th scope="col">Sample</th>
 						<th scope="col">Genotype</th>
@@ -177,6 +180,7 @@
 				</tfoot>
 			</table>
 		</div>
+
 		<link rel="stylesheet" type="text/css" href="css/ladda-themeless.min.css">
 		<link rel="stylesheet" type="text/css" href="css/animate.css">
 		<link rel="stylesheet" type="text/css" href="css/bootstrap.css">

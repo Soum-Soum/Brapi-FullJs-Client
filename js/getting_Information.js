@@ -33,7 +33,7 @@ async function urlMapIdIsOk(brapiEndPoint, mapDbId){
     try {
         await fetch(brapiEndPoint + "/" + URL_MAPS + "/" + mapDbId);
     } catch (err) {
-        handleErrors("Bad map id in Url");
+        handleErrors("Bad map id in Url : " + mapDbId);
         return false;
     }
 	return true;
@@ -49,11 +49,11 @@ async function urlBrapiEndPointIsOk(brapiEndPoint){
 	try{
         let reponse = await fetch(brapiEndPoint + "/" + URL_CALLS);
         if(!reponse.ok){
-            handleErrors("Bad barpi end point in Url");
+            handleErrors("Bad barpi end point in Url : " + brapiEndPoint);
             return false;
 		}
     }catch(err){
-		handleErrors("Bad barpi end point in Url");
+		handleErrors("Bad barpi end point in Url : " + brapiEndPoint);
 		return false;
 	}
 	return true;
@@ -75,7 +75,7 @@ async function getCalls(urlWithToken){
 			resp1 = await resp1.json();
 			return resp1.result.data;
 		}catch(err){
-			handleErrors('Bad Url');
+			handleErrors('Bad Url : ' + urlWithToken.url);
 		}
 
 }
@@ -195,8 +195,18 @@ async function getMapDetails(argumentsArray){
  * @param {array} argumentsArray - Array containing the parameters required by the function
  */
 async function getMarkersPosition(argumentsArray){
-    let myURL = argumentsArray.askedPage===undefined ? argumentsArray.urlEndPoint+"/"+URL_MAPS+"/"+argumentsArray.selectedMap+"/positions" : argumentsArray.urlEndPoint+"/"+URL_MAPS+"/"+argumentsArray.selectedMap+"/positions?page="+argumentsArray.askedPage;
-    if(argumentsArray.selectedLKG!==undefined){myURL = myURL + '&linkageGroupId=' + argumentsArray.selectedLKG;}
+    let myURL = '';
+    if(argumentsArray.askedPage===undefined){
+    	myURL = argumentsArray.urlEndPoint+"/"+URL_MAPS+"/"+argumentsArray.selectedMap+"/positions";
+    	if(argumentsArray.selectedLKG!==undefined){
+            myURL += '?linkageGroupId=' + argumentsArray.selectedLKG;
+		}
+	}else{
+    	myURL = argumentsArray.urlEndPoint+"/"+URL_MAPS+"/"+argumentsArray.selectedMap+"/positions?page="+argumentsArray.askedPage;
+        if(argumentsArray.selectedLKG!==undefined){
+            myURL += '&linkageGroupId=' + argumentsArray.selectedLKG;
+        }
+    }
     let myInit = returnInit(argumentsArray.token);
 	console.log(myURL);
 	try {
@@ -318,3 +328,4 @@ async function getGermplasmsDetails(argumentsArray){
 	}
 
 }
+

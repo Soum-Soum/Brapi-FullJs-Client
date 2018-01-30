@@ -18,6 +18,9 @@ async function setVisibleField() {
 	$('#topTypeDiv').hide();
 	$('#AbortExport').hide();
 	$('#AbortExportGermplasmsDetails').hide();
+    if($_GET("manage") === 'false'){
+        $('#groupManager').hide();
+    }
 	if ($_GET("baseUrl") !== null) {
 		let temp = $_GET("baseUrl").split(';');
 		for (let i = 0; i < temp.length; i++) {
@@ -80,7 +83,7 @@ async function geneateGroupTab(caller) {
 }
 
 async function login(){
-	if(groupTab.length===0){
+	if(groupTab.length===0 || $("#urltoget").val()!== groupTab[0].urlEndPoint ){
         if(!isEndPointInUrl){
             let tempGroup =[];
             tempGroup.push(await urlWithAuth.staticConstructor($("#urltoget").val(),$("#UserId").val(),$("#Password").val()));
@@ -130,7 +133,7 @@ async function getFirstInformation(){
             }
         }
     }catch (err){
-        handleErrors('Bad URL')
+        handleErrors('Unable to load preliminary information  ')
     }
 }
 
@@ -149,7 +152,7 @@ async function launch_selection(){
 			selectedMap=$_GET("mapDbId");
 		}
 		let arrayOfLinkageGroup=[],  arrayMarkers=[];
-		let selectedStudy = $('#selectionStudies').find('option:selected').val();
+		selectedStudy = $('#selectionStudies').find('option:selected').val();
 		let paginationManager = new PaginationManager(0);
 		let argumentsArray = {selectedStudy, selectedMap};
         argumentsArray = setArgumentArray("markerprofiles",argumentsArray);
@@ -193,14 +196,15 @@ async function launch_selection(){
 			for(let i=0; i<arrayOfLinkageGroup.length;i++){
                 let argumentsArray = {selectedStudy, selectedMap, selectedLKG: selectedLKG};
                 argumentsArray = setArgumentArray("maps/{id}/positions",argumentsArray);
-                tempArray = await paginationManag
-				er.lol(getMarkersPosition, argumentsArray);
+                tempArray = await paginationManager.pager(getMarkersPosition, argumentsArray);
                 for(let p=0; p<tempArray.length;p++){
                     arrayMarkers=arrayMarkers.concat(tempArray[p]);
 				}
 			}
             arrayMarkers = [arrayMarkers];
 		}
+        console.log(arrayMarkers[0]);
+        setLocalStorage(arrayMarkers);
         setHmapLinkageGroup(arrayOfLinkageGroup, arrayMarkers);
 		setUpLinkageGroupAndMarkersType(arrayOfLinkageGroup,arrayOfMarkersType);
 	}
@@ -209,8 +213,8 @@ async function launch_selection(){
 
 function selectionMarkers(){
 	let selectedType = $("#typeMarker").val();
-	console.log(selectedType);
 	let selectedLinkageGroup = $("#chromosome").val();
+	console.log(selectedLinkageGroup);
 	if((selectedType.length!==0 && selectedLinkageGroup.length!==0)||(selectedLinkageGroup.length!==0 && $("#typeMarker>option").length===0)){
 		selectedMarkers=[];
 		for(let i=0; i<selectedLinkageGroup.length;i++){
@@ -221,10 +225,8 @@ function selectionMarkers(){
 		}else{
 			handleErrors('No type are selected');
 		}
-
-		setupMarkersId(selectedMarkers);
-		console.log(selectedMarkers);
-	}
+        setupMarkersId(selectedMarkers);
+    }
 }
 
 function compareOrSubtract(selectedType){
@@ -235,14 +237,12 @@ function compareOrSubtract(selectedType){
 			let tempSet = new Set(hmapsType[unselectedType[i]]);
 			selectedMarkers = [...new Set([...selectedMarkers].filter(x => !tempSet.has(x)))];
 		}
-		console.log(selectedMarkers);
 		return selectedMarkers
 	}else{
         let intersection = [];
         for(let i=0; i<selectedType.length; i++){
         	intersection = intersection.concat(array_big_intersect(selectedMarkers, hmapsType[selectedType[i]]));
 		}
-		console.log(intersection);
 		return intersection;
 	}
 }

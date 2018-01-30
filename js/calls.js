@@ -24,7 +24,7 @@ async function requCallareImplement() {
         return groupTab.length>0;
 
     }catch (err){
-        handleErrors(err);
+        handleErrors('Unable to check if required calls are available');
     }
 }
 
@@ -51,7 +51,7 @@ function callsAreInArray(resp, requCall){
         });
         return true;
     }catch(err){
-        handleErrors('Bad Url')
+        handleErrors('Unable to check if the current call is in the table')
     }
 
 }
