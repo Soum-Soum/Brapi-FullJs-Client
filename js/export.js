@@ -152,13 +152,18 @@ function buildTsvString(jsonHmap, selectedGermplasms, fieldTab){
  * @param {String} tsvData- The string to encoded in the tsv file
  */
 function download(filename, tsvData) {
-    let element = document.createElement('a');
-    element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(tsvData));
-    element.setAttribute('download', filename);
-    element.style.display = 'none';
-    document.body.appendChild(element);
-    element.click();
-    document.body.removeChild(element);
+    let blob = new Blob([tsvData], {type: 'text/tsv'});
+    if(window.navigator.msSaveOrOpenBlob) {
+        window.navigator.msSaveBlob(blob, filename);
+    }
+    else{
+        let elem = window.document.createElement('a');
+        elem.href = window.URL.createObjectURL(blob);
+        elem.download = filename;
+        document.body.appendChild(elem);
+        elem.click();
+        document.body.removeChild(elem);
+    }
 }
 
 async function exportMarkerDetails() {

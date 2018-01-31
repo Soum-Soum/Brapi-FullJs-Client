@@ -218,6 +218,7 @@ function setDisabled(bool){
     $('#Export').prop('disabled', bool);
     $('#ExportGermplasmsTsv').prop('disabled', bool);
     $('#ExportGermplasmsDetails').prop('disabled', bool);
+    $('#ExportMarkerDetails').prop('disabled', bool);
 }
 
 /**

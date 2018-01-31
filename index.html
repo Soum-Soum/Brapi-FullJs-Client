@@ -132,7 +132,7 @@
 						<input disabled type="button" id="Search" value="Search" class="btn btn-primary" onclick="getRequestParameter();">
 						<button disabled type="button" id="Export" class="btn btn-primary ladda-button" data-style="expand-right" onclick="exportMatrix();">Export genotypes</button>
 						<button disabled type="button" id="ExportGermplasmsDetails" class="btn btn-primary ladda-button" data-style="expand-right" onclick="ExportDetailsGermplasms();"> Export Germplasms Details</button>
-						<button  type="button" id="ExportMarkerDetails" class="btn btn-primary ladda-button" data-style="expand-right" onclick="exportMarkerDetails();"> Export Marker Details</button>
+						<button disabled type="button" id="ExportMarkerDetails" class="btn btn-primary ladda-button" data-style="expand-right" onclick="exportMarkerDetails();"> Export Marker Details</button>
 					</div>
 				</div>
 				<div class="row">
@@ -153,7 +153,7 @@
 			<label class="badge badge-success" for="customPageSize">Genotypes per page : </label>
 			<input type="text" id="customPageSize" size="5" value="1000" onchange="setCustomPageSize();launchMatrixRequest(startmentindex);">
 			<label class="badge badge-success" for="missingData">Show missing data</label>
-			<input type="checkbox" onchange="getRequestParameter();">
+			<input id="missingData" type="checkbox" onchange="getRequestParameter();">
 			<br>
 		</form>
 		<div class="container">
