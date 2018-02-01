@@ -5,7 +5,7 @@
  */
 function setup_select_tag(){
     let htmlString='<option value="">---Select one---</option>\n';
-    if($_GET("mapDbId")===null){
+    if($_GET("mapDbId")===null || grpTabFromUrlAsChanged){
         for(let i=0; i<firstInformation.length; i++){
             htmlString += '<option id="'+i+'" value="' + firstInformation[i].map[0].mapDbId + '">' + firstInformation[i].map[0].name + '</option>\n';
 		}
@@ -221,33 +221,6 @@ function setDisabled(bool){
     $('#ExportMarkerDetails').prop('disabled', bool);
 }
 
-/**
- * Animate html page
- * @function
- */
-function animatForm(){
-	if(!$('#UserId2').is(':visible')){
-		$('#btnChangeName').text('Use one url');
-        $('#UserId2').show();
-        $('#Password2').show();
-        $('#urltoget2').show();
-        $('#UserId2').text('');
-        $('#Password2').text('');
-        $('#urltoget2').text('');
-        $('#UserId2').addClass('animated bounceInRight');
-        $('#Password2').addClass('animated bounceInRight');
-        $('#urltoget2').addClass('animated bounceInRight');
-	}else{
-        $('#btnChangeName').text('Use tow url');
-        $('#UserId2').hide();
-        $('#Password2').hide();
-        $('#urltoget2').hide();
-        $('#UserId2').removeClass('animated bounceInRight');
-        $('#Password2').removeClass('animated bounceInRight');
-        $('#urltoget2').removeClass('animated bounceInRight');
-	}
-}
-
 function setMainFormVisible(){
     $('#mainForm').show();
 	if($('#Use2Url').is(':checked')){
@@ -255,4 +228,36 @@ function setMainFormVisible(){
 	}else{
         $('#ExportGermplasmsDetails').attr("disabled", false);
 	}
+}
+
+async function isInAdvancedMode(bool) {
+    if(bool){
+        if(isEndPointInUrl){
+            $('#groupManager').show();
+        }else{
+            if($('#urltoget').val()!=="" && $('#Password').val()!=="" && $('#UserId').val()!==""){
+                urlSaver = await urlWithAuth.staticConstructor($('#urltoget').val(),$('#UserId').val(),$('#Password').val());
+            }
+            $('#urltoget').hide();
+            $('#urltoget').val('');
+            $('#loginForm').hide();
+            $('#UserId').val('');
+            $('#Password').val('');
+            $('#Submit1').hide();
+            $('#groupManager').show();
+        }
+    }else{
+        if(isEndPointInUrl){
+            $('#groupManager').hide();
+        }else{
+            $('#urltoget').show();
+            $('#loginForm').show();
+            $('#Submit1').show();
+            $('#groupManager').hide();
+            $('#urltoget').val(urlSaver.url);
+            $('#UserId').val(urlSaver.userName);
+            $('#Password').val(urlSaver.pswrd);
+        }
+
+    }
 }

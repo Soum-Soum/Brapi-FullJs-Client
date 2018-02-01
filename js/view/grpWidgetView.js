@@ -6,9 +6,9 @@
 function  addUrl(caller){
     $('.badgeToShow').show();
     $(caller).parent().append('<div class=" row  space container-fluid animated pulse ">\n' +
-            '<input class="form-control col-7" type="text" value="http://localhost:8080/gigwa/rest/Rice-MSU7/brapi/v1" placeholder="Url">\n' +
-            '<input class="form-control col-2" type="text" value="pierre" placeholder="UserName">\n' +
-            '<input class="form-control col-2" type="text" value="test" placeholder="Password">\n' +
+            '<input class="form-control col-7" type="text" value="" placeholder="Url">\n' +
+            '<input class="form-control col-2" type="text" value="" placeholder="UserName">\n' +
+            '<input class="form-control col-2" type="text" value="" placeholder="Password">\n' +
         '<div class="btn btn-secondary badgeToShow"></div>\n' +
             '<div class="btn btn-success badgeToHide">\n' +
                 '<i class="fas fa-check"></i>\n' +
@@ -80,9 +80,9 @@ function addGrp(caller){
                 '<span aria-hidden="true">&times;</span>\n' +
             '</button>\n' +
             '<div class=" row  space container-fluid animated pulse ">\n' +
-                '<input class="form-control col-7" type="text" value="http://localhost:8080/gigwa/rest/Rice-MSU7/brapi/v1" placeholder="Url">\n' +
-                '<input class="form-control col-2" type="text" value="pierre" placeholder="UserName">\n' +
-                '<input class="form-control col-2" type="text" value="test" placeholder="Password">\n' +
+                '<input class="form-control col-7" type="text" value="" placeholder="Url">\n' +
+                '<input class="form-control col-2" type="text" value="" placeholder="UserName">\n' +
+                '<input class="form-control col-2" type="text" value="" placeholder="Password">\n' +
                 '<div class="btn btn-secondary badgeToShow"></div>\n' +
                 '<div class="btn btn-success badgeToHide">\n' +
                     '<i class="fas fa-check"></i>\n' +

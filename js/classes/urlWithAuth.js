@@ -85,6 +85,13 @@ class urlWithAuth{
         }
     }
 
+    async reconect(username, pswrd){
+        this.userName=username;
+        this.pswrd=pswrd;
+        await this.connect();
+        await this.allocateCall();
+    }
+
     /**
      * print the current UrlWithAuth
      * @function

@@ -10,5 +10,5 @@ const  ALL_CALLS = ['token', 'calls', 'markers', 'studies-search', 'maps', 'maps
 let  selectedMap = "", selectedStudy = "" , calls = "", mostPresentType = "";
 let selectedMarkersProfils=[], selectedMarkers=[], hmapsType=undefined , hmapsLinkageGroup = [], response = [], cpyResp = [], arrayOfMarkersType=[], groupTab = [], call2UrlTab = [],firstInformation = [], markerDetailsHmap = [];
 let clientPageSize=1000, startmentindex=0, sizeOfResquestedMatrix=0, totalPage =0, currentGroupId=0;
-let isEndPointInUrl=false, isMapIdInUrl=false, auth=true, exportIsAbort = false ,exportGermplasmsIsAbort = false;
-
+let isEndPointInUrl=false, isMapIdInUrl=false, auth=false, exportIsAbort = false ,exportGermplasmsIsAbort = false, grpTabFromUrlAsChanged = false;
+let urlSaver = new urlWithAuth();

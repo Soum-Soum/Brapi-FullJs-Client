@@ -5,7 +5,6 @@ async function init(){
 	if (window !== top){
 		$('#title').hide();
 	}
-    animatForm();
 }
 
 async function setVisibleField() {
@@ -18,8 +17,9 @@ async function setVisibleField() {
 	$('#topTypeDiv').hide();
 	$('#AbortExport').hide();
 	$('#AbortExportGermplasmsDetails').hide();
+    $('#groupManager').hide();
     if($_GET("manage") === 'false'){
-        $('#groupManager').hide();
+        $('#advancedMode').hide();
     }
 	if ($_GET("baseUrl") !== null) {
 		let temp = $_GET("baseUrl").split(';');
@@ -44,15 +44,17 @@ async function setVisibleField() {
             }
 		}
 		if (groupTab.length > 0) {
-			$('#urlForm').hide();
+			$('#urltoget').hide();
 			$('#labelUse2Url').hide();
-			isEndPointInUrl = true;
-		}
-		if ($_GET("auth") !== "true") {
 			$('#loginForm').hide();
-			auth = false;
+			isEndPointInUrl = true;
+			fillWidget(groupTab);
 		}
-		if (isEndPointInUrl && auth === false) {
+		if ($_GET("auth") === "true" && groupTab.length===1) {
+			$('#loginForm').show();
+			auth = true;
+		}
+		if (isEndPointInUrl && auth !== true) {
 			$('#Submit1').hide();
 			await login();
 		}
@@ -60,6 +62,7 @@ async function setVisibleField() {
 }
 
 async function geneateGroupTab(caller) {
+    grpTabFromUrlAsChanged=true; isMapIdInUrl=false;
 	groupTab=[];
 	let groups = $(caller).parent().children();
 	for(let i=2; i<groups.length;i++){
@@ -80,9 +83,28 @@ async function geneateGroupTab(caller) {
 		}
 	}
 	console.log(groupTab);
+	login();
 }
 
 async function login(){
+	console.log(groupTab);
+	if((groupTab.length===0 && !$('#advancedMode input').is(':checked'))){
+		let tempGroup =[];
+		tempGroup.push(await urlWithAuth.staticConstructor($("#urltoget").val(),$("#UserId").val(),$("#Password").val()));
+		groupTab.push(tempGroup);
+	}else if(groupTab.length===1 && auth=== true){
+        await groupTab[0][0].reconect($('#UserId').val(),$('#Password').val());
+	}
+	//}
+    console.log(groupTab);
+    setMainFormVisible();
+    $('#toAnimate').addClass('animated fadeIn');
+    startment();
+
+}
+
+/*async function login(){
+||(groupTab.length!==0 && $('#urltoget').val()!==groupTab[0].url)
 	if(groupTab.length===0 || $("#urltoget").val()!== groupTab[0].urlEndPoint ){
         if(!isEndPointInUrl){
             let tempGroup =[];
@@ -98,7 +120,7 @@ async function login(){
 	setMainFormVisible();
 	$('#toAnimate').addClass('animated fadeIn');
 	startment();
-}
+}*/
 
 
 async function startment() {
@@ -114,7 +136,7 @@ async function getFirstInformation(){
     	firstInformation=[];
         let argumentsArray =[];
         bindCall2Url(groupTab, ALL_CALLS);
-        if($_GET("mapDbId")!==null){
+        if($_GET("mapDbId")!==null && !grpTabFromUrlAsChanged){
             $('#selectionMap').hide();
             $('#labelSelectionMap').hide();
             for(let i=0; i<groupTab.length;i++){
@@ -124,6 +146,8 @@ async function getFirstInformation(){
                 firstInformation[i]={map : tempMap, studies : tempStudies};
             }
         }else{
+            $('#selectionMap').show();
+            $('#labelSelectionMap').show();
             for(let i=0; i<groupTab.length;i++){
                 argumentsArray = {urlEndPoint : call2UrlTab[i]['studies-search'].split(';')[0], token : call2UrlTab[i]['studies-search'].split(';')[1]};
                 let tempStudies = await readStudyList(argumentsArray);

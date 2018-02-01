@@ -33,15 +33,16 @@
 							</div>
 						</div>
 						<div class="row">
-							<div id="urlForm" class="input-group">
-								<input value="http://localhost:8080/gigwa/rest/Rice-MSU7/brapi/v1" type="text" name="URL" class="form-control" placeholder="Ex : http://_____/brapi/v1" id="urltoget" onchange="setEmptyTheFields();">
+							<div class="input-group">
+								<input value="" type="text" name="URL" class="form-control" placeholder="Ex : http://_____/brapi/v1" id="urltoget" onchange="setEmptyTheFields();">
 							</div>
 						</div>
 						<div class="row">
-							<div class=" col-6">
-								<button class="mx-auto btn btn-secondary btn-sm" id="Submit1" type="button" onclick="setEmptyTheFields();login();">Submit</button>
+							<button class="col-4 btn btn-secondary btn-sm" id="Submit1" type="button" onclick="if(groupTab.length>0 && $('#urltoget').val()!==''){groupTab=[];}setEmptyTheFields();login();">Submit</button>
+							<div id="advancedMode" class="col-4">
+								<p style="margin-left: 25px; margin-right: 5px;" class="badge badge-info">Advanced Mode : </p>
+								<input type="checkbox" class="" onchange="isInAdvancedMode($(this).is(':checked'))">
 							</div>
-							<button type="button" id="groupManager" class="btn btn-sm btn-primary" data-toggle="modal" data-target=".bd-example-modal-lg">Use more urls</button>
 							<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
 								<div class="modal-dialog modal-lg">
 									<div style="border-radius: 20px" class="modal-content">
@@ -55,24 +56,13 @@
 													<button type="button" class="space col-2 btn btn-outline-danger close" aria-label="Close" onclick="rmThisGrp(this);">
 														<span aria-hidden="true">&times;</span>
 													</button>
-													<div class=" row  space container-fluid animated pulse ">
-														<input class="form-control col-7" type="text" value="http://localhost:8080/gigwa/rest/Rice-MSU7/brapi/v1" placeholder="Url">
-														<input class="form-control col-2" type="text" value="pierre" placeholder="UserName">
-														<input class="form-control col-2" type="text" value="test" placeholder="Password">
-														<div class="btn btn-secondary badgeToShow"></div>
-														<div class="btn btn-success badgeToHide">
-															<i class="fas fa-check"></i>
-														</div>
-														<div class="btn btn-danger badgeToHide">
-															<i class="fas fa-minus-circle"></i>
-														</div>
-													</div>
 												</div>
 											</div>
 										</div>
 									</div>
 								</div>
 							</div>
+							<button type="button" id="groupManager" class="col-4 btn btn-sm btn-primary" data-toggle="modal" data-target=".bd-example-modal-lg">Configure</button>
 						</div>
 					</div>
 				</form>	
