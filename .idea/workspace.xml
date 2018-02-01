@@ -2,13 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="35f502fc-e838-42db-8b8d-ae93addfb8b3" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/index.html" afterPath="$PROJECT_DIR$/index.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/classes/urlWithAuth.js" afterPath="$PROJECT_DIR$/js/classes/urlWithAuth.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/main.js" afterPath="$PROJECT_DIR$/js/main.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/variables.js" afterPath="$PROJECT_DIR$/js/variables.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/view/grpWidgetView.js" afterPath="$PROJECT_DIR$/js/view/grpWidgetView.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/view/view.js" afterPath="$PROJECT_DIR$/js/view/view.js" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -35,24 +29,23 @@
       <file leaf-file-name="index.html" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="260">
-              <caret line="58" column="48" lean-forward="false" selection-start-line="58" selection-start-column="48" selection-end-line="58" selection-end-column="48" />
+            <state relative-caret-position="504">
+              <caret line="42" column="34" lean-forward="false" selection-start-line="42" selection-start-column="34" selection-end-line="42" selection-end-column="34" />
               <folding>
-                <element signature="n#style#0;n#p#0;n#div#0;n#div#2;n#div#0;n#form#0;n#div#0;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#div#0;n#div#0;n#div#1;n#div#2;n#div#0;n#form#0;n#div#0;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#div#0;n#div#0;n#div#0;n#div#1;n#div#2;n#div#0;n#form#0;n#div#0;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#1;n#div#2;n#div#0;n#form#0;n#div#0;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#button#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#1;n#div#2;n#div#0;n#form#0;n#div#0;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#button#1;n#div#0;n#div#0;n#div#0;n#div#0;n#div#1;n#div#2;n#div#0;n#form#0;n#div#0;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#1;n#div#2;n#div#0;n#form#0;n#div#0;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
-                <element signature="e#3101#3108#1" expanded="true" />
-                <marker date="1517494306806" expanded="false" signature="4910:4989" ph="..." />
-                <marker date="1517494306806" expanded="false" signature="5049:5068" ph="..." />
-                <marker date="1517494306806" expanded="false" signature="5928:6007" ph="..." />
-                <marker date="1517494306806" expanded="false" signature="6069:6088" ph="..." />
-                <marker date="1517494306806" expanded="false" signature="6601:6620" ph="..." />
-                <marker date="1517494306806" expanded="false" signature="7380:7416" ph="..." />
-                <marker date="1517494306806" expanded="false" signature="7794:7813" ph="..." />
+                <element signature="e#3055#3062#1" expanded="true" />
+                <marker date="1517494647111" expanded="false" signature="4864:4943" ph="..." />
+                <marker date="1517494647111" expanded="false" signature="5003:5022" ph="..." />
+                <marker date="1517494647111" expanded="false" signature="5882:5961" ph="..." />
+                <marker date="1517494647111" expanded="false" signature="6023:6042" ph="..." />
+                <marker date="1517494647111" expanded="false" signature="6555:6574" ph="..." />
+                <marker date="1517494647111" expanded="false" signature="7334:7370" ph="..." />
+                <marker date="1517494647111" expanded="false" signature="7748:7767" ph="..." />
               </folding>
             </state>
           </provider>
@@ -417,7 +410,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="412096000" />
+    <option name="totallyTimeSpent" value="412473000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -834,24 +827,23 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="260">
-          <caret line="58" column="48" lean-forward="false" selection-start-line="58" selection-start-column="48" selection-end-line="58" selection-end-column="48" />
+        <state relative-caret-position="504">
+          <caret line="42" column="34" lean-forward="false" selection-start-line="42" selection-start-column="34" selection-end-line="42" selection-end-column="34" />
           <folding>
-            <element signature="n#style#0;n#p#0;n#div#0;n#div#2;n#div#0;n#form#0;n#div#0;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#div#0;n#div#0;n#div#1;n#div#2;n#div#0;n#form#0;n#div#0;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#div#0;n#div#0;n#div#0;n#div#1;n#div#2;n#div#0;n#form#0;n#div#0;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#1;n#div#2;n#div#0;n#form#0;n#div#0;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#button#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#1;n#div#2;n#div#0;n#form#0;n#div#0;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#button#1;n#div#0;n#div#0;n#div#0;n#div#0;n#div#1;n#div#2;n#div#0;n#form#0;n#div#0;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#1;n#div#2;n#div#0;n#form#0;n#div#0;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="e#3101#3108#1" expanded="true" />
-            <marker date="1517494306806" expanded="false" signature="4910:4989" ph="..." />
-            <marker date="1517494306806" expanded="false" signature="5049:5068" ph="..." />
-            <marker date="1517494306806" expanded="false" signature="5928:6007" ph="..." />
-            <marker date="1517494306806" expanded="false" signature="6069:6088" ph="..." />
-            <marker date="1517494306806" expanded="false" signature="6601:6620" ph="..." />
-            <marker date="1517494306806" expanded="false" signature="7380:7416" ph="..." />
-            <marker date="1517494306806" expanded="false" signature="7794:7813" ph="..." />
+            <element signature="e#3055#3062#1" expanded="true" />
+            <marker date="1517494647111" expanded="false" signature="4864:4943" ph="..." />
+            <marker date="1517494647111" expanded="false" signature="5003:5022" ph="..." />
+            <marker date="1517494647111" expanded="false" signature="5882:5961" ph="..." />
+            <marker date="1517494647111" expanded="false" signature="6023:6042" ph="..." />
+            <marker date="1517494647111" expanded="false" signature="6555:6574" ph="..." />
+            <marker date="1517494647111" expanded="false" signature="7334:7370" ph="..." />
+            <marker date="1517494647111" expanded="false" signature="7748:7767" ph="..." />
           </folding>
         </state>
       </provider>
