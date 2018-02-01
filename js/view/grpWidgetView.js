@@ -8,7 +8,7 @@ function  addUrl(caller){
     $(caller).parent().append('<div class=" row  space container-fluid animated pulse ">\n' +
             '<input class="form-control col-7" type="text" value="" placeholder="Url">\n' +
             '<input class="form-control col-2" type="text" value="" placeholder="UserName">\n' +
-            '<input class="form-control col-2" type="text" value="" placeholder="Password">\n' +
+            '<input class="form-control col-2" type="password" value="" placeholder="Password">\n' +
         '<div class="btn btn-secondary badgeToShow"></div>\n' +
             '<div class="btn btn-success badgeToHide">\n' +
                 '<i class="fas fa-check"></i>\n' +
@@ -33,7 +33,7 @@ function  addUrl2(caller, urlwithauth){
     $(caller).parent().append('<div class=" row  space container-fluid animated pulse ">\n' +
             '<input class="form-control col-7" type="text" value="'+urlwithauth.url+'" placeholder="Url">\n' +
             '<input class="form-control col-2" type="text" value="'+urlwithauth.userName+'" placeholder="UserName">\n' +
-            '<input class="form-control col-2" type="text" value="'+urlwithauth.pswrd+'" placeholder="Password">\n' +
+            '<input class="form-control col-2" type="password" value="'+urlwithauth.pswrd+'" placeholder="Password">\n' +
         '<div class="btn btn-secondary badgeToShow"></div>\n' +
             '<div class="btn btn-success badgeToHide">\n' +
                 '<i class="fas fa-check"></i>\n' +
@@ -82,7 +82,7 @@ function addGrp(caller){
             '<div class=" row  space container-fluid animated pulse ">\n' +
                 '<input class="form-control col-7" type="text" value="" placeholder="Url">\n' +
                 '<input class="form-control col-2" type="text" value="" placeholder="UserName">\n' +
-                '<input class="form-control col-2" type="text" value="" placeholder="Password">\n' +
+                '<input class="form-control col-2" type="password" value="" placeholder="Password">\n' +
                 '<div class="btn btn-secondary badgeToShow"></div>\n' +
                 '<div class="btn btn-success badgeToHide">\n' +
                     '<i class="fas fa-check"></i>\n' +

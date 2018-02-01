@@ -28,7 +28,8 @@
 							<div class=" row">
 								<div class="input-group">
 									<input type="text" value="" name="UserId" class="form-control" id="UserId" placeholder="User Name">
-									<input type="text" value="" name="Password" class="form-control" id="Password" placeholder="Password">
+									<input type="password" value="" name="Password" class="form-control" id="Password" placeholder="Password">
+									<button class="col-4 btn btn-secondary btn-sm" id="Submit1" type="button" onclick="if(groupTab.length>0 && $('#urltoget').val()!==''){groupTab=[];}setEmptyTheFields();login();">Submit</button>
 								</div>
 							</div>
 						</div>
@@ -38,7 +39,6 @@
 							</div>
 						</div>
 						<div class="row">
-							<button class="col-4 btn btn-secondary btn-sm" id="Submit1" type="button" onclick="if(groupTab.length>0 && $('#urltoget').val()!==''){groupTab=[];}setEmptyTheFields();login();">Submit</button>
 							<div id="advancedMode" class="col-4">
 								<p class="badge badge-info">Advanced Mode : </p>
 								<input type="checkbox" class="" onchange="isInAdvancedMode($(this).is(':checked'))">
