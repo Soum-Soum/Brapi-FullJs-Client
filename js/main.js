@@ -103,25 +103,6 @@ async function login(){
 
 }
 
-/*async function login(){
-||(groupTab.length!==0 && $('#urltoget').val()!==groupTab[0].url)
-	if(groupTab.length===0 || $("#urltoget").val()!== groupTab[0].urlEndPoint ){
-        if(!isEndPointInUrl){
-            let tempGroup =[];
-            tempGroup.push(await urlWithAuth.staticConstructor($("#urltoget").val(),$("#UserId").val(),$("#Password").val()));
-            groupTab.push(tempGroup);
-        }
-	}else{
-		if(isEndPointInUrl){
-            fillWidget(groupTab);
-		}
-	}
-    console.log(groupTab);
-	setMainFormVisible();
-	$('#toAnimate').addClass('animated fadeIn');
-	startment();
-}*/
-
 
 async function startment() {
 	let argumentsArray = groupTab;
@@ -162,56 +143,75 @@ async function getFirstInformation(){
 }
 
 async function launch_selection(){
-    setEmptyMarkerSelect();
+	setEmptyMarkerSelect();
     $('#topTypeDiv').hide();
     setDisabled(true);
 	if ($("#selectionStudies").find("option:selected").text()==="---Select one---") {
 		setEmptyTheFields();
 	}else{
+		$('#loadingModal').modal('show');
+		setMainBadgeText('Get selected Map and Study');
 		if(!isMapIdInUrl){
 			selectedMap = $('#selectionMap').find('option:selected').val();
+            setMainBadgeText('Selected Map : '+selectedMap);
             currentGroupId =$('#selectionMap').find('option:selected').attr('id');
-            console.log(selectedMap);
+            //console.log(selectedMap);
 		}else{
 			selectedMap=$_GET("mapDbId");
+            setMainBadgeText('Slected Map : '+selectedMap);
 		}
 		let arrayOfLinkageGroup=[],  arrayMarkers=[];
 		selectedStudy = $('#selectionStudies').find('option:selected').val();
-		let paginationManager = new PaginationManager(0);
+        setMainBadgeText('Selected Study '+selectedMap);
+		let paginationManager = new PaginationManager(0,0);
 		let argumentsArray = {selectedStudy, selectedMap};
         argumentsArray = setArgumentArray("markerprofiles",argumentsArray);
 		let askedType=null;
+		setMainBadgeText('Start loading Markers Profiles');
         await paginationManager.pager(getmarkerProfileDbId,argumentsArray).then(function(arrayGermplasmsIDs){
-			response = getMarkerProfileHmap(arrayGermplasmsIDs);
+			setMainBadgeText('Markers Profiles hmap making');
+        	response = getMarkerProfileHmap(arrayGermplasmsIDs);
+            setMainBadgeText('Set up Markers Profiles and Germplasms');
 			setUpGermplasms(response);
 			setUpMarkerProfils(response);
 			cpyResp = response;
 			response=reversHmap(response);
 		});
         argumentsArray = setArgumentArray("maps/{id}",argumentsArray);
+        setMainBadgeText('Map details loading...');
 		let mapDetails = await getMapDetails(argumentsArray);
 		mapDetails.result.linkageGroups.forEach(function(element){
 			arrayOfLinkageGroup.push(element.linkageGroupId);
 		});
         argumentsArray = setArgumentArray("markers",argumentsArray);
+        paginationManager.currentLoadingBarId++;
+        setMainBadgeText('Type List making');
         arrayOfMarkersType = getTypeList(await paginationManager.getFirstPage(getMarkers,argumentsArray));
-        console.log(arrayOfMarkersType);
+        //console.log(arrayOfMarkersType);
+        setMainBadgeText('Testing Type List');
         if(! await paginationManager.isCompleteTypeList(getMarkers,argumentsArray,arrayOfMarkersType)){
-            console.log('uncomplete');
+            //console.log('uncomplete');
             $('#topTypeDiv').show();
         }else{
-            console.log('complete');
+            //console.log('complete');
             argumentsArray = {selectedStudy, selectedMap, askedType, pageSize : undefined};
             argumentsArray = setArgumentArray("markers",argumentsArray);
+            paginationManager.currentLoadingBarId++;
             for(let i=0 ; i<arrayOfMarkersType.length; i++){
             	if(arrayOfMarkersType[i]!== mostPresentType){
+            		setMainBadgeText('Loading ' + arrayOfMarkersType[i] + ' Markers');
             		argumentsArray.askedType=arrayOfMarkersType[i];
                     arrayMarkers.push(await paginationManager.pager(getMarkers,argumentsArray));
 				}
 			}
             hmapsType = setHmapType(arrayOfMarkersType,arrayMarkers);
         }
+        if(arrayMarkers.length===0 && arrayOfMarkersType.length<=1){
+        	setProgresBarValue(paginationManager.currentLoadingBarId,100);
+		}
+        paginationManager.currentLoadingBarId++;
 		if(arrayOfLinkageGroup.length>100 || arrayMarkers.length<100000){
+			setMainBadgeText('Positions Loading... (could take few minutes)');
             argumentsArray = setArgumentArray("maps/{id}/positions",argumentsArray);
             arrayMarkers = await paginationManager.pager(getMarkersPosition,argumentsArray);
 		}else{
@@ -220,6 +220,7 @@ async function launch_selection(){
 			for(let i=0; i<arrayOfLinkageGroup.length;i++){
                 let argumentsArray = {selectedStudy, selectedMap, selectedLKG: selectedLKG};
                 argumentsArray = setArgumentArray("maps/{id}/positions",argumentsArray);
+                setMainBadgeText('Positions Loading... (could take few minutes)');
                 tempArray = await paginationManager.pager(getMarkersPosition, argumentsArray);
                 for(let p=0; p<tempArray.length;p++){
                     arrayMarkers=arrayMarkers.concat(tempArray[p]);
@@ -227,10 +228,17 @@ async function launch_selection(){
 			}
             arrayMarkers = [arrayMarkers];
 		}
-        console.log(arrayMarkers[0]);
+        //console.log(arrayMarkers[0]);
+        setMainBadgeText('Local Storage making');
         setLocalStorage(arrayMarkers);
+        setMainBadgeText('Sequence Hmap making');
         setHmapLinkageGroup(arrayOfLinkageGroup, arrayMarkers);
+        setMainBadgeText('Linkage groupe to Marker Type Hmap making');
 		setUpLinkageGroupAndMarkersType(arrayOfLinkageGroup,arrayOfMarkersType);
+		setProgresBarValue(5,100);
+		await sleep(1500);
+        $('#loadingModal').modal('hide');
+        cleanWaitingModal();
 	}
     setDisabled(false);
 }

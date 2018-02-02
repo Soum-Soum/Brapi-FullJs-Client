@@ -199,6 +199,7 @@ async function handleErrors(err) {
 	    await sleep(3000);
 	    $('#ErrorMessage').hide();
 	}else{
+	    if($('#ErrorMessage').is())
 		$('#ErrorMessage').show();
 	    $('#ErrorMessage').text(err.message);
 	    await sleep(3000);
@@ -260,4 +261,80 @@ async function isInAdvancedMode(bool) {
         }
 
     }
+}
+
+function setProgresBarValue(idProgresBar, value, textProgresBar, text) {
+    let delay = 750;
+    if(idProgresBar>=0 && idProgresBar<$('#loadingModalContainer')[0].children.length){
+        let currenBlock = idProgresBar===5 ? $('#loadingModalContainer')[0].children[idProgresBar] : $('#loadingModalContainer')[0].children[idProgresBar+1];
+        let currentProgresBar = $(currenBlock).find('.progress-bar')[0];
+        if(value!==0){
+            if(value>100){
+                $(currentProgresBar).animate( { width: '100%' }, delay );
+            }
+            $(currentProgresBar).animate( { width: value + '%' }, delay );
+            if(textProgresBar!== undefined && textProgresBar!==""){
+                $(currentProgresBar).text(value + '%(' + textProgresBar + ")");
+            }else{
+                $(currentProgresBar).text(value + '%');
+            }
+            if(text!== undefined && text!==""){
+                $('#mainBadge').text(text);
+            }
+        }else {
+            $(currentProgresBar).replaceWith('<div class="progress-bar bg-dark" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>');
+        }
+    }
+}
+
+function setMainBadgeText(text) {
+    if(text!== undefined && text!==""){
+        $('#mainBadge').text(text);
+    }
+}
+
+function cleanWaitingModal() {
+    $('#loadingModalContainer').replaceWith('<div id="loadingModalContainer" style="padding: 10px;background-color: #daebf3; border-radius: 20px;" class="container-fluid modal-content">\n' +
+        '<div style="font-size: 16px; font-weight: bold; width: auto; margin-top: 10px;" class=\'mx-auto badge badge-pill badge-light\' id="mainBadge">loool</div>\n' +
+        '<div style="background-color:#2980B9; margin: 10px; border-radius: 10px;" class="row">\n' +
+        '<span style="font-size: 16px; font-weight: bold; width: auto; margin-top: 10px;" class=\'mx-auto badge badge-pill badge-light \'>Marker Profile Loading</span>\n' +
+        '<div class="col-12">\n' +
+        '<div style="margin: 5px 20px 20px 20px;" class="progress">\n' +
+        '<div class="progress-bar bg-dark" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>\n' +
+        '</div>\n' +
+        '</div>\n' +
+        '</div>\n' +
+        '<div style="background-color:#2980B9; margin: 10px; border-radius: 10px;" class="row">\n' +
+        '<span style="font-size: 16px; font-weight: bold; width: auto; margin-top: 10px;" class=\'mx-auto badge badge-pill badge-light \'>Type Cheaking</span>\n' +
+        '<div class="col-12">\n' +
+        '<div style="margin: 5px 20px 20px 20px;" class="progress">\n' +
+        '<div class="progress-bar bg-dark" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>\n' +
+        '</div>\n' +
+        '</div>\n' +
+        '</div>\n' +
+        '<div style="background-color:#2980B9; margin: 10px; border-radius: 10px;" class="row">\n' +
+        '<span style="font-size: 16px; font-weight: bold; width: auto; margin-top: 10px;" class=\'mx-auto badge badge-pill badge-light \'>Marker Loading</span>\n' +
+        '<div class="col-12">\n' +
+        '<div style="margin: 5px 20px 20px 20px; ;" class="progress">\n' +
+        '<div class="progress-bar bg-dark" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>\n' +
+        '</div>\n' +
+        '</div>\n' +
+        '</div>\n' +
+        '<div style="background-color:#2980B9; margin: 10px; border-radius: 10px;" class="row">\n' +
+        '<span style="font-size: 16px; font-weight: bold; width: auto; margin-top: 10px;" class=\'mx-auto badge badge-pill badge-light \'>Position Loading</span>\n' +
+        '<div class="col-12">\n' +
+        '<div style="margin: 5px 20px 20px 20px; ;" class="progress">\n' +
+        '<div class="progress-bar bg-dark" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>\n' +
+        '</div>\n' +
+        '</div>\n' +
+        '</div>\n' +
+        '<div style="background-color:#2980B9; margin: 10px; border-radius: 10px;" class="row">\n' +
+        '<span style="font-size: 16px; font-weight: bold; width: auto; margin-top: 10px;" class=\'mx-auto badge badge-pill badge-light \'>Data Processing</span>\n' +
+        '<div class="col-12">\n' +
+        '<div style="margin: 5px 20px 20px 20px; ;" class="progress">\n' +
+        '<div class="progress-bar bg-dark" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>\n' +
+        '</div>\n' +
+        '</div>\n' +
+        '</div>\n' +
+        '</div>')
 }

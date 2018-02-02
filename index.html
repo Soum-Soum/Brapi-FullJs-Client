@@ -5,22 +5,58 @@
 		<title>Breeding Api Client</title>
 	</head>
 	<body>
-	<div class=" container-fluid">
-		<div class="row">
-			<div class=" col-12">
-				<div id="loadingScreen" class="modal mx-auto">
-					<img id="loadingImage" src="resources/progress.gif">
-					<h3 id="EvolutionLoadingScreen" style="display: inline;" >Loading : </h3>
-					<button class="btn btn-danger" type="button" style="display: inline;" onclick="abortExport()">Abort</button>
+		<div id="loadingModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-lg">
+				<div id="loadingModalContainer" style="padding: 10px;background-color: #daebf3; border-radius: 20px;" class="container-fluid modal-content">
+					<div style="font-size: 16px; font-weight: bold; width: auto; margin-top: 10px;" class='mx-auto badge badge-pill badge-light' id="mainBadge">loool</div>
+					<div style="background-color:#2980B9; margin: 10px; border-radius: 10px;" class="row">
+						<span style="font-size: 16px; font-weight: bold; width: auto; margin-top: 10px;" class='mx-auto badge badge-pill badge-light '>Marker Profile Loading</span>
+						<div class="col-12">
+							<div style="margin: 5px 20px 20px 20px;" class="progress">
+								<div class="progress-bar bg-dark" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+							</div>
+						</div>
+					</div>
+					<div style="background-color:#2980B9; margin: 10px; border-radius: 10px;" class="row">
+						<span style="font-size: 16px; font-weight: bold; width: auto; margin-top: 10px;" class='mx-auto badge badge-pill badge-light '>Type Checking</span>
+						<div class="col-12">
+							<div style="margin: 5px 20px 20px 20px;" class="progress">
+								<div class="progress-bar bg-dark" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+							</div>
+						</div>
+					</div>
+					<div style="background-color:#2980B9; margin: 10px; border-radius: 10px;" class="row">
+						<span style="font-size: 16px; font-weight: bold; width: auto; margin-top: 10px;" class='mx-auto badge badge-pill badge-light '>Marker Loading</span>
+						<div class="col-12">
+							<div style="margin: 5px 20px 20px 20px; ;" class="progress">
+								<div class="progress-bar bg-dark" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+							</div>
+						</div>
+					</div>
+					<div style="background-color:#2980B9; margin: 10px; border-radius: 10px;" class="row">
+						<span style="font-size: 16px; font-weight: bold; width: auto; margin-top: 10px;" class='mx-auto badge badge-pill badge-light '>Position Loading</span>
+						<div class="col-12">
+							<div style="margin: 5px 20px 20px 20px; ;" class="progress">
+								<div class="progress-bar bg-dark" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+							</div>
+						</div>
+					</div>
+					<div style="background-color:#2980B9; margin: 10px; border-radius: 10px;" class="row">
+						<span style="font-size: 16px; font-weight: bold; width: auto; margin-top: 10px;" class='mx-auto badge badge-pill badge-light '>Data Processing</span>
+						<div class="col-12">
+							<div style="margin: 5px 20px 20px 20px; ;" class="progress">
+								<div class="progress-bar bg-dark" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
-	</div>
 		<div is="test" class="container-fluid">
 			<div class="row">
 				<h1 id="title" class="col-md-4">Breeding Api Client</h1>
 				<div class="col-md-3">
-                    <span class="alert alert-danger" id="ErrorMessage"></span>
+                    <span style="position: absolute; z-index: 1;" class="alert alert-danger" id="ErrorMessage"></span>
                 </div>
 				<form class="col-md-5">
 					<div id="standardForm" class="container mx-auto">
@@ -43,9 +79,9 @@
 								<p class="badge badge-info">Advanced Mode : </p>
 								<input type="checkbox" class="" onchange="isInAdvancedMode($(this).is(':checked'))">
 							</div>
-							<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+							<div id="groupModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
 								<div class="modal-dialog modal-lg">
-									<div style="border-radius: 20px" class="modal-content">
+									<div style="border-radius: 20px;" class="modal-content">
 										<div class="container-fluid" style="background-color: #daebf3;">
 											<div class="row lol" style="background-color: #daebf3;">
 												<button type="button" class="col-6 btn btn-light" style="margin-bottom: 10px" id="addGrpId" onclick="addGrp(this)"> Add one Group</button>
@@ -62,7 +98,7 @@
 									</div>
 								</div>
 							</div>
-							<button type="button" id="groupManager" class="col-4 btn btn-sm btn-primary" data-toggle="modal" data-target=".bd-example-modal-lg">Configure</button>
+							<button type="button" id="groupManager" class="col-4 btn btn-sm btn-primary" data-toggle="modal" data-target="#groupModal">Configure</button>
 						</div>
 					</div>
 				</form>	
