@@ -73,6 +73,7 @@ class PaginationManager{
 	async getFirstPage(function_to_launch, argumentsArray){
         try{
         	this.setEvolutionOfPagination(0);
+        	this.updateEvolution();
             argumentsArray.askedPage=0;
             let resp = await function_to_launch(argumentsArray);
             this.setEvolutionOfPagination(100);
@@ -99,31 +100,25 @@ class PaginationManager{
         	this.updateEvolution();
             argumentsArray.askedPage=0;
             argumentsArray.pageSize=1;
-            //console.log(argumentsArray);
             resp= await function_to_launch(argumentsArray);
-            this.evolutionOfPagination=Math.round((1/(1+arrayOfMarkersType.length))*100);
-            this.updateEvolution();
-            //console.log(resp);
             tantamount=resp.metadata.pagination.totalCount;
-            //console.log(tantamount);
 		    for(let i=0; i<arrayOfMarkersType.length;i++){
-		    	//console.log(arrayOfMarkersType[i]);
 		    	if(arrayOfMarkersType[i]!== undefined && arrayOfMarkersType[i]!== null && arrayOfMarkersType[i]!==''){
 		    		argumentsArray.askedType=arrayOfMarkersType[i];
                     resp = await function_to_launch(argumentsArray);
-                    this.setEvolutionOfPagination(Math.round(((i+2)/(arrayOfMarkersType.length))*100));
-                    this.updateEvolution();
-                    //console.log(resp);
+                    this.setEvolutionOfPagination(Math.round(((i+1)/(arrayOfMarkersType.length))*100));
+                    if(this.evolutionOfPagination!==100){
+                        this.updateEvolution();
+                    }
                     currentNumber = resp.metadata.pagination.totalCount;
                     if(currentNumber>max){
                     	max=currentNumber;
                     	mostPresentType =arrayOfMarkersType[i];
                     }
                     count += currentNumber;
-                    //console.log(count);
 				}
             }
-            this.setEvolutionOfPagination(100);
+            this.evolutionOfPagination=100;
 			this.updateEvolution();
             return tantamount === count;
 		}catch(err){

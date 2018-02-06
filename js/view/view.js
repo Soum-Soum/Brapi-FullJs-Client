@@ -264,26 +264,32 @@ async function isInAdvancedMode(bool) {
 }
 
 function setProgresBarValue(idProgresBar, value, textProgresBar, text) {
-    let delay = 750;
+    let delay = 500;
     if(idProgresBar>=0 && idProgresBar<$('#loadingModalContainer')[0].children.length){
         let currenBlock = idProgresBar===5 ? $('#loadingModalContainer')[0].children[idProgresBar] : $('#loadingModalContainer')[0].children[idProgresBar+1];
         let currentProgresBar = $(currenBlock).find('.progress-bar')[0];
+        console.log($(currentProgresBar));
         if(value!==0){
             if(value>100){
                 $(currentProgresBar).animate( { width: '100%' }, delay );
-            }
-            $(currentProgresBar).animate( { width: value + '%' }, delay );
-            if(textProgresBar!== undefined && textProgresBar!==""){
-                $(currentProgresBar).text(value + '%(' + textProgresBar + ")");
+                if(textProgresBar!== undefined && textProgresBar!==""){
+                    $(currentProgresBar).text(value + '%(' + textProgresBar + ")");
+                }
             }else{
-                $(currentProgresBar).text(value + '%');
-            }
-            if(text!== undefined && text!==""){
-                $('#mainBadge').text(text);
+                $(currentProgresBar).animate( { width: value + '%' }, delay );
+                if(textProgresBar!== undefined && textProgresBar!==""){
+                    $(currentProgresBar).text(value + '%(' + textProgresBar + ")");
+                }else{
+                    $(currentProgresBar).text(value + '%');
+                }
+                if(text!== undefined && text!==""){
+                    $('#mainBadge').text(text);
+                }
             }
         }else {
             $(currentProgresBar).replaceWith('<div class="progress-bar bg-dark" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>');
         }
+        console.log($(currentProgresBar));
     }
 }
 
