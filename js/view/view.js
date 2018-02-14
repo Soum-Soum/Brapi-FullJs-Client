@@ -87,7 +87,7 @@ function setUpGermplasms(response){
 	Object.keys(response).forEach(function(element){
         let valueString = "";
         for (let i = 0; i < response[element].length; i++) {
-			valueString+=response[element][i].markerProfileDbId + ",";
+			valueString+=response[element][i].markerprofileDbId + ",";
 		}
 		htmlString +='<option selected value="'+valueString+'">'+element+'</option>\n';
 	});
