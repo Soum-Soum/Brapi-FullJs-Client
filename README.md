@@ -22,4 +22,4 @@ http://webtools.southgreen.fr/BrAPI/Beegmac/jsdoc/ or http://webtools-sg.cirad.f
 
 ---
 
-*Beegmac development was initiated in 2018 by **Pierre Carceller** (https://github.com/Soum-Soum) in the context of his internship at **CIRAD** (https://www.cirad.fr/)*
+*Brapi-FullJs-Client development was initiated in 2018 by **Pierre Carceller** (https://github.com/Soum-Soum) in the context of his internship at **CIRAD** (https://www.cirad.fr/)*
